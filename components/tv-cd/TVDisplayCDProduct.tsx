@@ -246,35 +246,49 @@ export default function TVDisplayCDProduct({
   const leftRows = allRows.slice(0, splitIndex);
   const rightRows = shouldSplit ? allRows.slice(splitIndex) : [];
 
+  // ✅ Compact mode for high density (13-15 rows per table)
+  const rowsPerTable = shouldSplit ? Math.ceil(allRows.length / 2) : allRows.length;
+  const isCompact = rowsPerTable > 12;
+
+  const headerFontSize = isCompact 
+    ? "clamp(0.7rem, 1.2vw, 1.5rem)" 
+    : shouldSplit 
+      ? "clamp(0.8rem, 1.5vw, 1.8rem)" 
+      : "clamp(1rem, 1.8vw, 2.2rem)";
+
+  const rowFontSize = isCompact
+    ? "clamp(0.9rem, 1.5vw, 1.8rem)"
+    : "clamp(1.2rem, 2vw, 2.5rem)";
+
   return (
     <div
       className="h-screen w-screen text-white font-bold overflow-hidden relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
       style={{
         display: "grid",
         gridTemplateRows: "clamp(100px, 15vh, 140px) 1fr",
-        gap: "0.5rem",
+        gap: "0",
         margin: 0,
-        padding: "0.5rem",
+        padding: "0",
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Header */}
       <div
-        className="glass-header flex-shrink-0 z-20 rounded-xl"
+        className="glass-header flex-shrink-0 z-20 rounded-none border-b border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.15)]"
         style={{ height: "100%" }}
       >
         <div
           className="grid gap-1 h-full items-center px-2 grid-cols-12"
           style={{ width: "100%", minWidth: 0, overflow: "hidden" }}
         >
-          {/* Logo */}
-          <div className="col-span-1 h-full flex flex-col items-center justify-between py-2">
+          {/* Logo & Title */}
+          <div className="col-span-6 h-full flex items-center gap-4">
             <div
-              className="relative bg-white/95 rounded backdrop-blur-sm shadow-lg flex items-center justify-center"
+              className="relative bg-white/95 rounded backdrop-blur-sm shadow-lg flex items-center justify-center flex-shrink-0"
               style={{
-                width: "clamp(2.2rem, 4vw, 4.4rem)",
-                height: "clamp(2.2rem, 4vw, 4.4rem)",
+                width: "clamp(3rem, 5vw, 5rem)",
+                height: "clamp(3rem, 5vw, 5rem)",
                 aspectRatio: "1",
               }}
             >
@@ -287,93 +301,67 @@ export default function TVDisplayCDProduct({
                 className="w-full h-full object-contain filter drop-shadow-xl"
               />
             </div>
-            <div className="text-center px-2 py-1">
-              <div
-                style={{ fontSize: "clamp(1.4rem, 2.5vw, 2.5rem)" }}
-                className="font-black text-white leading-none"
-                suppressHydrationWarning={true}
-              >
-                {formattedTime}
-              </div>
-            </div>
-          </div>
-
-          {/* Title & Info */}
-          <div className="col-span-10 flex flex-col justify-center items-center gap-1 min-w-0">
+            
             <h1
-              className="font-black text-white text-center leading-tight"
-              style={{ fontSize: "clamp(1.5rem, 3vw, 3.5rem)" }}
+              className="font-black text-white leading-tight text-left"
+              style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}
             >
               BẢNG THEO DÕI CHI TIẾT BTP TỔ {data?.sheet?.replace("CD", "CD")}{" "}
               {data?.factory}
             </h1>
-            <div
-              className="flex items-center justify-center gap-4 flex-wrap"
-              style={{ fontSize: "clamp(1rem, 2vw, 2rem)" }}
-            >
-              <div className="font-semibold">
-                <span className="text-red-400">STYLE</span>{" "}
-                <span className={getFlashClass("product-ma", "text-cyan-300")}>
+          </div>
+
+          {/* Metrics Card */}
+          <div className="col-span-6 h-full flex items-center justify-end pr-2">
+            <div className="metric-card-violet flex items-center justify-between px-4 py-1 w-full h-[90%] gap-2 shadow-lg">
+              {/* Style */}
+              <div className="flex flex-col items-center justify-center flex-1 min-w-0">
+                <span className="text-purple-300 font-bold mb-0.5 tracking-wider" style={{ fontSize: "clamp(1.2rem, 1.6vw, 2rem)" }}>STYLE</span>
+                <span className={getFlashClass("product-ma", "font-black text-white leading-none truncate w-full text-center")} style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}>
                   {currentProduct.ma}
                 </span>
               </div>
-              <div className="font-semibold">
-                <span className="text-red-400">MÀU</span>{" "}
-                <span className={getFlashClass("product-mau", "text-cyan-300")}>
+
+              {/* Màu */}
+              <div className="flex flex-col items-center justify-center border-l border-purple-500/30 pl-2 flex-1 min-w-0">
+                <span className="text-purple-300 font-bold mb-0.5 tracking-wider" style={{ fontSize: "clamp(1.2rem, 1.6vw, 2rem)" }}>MÀU</span>
+                <span className={getFlashClass("product-mau", "font-black text-white leading-none truncate w-full text-center")} style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}>
                   {currentProduct.mau}
                 </span>
               </div>
-              <div className="font-semibold">
-                <span className="text-red-400">SLKH</span>{" "}
-                <span
-                  className={getFlashClass("product-slkh", "text-cyan-300")}
-                >
-                  {currentProduct.slkh.toLocaleString()}
-                </span>
-              </div>
-              <div className="font-semibold">
-                <span className="text-red-400">NHU CẦU LŨY KẾ</span>{" "}
-                <span
-                  className={getFlashClass(
-                    "product-nhuCauLuyKe",
-                    "text-cyan-300"
-                  )}
-                >
-                  {currentProduct.nhuCauLuyKe.toLocaleString()}
-                </span>
-              </div>
-            </div>
-          </div>
 
-          {/* Connection Status */}
-          <div className="col-span-1 flex flex-col items-center justify-center gap-1">
-            <div className="flex items-center gap-1">
-              {connected ? (
-                <Wifi
-                  className="text-green-400"
-                  style={{
-                    width: "clamp(1.2rem, 2vw, 2rem)",
-                    height: "clamp(1.2rem, 2vw, 2rem)",
-                  }}
-                />
-              ) : (
-                <WifiOff
-                  className="text-red-400"
-                  style={{
-                    width: "clamp(1.2rem, 2vw, 2rem)",
-                    height: "clamp(1.2rem, 2vw, 2rem)",
-                  }}
-                />
-              )}
-            </div>
-            {products.length > 1 && (
-              <div
-                className="text-white/80 font-semibold text-center"
-                style={{ fontSize: "clamp(0.7rem, 1.2vw, 1.2rem)" }}
-              >
-                {currentSlide + 1}/{products.length}
+              {/* SLKH */}
+              <div className="flex flex-col items-center justify-center border-l border-purple-500/30 pl-2 flex-1 min-w-0">
+                <span className="text-purple-300 font-bold mb-0.5 tracking-wider" style={{ fontSize: "clamp(1.2rem, 1.6vw, 2rem)" }}>SLKH</span>
+                <span className={getFlashClass("product-slkh", "font-black text-white leading-none")} style={{ fontSize: "clamp(1.8rem, 3vw, 3.5rem)" }}>
+                  {currentProduct.slkh.toLocaleString("de-DE")}
+                </span>
               </div>
-            )}
+
+              {/* Nhu cầu lũy kế */}
+              <div className="flex flex-col items-center justify-center border-l border-purple-500/30 pl-2 flex-1 min-w-0">
+                <span className="text-purple-300 font-bold mb-0.5 text-center leading-tight tracking-wider" style={{ fontSize: "clamp(1.2rem, 1.6vw, 2rem)" }}>NC LŨY KẾ</span>
+                <span className={getFlashClass("product-nhuCauLuyKe", "font-black text-white leading-none")} style={{ fontSize: "clamp(1.8rem, 3vw, 3.5rem)" }}>
+                  {currentProduct.nhuCauLuyKe.toLocaleString("de-DE")}
+                </span>
+              </div>
+
+              {/* Connection Status & Slide Info */}
+              <div className="flex flex-col items-center justify-center border-l border-purple-500/30 pl-2 gap-1" style={{ minWidth: "clamp(3rem, 5vw, 5rem)" }}>
+                <div className="flex items-center">
+                  {connected ? (
+                    <Wifi className="text-green-400 drop-shadow-[0_0_5px_rgba(74,222,128,0.5)]" style={{ width: "clamp(1.5rem, 2.5vw, 2.5rem)", height: "clamp(1.5rem, 2.5vw, 2.5rem)" }} />
+                  ) : (
+                    <WifiOff className="text-red-400 drop-shadow-[0_0_5px_rgba(248,113,113,0.5)]" style={{ width: "clamp(1.5rem, 2.5vw, 2.5rem)", height: "clamp(1.5rem, 2.5vw, 2.5rem)" }} />
+                  )}
+                </div>
+                {products.length > 1 && (
+                  <div className="text-white/90 font-black tracking-widest" style={{ fontSize: "clamp(0.8rem, 1.2vw, 1.2rem)" }}>
+                    {currentSlide + 1}/{products.length}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -386,66 +374,69 @@ export default function TVDisplayCDProduct({
       >
         {/* Left/Single Table */}
         <div className={`${shouldSplit ? "flex-1" : "w-full"} overflow-hidden`}>
-          <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg shadow-2xl overflow-auto h-full border border-slate-700/50">
+          <div className="metric-card-violet overflow-auto h-full shadow-2xl rounded-none border-t-0">
             <table className="w-full border-collapse">
               <thead className="sticky top-0 z-10">
-                <tr className="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white">
+                <tr className="bg-slate-800 text-white backdrop-blur-md border-b border-purple-500/50">
                   <th
-                    className="border-2 border-slate-700 px-1 py-1 text-center font-black"
+                    className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{
-                      fontSize: "clamp(0.9rem, 1.5vw, 1.8rem)",
+                      fontSize: headerFontSize,
                       width: "clamp(40px, 5vw, 60px)",
                     }}
                   >
                     STT
                   </th>
                   <th
-                    className="border-2 border-slate-700 px-1 py-1 text-center font-black"
-                    style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.8rem)" }}
+                    className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                    style={{ 
+                      fontSize: headerFontSize,
+                      width: shouldSplit ? undefined : "25%" 
+                    }}
                   >
                     TÊN CT
                   </th>
                   <th
-                    className="border-2 border-slate-700 px-1 py-1 text-center font-black"
+                    className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{
-                      fontSize: "clamp(0.9rem, 1.5vw, 1.8rem)",
+                      fontSize: headerFontSize,
                       width: "clamp(60px, 8vw, 100px)",
                     }}
                   >
                     GIAO
                   </th>
                   <th
-                    className="border-2 border-slate-700 px-1 py-1 text-center font-black"
+                    className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{
-                      fontSize: "clamp(0.9rem, 1.5vw, 1.8rem)",
+                      fontSize: headerFontSize,
                       width: "clamp(70px, 10vw, 120px)",
                     }}
                   >
                     LK GIAO
                   </th>
                   <th
-                    className="border-2 border-slate-700 px-1 py-1 text-center font-black"
+                    className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{
-                      fontSize: "clamp(0.9rem, 1.5vw, 1.8rem)",
+                      fontSize: headerFontSize,
                       width: "clamp(60px, 8vw, 100px)",
                     }}
                   >
                     +/- CL
                   </th>
                   <th
-                    className="border-2 border-slate-700 px-1 py-1 text-center font-black"
+                    className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{
-                      fontSize: "clamp(0.9rem, 1.5vw, 1.8rem)",
+                      fontSize: headerFontSize,
                       width: "clamp(60px, 8vw, 100px)",
                     }}
                   >
                     TỒN
                   </th>
                   <th
-                    className="border-2 border-slate-700 px-1 py-1 text-center font-black"
+                    className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{
-                      fontSize: "clamp(0.9rem, 1.5vw, 1.8rem)",
-                      width: "clamp(70px, 10vw, 120px)",
+                      fontSize: shouldSplit ? "clamp(0.8rem, 1.4vw, 1.8rem)" : "clamp(1rem, 1.8vw, 2.2rem)",
+                      width: shouldSplit ? "clamp(80px, 12vw, 140px)" : "clamp(70px, 10vw, 120px)",
                     }}
                   >
                     CẦN XỬ LÝ
@@ -456,85 +447,85 @@ export default function TVDisplayCDProduct({
                 {leftRows.map((row, idx) => {
                   const isNegative = row.conLai < 0;
                   const rowBgColor = isNegative
-                    ? "bg-red-900/40"
+                    ? "bg-red-900/60"
                     : idx % 2 === 0
-                    ? "bg-slate-700/30"
-                    : "bg-slate-800/30";
+                    ? "bg-white/5"
+                    : "bg-transparent";
                   const rowKey =
                     row.stt === 1 ? "product" : `detail-${row.stt - 2}`;
 
                   return (
                     <tr
                       key={idx}
-                      className={`${rowBgColor} hover:bg-slate-600/40 transition-colors`}
+                      className={`${rowBgColor} hover:bg-white/10 transition-colors`}
                     >
                       <td
-                        className="border border-slate-700 px-1 py-1 text-center font-bold text-white"
-                        style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.6rem)" }}
+                        className="border border-purple-500/20 px-0.5 py-0.5 text-center font-bold text-white"
+                        style={{ fontSize: rowFontSize }}
                       >
                         {row.stt}
                       </td>
                       <td
                         className={getFlashClass(
                           `${rowKey}-tenChiTiet`,
-                          "border border-slate-700 px-1 py-1 font-semibold text-white"
+                          "border border-purple-500/20 px-0.5 py-0.5 font-semibold text-white"
                         )}
-                        style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.6rem)" }}
+                        style={{ fontSize: rowFontSize }}
                       >
                         {row.tenChiTiet}
                       </td>
                       <td
                         className={getFlashClass(
                           `${rowKey}-keHoachGiao`,
-                          "border border-slate-700 px-1 py-1 text-center font-semibold text-white"
+                          "border border-purple-500/20 px-0.5 py-0.5 text-center font-semibold text-white"
                         )}
-                        style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.6rem)" }}
+                        style={{ fontSize: rowFontSize }}
                       >
                         {row.keHoachGiao > 0
-                          ? row.keHoachGiao.toLocaleString()
+                          ? row.keHoachGiao.toLocaleString("de-DE")
                           : "-"}
                       </td>
                       <td
                         className={getFlashClass(
                           `${rowKey}-luyKeGiao`,
-                          "border border-slate-700 px-1 py-1 text-center font-semibold text-cyan-300"
+                          "border border-purple-500/20 px-0.5 py-0.5 text-center font-semibold text-cyan-300"
                         )}
-                        style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.6rem)" }}
+                        style={{ fontSize: rowFontSize }}
                       >
                         {row.luyKeGiao > 0
-                          ? row.luyKeGiao.toLocaleString()
+                          ? row.luyKeGiao.toLocaleString("de-DE")
                           : "-"}
                       </td>
                       <td
                         className={getFlashClass(
                           `${rowKey}-conLai`,
-                          `border border-slate-700 px-1 py-1 text-center font-bold ${
+                          `border border-purple-500/20 px-0.5 py-0.5 text-center font-bold ${
                             isNegative ? "text-red-400" : "text-white"
                           }`
                         )}
-                        style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.6rem)" }}
+                        style={{ fontSize: rowFontSize }}
                       >
-                        {row.conLai !== 0 ? row.conLai.toLocaleString() : "-"}
+                        {row.conLai !== 0 ? row.conLai.toLocaleString("de-DE") : "-"}
                       </td>
                       <td
                         className={getFlashClass(
                           `${rowKey}-ttdb`,
-                          "border border-slate-700 px-1 py-1 text-center font-semibold text-amber-300"
+                          "border border-purple-500/20 px-0.5 py-0.5 text-center font-semibold text-amber-300"
                         )}
-                        style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.6rem)" }}
+                        style={{ fontSize: rowFontSize }}
                       >
-                        {row.ttdb > 0 ? row.ttdb.toLocaleString() : ""}
+                        {row.ttdb > 0 ? row.ttdb.toLocaleString("de-DE") : ""}
                       </td>
                       <td
                         className={getFlashClass(
                           `${rowKey}-canXuLy`,
-                          `border border-slate-700 px-1 py-1 text-center font-bold ${
+                          `border border-purple-500/20 px-0.5 py-0.5 text-center font-bold ${
                             row.canXuLy < 0 ? "text-red-400" : "text-white"
                           }`
                         )}
-                        style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.6rem)" }}
+                        style={{ fontSize: rowFontSize }}
                       >
-                        {row.canXuLy !== 0 ? row.canXuLy.toLocaleString() : ""}
+                        {row.canXuLy !== 0 ? row.canXuLy.toLocaleString("de-DE") : ""}
                       </td>
                     </tr>
                   );
@@ -547,66 +538,66 @@ export default function TVDisplayCDProduct({
         {/* Right Table (if split) */}
         {shouldSplit && (
           <div className="flex-1 overflow-hidden">
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg shadow-2xl overflow-auto h-full border border-slate-700/50">
+            <div className="metric-card-violet overflow-auto h-full shadow-2xl rounded-none border-t-0">
               <table className="w-full border-collapse">
                 <thead className="sticky top-0 z-10">
-                  <tr className="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white">
+                  <tr className="bg-slate-800 text-white backdrop-blur-md border-b border-purple-500/50">
                     <th
-                      className="border-2 border-slate-700 px-1 py-1 text-center font-black"
+                      className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
                       style={{
-                        fontSize: "clamp(0.9rem, 1.5vw, 1.8rem)",
+                        fontSize: headerFontSize,
                         width: "clamp(40px, 5vw, 60px)",
                       }}
                     >
                       STT
                     </th>
                     <th
-                      className="border-2 border-slate-700 px-1 py-1 text-center font-black"
-                      style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.8rem)" }}
+                      className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                      style={{ fontSize: headerFontSize }}
                     >
                       TÊN CT
                     </th>
                     <th
-                      className="border-2 border-slate-700 px-1 py-1 text-center font-black"
+                      className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
                       style={{
-                        fontSize: "clamp(0.9rem, 1.5vw, 1.8rem)",
+                        fontSize: headerFontSize,
                         width: "clamp(60px, 8vw, 100px)",
                       }}
                     >
                       GIAO
                     </th>
                     <th
-                      className="border-2 border-slate-700 px-1 py-1 text-center font-black"
+                      className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
                       style={{
-                        fontSize: "clamp(0.9rem, 1.5vw, 1.8rem)",
+                        fontSize: headerFontSize,
                         width: "clamp(70px, 10vw, 120px)",
                       }}
                     >
                       LK GIAO
                     </th>
                     <th
-                      className="border-2 border-slate-700 px-1 py-1 text-center font-black"
+                      className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
                       style={{
-                        fontSize: "clamp(0.9rem, 1.5vw, 1.8rem)",
+                        fontSize: headerFontSize,
                         width: "clamp(60px, 8vw, 100px)",
                       }}
                     >
                       +/- CL
                     </th>
                     <th
-                      className="border-2 border-slate-700 px-1 py-1 text-center font-black"
+                      className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
                       style={{
-                        fontSize: "clamp(0.9rem, 1.5vw, 1.8rem)",
+                        fontSize: headerFontSize,
                         width: "clamp(60px, 8vw, 100px)",
                       }}
                     >
                       TỒN
                     </th>
                     <th
-                      className="border-2 border-slate-700 px-1 py-1 text-center font-black"
+                      className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
                       style={{
-                        fontSize: "clamp(0.9rem, 1.5vw, 1.8rem)",
-                        width: "clamp(70px, 10vw, 120px)",
+                        fontSize: "clamp(0.8rem, 1.4vw, 1.8rem)",
+                        width: "clamp(80px, 12vw, 140px)",
                       }}
                     >
                       CẦN XỬ LÝ
@@ -617,86 +608,86 @@ export default function TVDisplayCDProduct({
                   {rightRows.map((row, idx) => {
                     const isNegative = row.conLai < 0;
                     const rowBgColor = isNegative
-                      ? "bg-red-900/40"
+                      ? "bg-red-900/60"
                       : idx % 2 === 0
-                      ? "bg-slate-700/30"
-                      : "bg-slate-800/30";
+                      ? "bg-white/5"
+                      : "bg-transparent";
                     const rowKey =
                       row.stt === 1 ? "product" : `detail-${row.stt - 2}`;
 
                     return (
                       <tr
                         key={idx}
-                        className={`${rowBgColor} hover:bg-slate-600/40 transition-colors`}
+                        className={`${rowBgColor} hover:bg-white/10 transition-colors`}
                       >
                         <td
-                          className="border border-slate-700 px-1 py-1 text-center font-bold text-white"
-                          style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.6rem)" }}
+                          className="border border-purple-500/20 px-0.5 py-0.5 text-center font-bold text-white"
+                          style={{ fontSize: rowFontSize }}
                         >
                           {row.stt}
                         </td>
                         <td
                           className={getFlashClass(
                             `${rowKey}-tenChiTiet`,
-                            "border border-slate-700 px-1 py-1 font-semibold text-white"
+                            "border border-purple-500/20 px-0.5 py-0.5 font-semibold text-white"
                           )}
-                          style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.6rem)" }}
+                          style={{ fontSize: rowFontSize }}
                         >
                           {row.tenChiTiet}
                         </td>
                         <td
                           className={getFlashClass(
                             `${rowKey}-keHoachGiao`,
-                            "border border-slate-700 px-1 py-1 text-center font-semibold text-white"
+                            "border border-purple-500/20 px-0.5 py-0.5 text-center font-semibold text-white"
                           )}
-                          style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.6rem)" }}
+                          style={{ fontSize: rowFontSize }}
                         >
                           {row.keHoachGiao > 0
-                            ? row.keHoachGiao.toLocaleString()
+                            ? row.keHoachGiao.toLocaleString("de-DE")
                             : "-"}
                         </td>
                         <td
                           className={getFlashClass(
                             `${rowKey}-luyKeGiao`,
-                            "border border-slate-700 px-1 py-1 text-center font-semibold text-cyan-300"
+                            "border border-purple-500/20 px-0.5 py-0.5 text-center font-semibold text-cyan-300"
                           )}
-                          style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.6rem)" }}
+                          style={{ fontSize: rowFontSize }}
                         >
                           {row.luyKeGiao > 0
-                            ? row.luyKeGiao.toLocaleString()
+                            ? row.luyKeGiao.toLocaleString("de-DE")
                             : "-"}
                         </td>
                         <td
                           className={getFlashClass(
                             `${rowKey}-conLai`,
-                            `border border-slate-700 px-1 py-1 text-center font-bold ${
+                            `border border-purple-500/20 px-0.5 py-0.5 text-center font-bold ${
                               isNegative ? "text-red-400" : "text-white"
                             }`
                           )}
-                          style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.6rem)" }}
+                          style={{ fontSize: rowFontSize }}
                         >
-                          {row.conLai !== 0 ? row.conLai.toLocaleString() : "-"}
+                          {row.conLai !== 0 ? row.conLai.toLocaleString("de-DE") : "-"}
                         </td>
                         <td
                           className={getFlashClass(
                             `${rowKey}-ttdb`,
-                            "border border-slate-700 px-1 py-1 text-center font-semibold text-amber-300"
+                            "border border-purple-500/20 px-0.5 py-0.5 text-center font-semibold text-amber-300"
                           )}
-                          style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.6rem)" }}
+                          style={{ fontSize: rowFontSize }}
                         >
-                          {row.ttdb > 0 ? row.ttdb.toLocaleString() : ""}
+                          {row.ttdb > 0 ? row.ttdb.toLocaleString("de-DE") : ""}
                         </td>
                         <td
                           className={getFlashClass(
                             `${rowKey}-canXuLy`,
-                            `border border-slate-700 px-1 py-1 text-center font-bold ${
+                            `border border-purple-500/20 px-0.5 py-0.5 text-center font-bold ${
                               row.canXuLy < 0 ? "text-red-400" : "text-white"
                             }`
                           )}
-                          style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.6rem)" }}
+                          style={{ fontSize: rowFontSize }}
                         >
                           {row.canXuLy !== 0
-                            ? row.canXuLy.toLocaleString()
+                            ? row.canXuLy.toLocaleString("de-DE")
                             : ""}
                         </td>
                       </tr>
