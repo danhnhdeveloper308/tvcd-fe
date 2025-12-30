@@ -256,7 +256,7 @@ class WebSocketService {
     this.socket.once(
       "cd-product-subscription-confirmed",
       (confirmation: any) => {
-        console.log("✅ CD Product subscription confirmed:", confirmation);
+        // console.log("✅ CD Product subscription confirmed:", confirmation);
       }
     );
 
@@ -264,7 +264,7 @@ class WebSocketService {
     this.socket.on("cd-product-update", (data) => {
       // Only process updates for the subscribed sheet
       if (data.sheet === sheetCode) {
-        console.log(`📡 CD Product update received for ${sheetCode}:`, data);
+        // console.log(`📡 CD Product update received for ${sheetCode}:`, data);
         callback(data);
       }
     });

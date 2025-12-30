@@ -217,10 +217,10 @@ export default function TVDisplayCDProduct({
   }
 
   // Combine main product row with details for display
-  const allRows = [
+  const rawRows = [
     {
-      stt: 1,
-      tenChiTiet: currentProduct.tenChiTiet || "-",
+      type: "main",
+      tenChiTiet: currentProduct.tenChiTiet,
       keHoachGiao: currentProduct.keHoachGiao,
       luyKeGiao: currentProduct.luyKeGiao,
       conLai: currentProduct.conLai,
@@ -228,7 +228,8 @@ export default function TVDisplayCDProduct({
       canXuLy: currentProduct.canXuLy,
     },
     ...currentProduct.details.map((detail, idx) => ({
-      stt: idx + 2,
+      type: "detail",
+      index: idx,
       tenChiTiet: detail.tenChiTiet,
       keHoachGiao: detail.keHoachGiao,
       luyKeGiao: detail.luyKeGiao,
@@ -237,6 +238,14 @@ export default function TVDisplayCDProduct({
       canXuLy: detail.canXuLy,
     })),
   ];
+
+  // Filter out rows with empty tenChiTiet and re-index
+  const allRows = rawRows
+    .filter((row) => row.tenChiTiet && row.tenChiTiet.trim() !== "")
+    .map((row, idx) => ({
+      stt: idx + 1,
+      ...row,
+    }));
 
   // ✅ Split into 2 tables if more than 15 rows
   const shouldSplit = allRows.length > 15;
@@ -377,9 +386,9 @@ export default function TVDisplayCDProduct({
           <div className="metric-card-violet overflow-auto h-full shadow-2xl rounded-none border-t-0">
             <table className="w-full border-collapse">
               <thead className="sticky top-0 z-10">
-                <tr className="bg-slate-800 text-white backdrop-blur-md border-b border-purple-500/50">
+                <tr className="bg-slate-800 text-white backdrop-blur-md border-b border-slate-500">
                   <th
-                    className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                    className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
                       width: "clamp(40px, 5vw, 60px)",
@@ -388,7 +397,7 @@ export default function TVDisplayCDProduct({
                     STT
                   </th>
                   <th
-                    className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                    className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{ 
                       fontSize: headerFontSize,
                       width: shouldSplit ? undefined : "25%" 
@@ -397,7 +406,7 @@ export default function TVDisplayCDProduct({
                     TÊN CT
                   </th>
                   <th
-                    className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                    className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
                       width: "clamp(60px, 8vw, 100px)",
@@ -406,7 +415,7 @@ export default function TVDisplayCDProduct({
                     GIAO
                   </th>
                   <th
-                    className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                    className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
                       width: "clamp(70px, 10vw, 120px)",
@@ -415,7 +424,7 @@ export default function TVDisplayCDProduct({
                     LK GIAO
                   </th>
                   <th
-                    className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                    className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
                       width: "clamp(60px, 8vw, 100px)",
@@ -424,7 +433,7 @@ export default function TVDisplayCDProduct({
                     +/- CL
                   </th>
                   <th
-                    className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                    className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
                       width: "clamp(60px, 8vw, 100px)",
@@ -433,9 +442,9 @@ export default function TVDisplayCDProduct({
                     TỒN
                   </th>
                   <th
-                    className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                    className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{
-                      fontSize: shouldSplit ? "clamp(0.8rem, 1.4vw, 1.8rem)" : "clamp(1rem, 1.8vw, 2.2rem)",
+                      fontSize: headerFontSize,
                       width: shouldSplit ? "clamp(80px, 12vw, 140px)" : "clamp(70px, 10vw, 120px)",
                     }}
                   >
@@ -446,21 +455,25 @@ export default function TVDisplayCDProduct({
               <tbody>
                 {leftRows.map((row, idx) => {
                   const isNegative = row.conLai < 0;
+                  // Dark Theme for TV: Reduces glare, high contrast
                   const rowBgColor = isNegative
-                    ? "bg-red-900/60"
+                    ? "bg-red-950/50" // Dark red for negative
                     : idx % 2 === 0
-                    ? "bg-white/5"
-                    : "bg-transparent";
+                    ? "bg-slate-900/80" // Very dark slate
+                    : "bg-slate-800/80"; // Slightly lighter slate
                   const rowKey =
-                    row.stt === 1 ? "product" : `detail-${row.stt - 2}`;
+                    row.type === "main" ? "product" : `detail-${row.indexndex}`;
+                  
+                  // Subtle borders for dark theme
+                  const borderColor = "border-slate-700";
 
                   return (
                     <tr
                       key={idx}
-                      className={`${rowBgColor} hover:bg-white/10 transition-colors`}
+                      className={`${rowBgColor} hover:bg-slate-700 transition-colors`}
                     >
                       <td
-                        className="border border-purple-500/20 px-0.5 py-0.5 text-center font-bold text-white"
+                        className={`border ${borderColor} px-0.5 py-0.5 text-center font-bold text-slate-300`}
                         style={{ fontSize: rowFontSize }}
                       >
                         {row.stt}
@@ -468,7 +481,7 @@ export default function TVDisplayCDProduct({
                       <td
                         className={getFlashClass(
                           `${rowKey}-tenChiTiet`,
-                          "border border-purple-500/20 px-0.5 py-0.5 font-semibold text-white"
+                          `border ${borderColor} px-0.5 py-0.5 font-semibold text-white`
                         )}
                         style={{ fontSize: rowFontSize }}
                       >
@@ -477,7 +490,7 @@ export default function TVDisplayCDProduct({
                       <td
                         className={getFlashClass(
                           `${rowKey}-keHoachGiao`,
-                          "border border-purple-500/20 px-0.5 py-0.5 text-center font-semibold text-white"
+                          `border ${borderColor} px-0.5 py-0.5 text-center font-semibold text-slate-200`
                         )}
                         style={{ fontSize: rowFontSize }}
                       >
@@ -488,7 +501,7 @@ export default function TVDisplayCDProduct({
                       <td
                         className={getFlashClass(
                           `${rowKey}-luyKeGiao`,
-                          "border border-purple-500/20 px-0.5 py-0.5 text-center font-semibold text-cyan-300"
+                          `border ${borderColor} px-0.5 py-0.5 text-center font-semibold text-cyan-400`
                         )}
                         style={{ fontSize: rowFontSize }}
                       >
@@ -499,7 +512,7 @@ export default function TVDisplayCDProduct({
                       <td
                         className={getFlashClass(
                           `${rowKey}-conLai`,
-                          `border border-purple-500/20 px-0.5 py-0.5 text-center font-bold ${
+                          `border ${borderColor} px-0.5 py-0.5 text-center font-bold ${
                             isNegative ? "text-red-400" : "text-white"
                           }`
                         )}
@@ -510,7 +523,7 @@ export default function TVDisplayCDProduct({
                       <td
                         className={getFlashClass(
                           `${rowKey}-ttdb`,
-                          "border border-purple-500/20 px-0.5 py-0.5 text-center font-semibold text-amber-300"
+                          `border ${borderColor} px-0.5 py-0.5 text-center font-semibold text-yellow-400`
                         )}
                         style={{ fontSize: rowFontSize }}
                       >
@@ -519,7 +532,7 @@ export default function TVDisplayCDProduct({
                       <td
                         className={getFlashClass(
                           `${rowKey}-canXuLy`,
-                          `border border-purple-500/20 px-0.5 py-0.5 text-center font-bold ${
+                          `border ${borderColor} px-0.5 py-0.5 text-center font-bold ${
                             row.canXuLy < 0 ? "text-red-400" : "text-white"
                           }`
                         )}
@@ -541,9 +554,9 @@ export default function TVDisplayCDProduct({
             <div className="metric-card-violet overflow-auto h-full shadow-2xl rounded-none border-t-0">
               <table className="w-full border-collapse">
                 <thead className="sticky top-0 z-10">
-                  <tr className="bg-slate-800 text-white backdrop-blur-md border-b border-purple-500/50">
+                  <tr className="bg-slate-800 text-white backdrop-blur-md border-b border-slate-500">
                     <th
-                      className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                      className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                       style={{
                         fontSize: headerFontSize,
                         width: "clamp(40px, 5vw, 60px)",
@@ -552,13 +565,13 @@ export default function TVDisplayCDProduct({
                       STT
                     </th>
                     <th
-                      className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                      className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                       style={{ fontSize: headerFontSize }}
                     >
                       TÊN CT
                     </th>
                     <th
-                      className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                      className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                       style={{
                         fontSize: headerFontSize,
                         width: "clamp(60px, 8vw, 100px)",
@@ -567,7 +580,7 @@ export default function TVDisplayCDProduct({
                       GIAO
                     </th>
                     <th
-                      className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                      className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                       style={{
                         fontSize: headerFontSize,
                         width: "clamp(70px, 10vw, 120px)",
@@ -576,7 +589,7 @@ export default function TVDisplayCDProduct({
                       LK GIAO
                     </th>
                     <th
-                      className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                      className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                       style={{
                         fontSize: headerFontSize,
                         width: "clamp(60px, 8vw, 100px)",
@@ -585,7 +598,7 @@ export default function TVDisplayCDProduct({
                       +/- CL
                     </th>
                     <th
-                      className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                      className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                       style={{
                         fontSize: headerFontSize,
                         width: "clamp(60px, 8vw, 100px)",
@@ -594,9 +607,9 @@ export default function TVDisplayCDProduct({
                       TỒN
                     </th>
                     <th
-                      className="border border-purple-500/30 px-0.5 py-1 text-center font-black tracking-wider"
+                      className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                       style={{
-                        fontSize: "clamp(0.8rem, 1.4vw, 1.8rem)",
+                        fontSize: headerFontSize,
                         width: "clamp(80px, 12vw, 140px)",
                       }}
                     >
@@ -607,21 +620,25 @@ export default function TVDisplayCDProduct({
                 <tbody>
                   {rightRows.map((row, idx) => {
                     const isNegative = row.conLai < 0;
+                    // Dark Theme for TV: Reduces glare, high contrast
                     const rowBgColor = isNegative
-                      ? "bg-red-900/60"
+                      ? "bg-red-950/50" // Dark red for negative
                       : idx % 2 === 0
-                      ? "bg-white/5"
-                      : "bg-transparent";
+                      ? "bg-slate-900/80" // Very dark slate
+                      : "bg-slate-800/80"; // Slightly lighter slate
                     const rowKey =
                       row.stt === 1 ? "product" : `detail-${row.stt - 2}`;
+                    
+                    // Subtle borders for dark theme
+                    const borderColor = "border-slate-700";
 
                     return (
                       <tr
                         key={idx}
-                        className={`${rowBgColor} hover:bg-white/10 transition-colors`}
+                        className={`${rowBgColor} hover:bg-slate-700 transition-colors`}
                       >
                         <td
-                          className="border border-purple-500/20 px-0.5 py-0.5 text-center font-bold text-white"
+                          className={`border ${borderColor} px-0.5 py-0.5 text-center font-bold text-slate-300`}
                           style={{ fontSize: rowFontSize }}
                         >
                           {row.stt}
@@ -629,7 +646,7 @@ export default function TVDisplayCDProduct({
                         <td
                           className={getFlashClass(
                             `${rowKey}-tenChiTiet`,
-                            "border border-purple-500/20 px-0.5 py-0.5 font-semibold text-white"
+                            `border ${borderColor} px-0.5 py-0.5 font-semibold text-white`
                           )}
                           style={{ fontSize: rowFontSize }}
                         >
@@ -638,7 +655,7 @@ export default function TVDisplayCDProduct({
                         <td
                           className={getFlashClass(
                             `${rowKey}-keHoachGiao`,
-                            "border border-purple-500/20 px-0.5 py-0.5 text-center font-semibold text-white"
+                            `border ${borderColor} px-0.5 py-0.5 text-center font-semibold text-slate-200`
                           )}
                           style={{ fontSize: rowFontSize }}
                         >
@@ -649,7 +666,7 @@ export default function TVDisplayCDProduct({
                         <td
                           className={getFlashClass(
                             `${rowKey}-luyKeGiao`,
-                            "border border-purple-500/20 px-0.5 py-0.5 text-center font-semibold text-cyan-300"
+                            `border ${borderColor} px-0.5 py-0.5 text-center font-semibold text-cyan-400`
                           )}
                           style={{ fontSize: rowFontSize }}
                         >
@@ -660,7 +677,7 @@ export default function TVDisplayCDProduct({
                         <td
                           className={getFlashClass(
                             `${rowKey}-conLai`,
-                            `border border-purple-500/20 px-0.5 py-0.5 text-center font-bold ${
+                            `border ${borderColor} px-0.5 py-0.5 text-center font-bold ${
                               isNegative ? "text-red-400" : "text-white"
                             }`
                           )}
@@ -671,7 +688,7 @@ export default function TVDisplayCDProduct({
                         <td
                           className={getFlashClass(
                             `${rowKey}-ttdb`,
-                            "border border-purple-500/20 px-0.5 py-0.5 text-center font-semibold text-amber-300"
+                            `border ${borderColor} px-0.5 py-0.5 text-center font-semibold text-yellow-400`
                           )}
                           style={{ fontSize: rowFontSize }}
                         >
@@ -680,7 +697,7 @@ export default function TVDisplayCDProduct({
                         <td
                           className={getFlashClass(
                             `${rowKey}-canXuLy`,
-                            `border border-purple-500/20 px-0.5 py-0.5 text-center font-bold ${
+                            `border ${borderColor} px-0.5 py-0.5 text-center font-bold ${
                               row.canXuLy < 0 ? "text-red-400" : "text-white"
                             }`
                           )}

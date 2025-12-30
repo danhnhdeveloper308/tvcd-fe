@@ -27,10 +27,6 @@ export function useCDProductData(options: UseCDProductDataOptions) {
   // Real-time update handler - Server-confirmed data only
   const handleRealtimeUpdate = useCallback(
     (updateData: CDProductWebSocketUpdate) => {
-      console.log(
-        `🔄 CD Product WebSocket update received for ${updateData.sheet}:`,
-        updateData
-      );
 
       // Verify this is legitimate server data
       if (!updateData.timestamp || !updateData.data) {
@@ -44,13 +40,6 @@ export function useCDProductData(options: UseCDProductDataOptions) {
       setData((prevData) => {
         // ✅ Direct replacement - trust backend data completely
         const newData = updateData.data;
-
-        console.log(`✅ CD Product data updated for ${updateData.sheet}:`, {
-          type: updateData.type,
-          totalProducts: newData.totalProducts,
-          changes: updateData.changes,
-          lastUpdate: newData.lastUpdate,
-        });
 
         return newData;
       });
@@ -80,12 +69,6 @@ export function useCDProductData(options: UseCDProductDataOptions) {
         throw new Error(result.error || "Failed to fetch CD product data");
       }
 
-      console.log(`✅ CD Product initial data loaded for ${options.code}:`, {
-        totalProducts: result.data.totalProducts,
-        sheet: result.data.sheet,
-        lastUpdate: result.data.lastUpdate,
-      });
-
       setData(result.data);
     } catch (err) {
       console.error(
@@ -101,13 +84,9 @@ export function useCDProductData(options: UseCDProductDataOptions) {
   // Setup WebSocket subscriptions
   useEffect(() => {
     if (!options.enableRealtime) {
-      console.log("⏸️ Real-time updates disabled for CD Product");
       return;
     }
 
-    console.log(
-      `🔌 Setting up WebSocket subscription for CD Product ${options.code.toUpperCase()}`
-    );
 
     // Subscribe to CD Product updates
     const socket = (websocketService as any).socket;
@@ -118,7 +97,6 @@ export function useCDProductData(options: UseCDProductDataOptions) {
 
       // Listen for subscription confirmation
       socket.once("cd-product-subscription-confirmed", (confirmation: any) => {
-        console.log(`✅ CD Product subscription confirmed:`, confirmation);
         setConnected(true);
       });
 
@@ -127,7 +105,6 @@ export function useCDProductData(options: UseCDProductDataOptions) {
 
       // Monitor connection status
       socket.on("connect", () => {
-        console.log("🔌 WebSocket connected for CD Product");
         setConnected(true);
         // Re-subscribe after reconnection
         socket.emit("subscribe-cd-product", {
@@ -136,7 +113,6 @@ export function useCDProductData(options: UseCDProductDataOptions) {
       });
 
       socket.on("disconnect", () => {
-        console.log("🔌 WebSocket disconnected for CD Product");
         setConnected(false);
       });
     }
@@ -146,9 +122,6 @@ export function useCDProductData(options: UseCDProductDataOptions) {
       if (socket) {
         socket.off("cd-product-update", handleRealtimeUpdate);
         socket.off("cd-product-subscription-confirmed");
-        console.log(
-          `🔌 Unsubscribed from CD Product ${options.code.toUpperCase()}`
-        );
       }
     };
   }, [options.code, options.enableRealtime, handleRealtimeUpdate]);
