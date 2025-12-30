@@ -220,6 +220,7 @@ export default function TVDisplayCDProduct({
   const rawRows = [
     {
       type: "main",
+      index: 0,
       tenChiTiet: currentProduct.tenChiTiet,
       keHoachGiao: currentProduct.keHoachGiao,
       luyKeGiao: currentProduct.luyKeGiao,
@@ -462,7 +463,7 @@ export default function TVDisplayCDProduct({
                     ? "bg-slate-900/80" // Very dark slate
                     : "bg-slate-800/80"; // Slightly lighter slate
                   const rowKey =
-                    row.type === "main" ? "product" : `detail-${row.indexndex}`;
+                    row.type === "main" ? "product" : `detail-${row.index}`;
                   
                   // Subtle borders for dark theme
                   const borderColor = "border-slate-700";
