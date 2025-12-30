@@ -1,0 +1,1432 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+--font-oswald: 'Oswald', sans-serif;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html,
+  body {
+    @apply bg-background text-foreground;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /* font-family: Arial, Helvetica, sans-serif; */
+    /* font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif; */
+
+  }
+
+  #__next,
+  body > div {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Thêm vào đầu file globals.css - SAU @import statements */
+
+/* ==================== OSWALD FONT OPTIMIZATION ==================== */
+
+/* Điều chỉnh font rendering để khớp với Looker Studio */
+html, body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1;
+  font-kerning: normal;
+  -webkit-text-stroke: 0.4px currentColor;
+  text-shadow: 0 0 0.3px currentColor;
+  letter-spacing: -0.015em;
+}
+
+/* Tăng độ đậm cho headings */
+h1, h2, h3, h4, h5, h6,
+.font-bold, 
+.font-semibold, 
+.font-black,
+[class*="tech-gradient-text"],
+[class*="green-gradient-text"] {
+  -webkit-text-stroke: 0.45px currentColor;
+  text-shadow: 0 0 0.4px currentColor;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+/* Tối ưu cho số và metrics */
+.metric-value,
+[class*="metric-card"],
+[class*="metric-card-group1"],
+[class*="metric-card-group2"],
+[class*="metric-card-group3"],
+[class*="RealTimeValue"] {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1, "kern" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-stroke: 0.5px currentColor;
+  text-shadow: 0 0 0.4px currentColor;
+  letter-spacing: -0.01em;
+}
+
+/* Font weights */
+.font-normal { font-weight: 500; }
+.font-medium { font-weight: 600; }
+.font-semibold { font-weight: 700; }
+.font-bold { font-weight: 800; }
+.font-black { 
+  font-weight: 900;
+  -webkit-text-stroke: 0.55px currentColor;
+  text-shadow: 0 0 0.5px currentColor;
+  letter-spacing: -0.015em;
+}
+
+/* Số lớn trong metric cards */
+[class*="metric-card"] .font-black,
+[class*="metric-card-group1"] .font-black,
+[class*="metric-card-group2"] .font-black,
+[class*="metric-card-group3"] .font-black,
+[style*="clamp(1.6rem,3.6vw,4.5rem)"] .font-black,
+[style*="clamp(1.6rem,2.8vw,3rem)"] .font-black {
+  -webkit-text-stroke: 0.6px currentColor;
+  text-shadow: 0 0 0.5px currentColor, 0 0 1px currentColor;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+/* TV display optimizations */
+@media (min-width: 1920px) {
+  html, body {
+    -webkit-text-stroke: 0.45px currentColor;
+  }
+  
+  .font-bold, .font-semibold, .font-black {
+    -webkit-text-stroke: 0.55px currentColor;
+  }
+  
+  [class*="metric-card"] .font-black {
+    -webkit-text-stroke: 0.65px currentColor;
+    text-shadow: 0 0 0.6px currentColor, 0 0 1.2px currentColor;
+  }
+}
+
+/* 4K displays */
+@media (min-width: 3840px) {
+  html, body {
+    -webkit-text-stroke: 0.5px currentColor;
+  }
+  
+  .font-bold, .font-semibold, .font-black {
+    -webkit-text-stroke: 0.6px currentColor;
+  }
+  
+  [class*="metric-card"] .font-black {
+    -webkit-text-stroke: 0.7px currentColor;
+    text-shadow: 0 0 0.7px currentColor, 0 0 1.4px currentColor;
+  }
+}
+
+/* ==================== MODERN TV DISPLAY OPTIMIZATIONS ==================== */
+
+/* Enhanced CSS containment and layout structure for TV displays */
+.tv-container {
+  contain: layout style paint;
+  content-visibility: auto;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  /* background: linear-gradient(135deg, #0a0e27 0%, #1a1d3a 25%, #2d3561 50%, #1a1d3a 75%, #0a0e27 100%); */
+  background: linear-gradient(
+  135deg,
+  #0a0c17 0%,   /* gần như đen, ánh xanh than */
+  #0f172a 25%,  /* slate-900 chuẩn */
+  #1e293b 50%,  /* slate-800 nhẹ hơn */
+  #0f172a 75%,  /* quay lại tông tối */
+  #0a0c17 100%
+);
+
+}
+
+/* Ensure no margins/padding on body and html */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Modern glass morphism effects */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+/* Modern glass morphism effects 3 group with different backgrounds and borders */
+
+/* Modern glass morphism effects Group 1 */
+/* .glass-card-group1 {
+  background: rgba(0, 0, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+} */
+
+/* Modern glass morphism effects Group 2 */
+/* .glass-card-group2 {
+  background: rgba(0, 255, 0, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+} */
+
+/* Modern glass morphism effects Group 3 */
+/* .glass-card-group3 {
+  background: rgba(255, 0, 0, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+} */
+
+
+
+
+/*========================================================================*/
+
+
+/* .glass-card-group1 {
+  background: rgb(15, 23, 42); 
+  border: 2px solid rgb(161, 179, 4); 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+}
+
+.glass-card-group2 {
+  background: rgb(20, 30, 20); 
+  border: 2px solid rgb(34, 197, 94);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+}
+
+.glass-card-group3 {
+  background: rgb(30, 15, 15); 
+  border: 2px solid rgb(255, 61, 126);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+} */
+
+
+.glass-card-group1 {
+  background: rgba(40, 10, 60, 0.9);
+  border: 2px solid rgba(168, 85, 247, 0.65);
+  box-shadow:
+    0 0 20px rgba(168, 85, 247, 0.25),
+    0 0 30px rgba(168, 85, 247, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+  color: #f3e8ff;
+}
+
+
+/* Group 2 - Xanh Lá */
+.glass-card-group2 {
+  background: rgba(15, 35, 20, 0.9); /* nền xanh lá đậm pha đen */
+  border: 2px solid rgba(34, 197, 94, 0.7); /* viền xanh lá tươi */
+  box-shadow:
+    0 0 20px rgba(34, 197, 94, 0.25),
+    0 0 30px rgba(34, 197, 94, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+  color: #dcfce7; /* chữ xanh nhạt dễ đọc */
+}
+
+
+
+/* Group 3 - Vàng */
+.glass-card-group3 {
+  background: rgba(45, 35, 10, 0.9);
+  border: 2px solid rgba(250, 204, 21, 0.75);
+  box-shadow:
+    0 0 20px rgba(250, 204, 21, 0.25),
+    0 0 30px rgba(250, 204, 21, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+  color: #fef9c3;
+}
+
+.glass-card-group4 {
+   background: rgba(45, 35, 10, 0.9);
+  backdrop-filter: blur(6px);
+}
+
+
+.glass-card-group5 {
+  background: rgba(45, 35, 10, 0.9);
+  border: 2px solid rgba(15, 70, 250, 0.75);
+  box-shadow:
+    0 0 20px rgba(15, 70, 250, 0.25),
+    0 0 30px rgba(15, 70, 250, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+  color: #cce0ff;
+}
+
+
+
+.metric-card-group1 {
+ background: #fff;
+ border: 2px solid rgba(168, 85, 247, 0.65);
+  box-shadow:
+    0 0 20px rgba(168, 85, 247, 0.25),
+    0 0 30px rgba(168, 85, 247, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.05); 
+
+  
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  color: #000;
+}
+
+.metric-card-group2 {
+ background: #fff;
+  border: 2px solid rgba(34, 197, 94, 0.7); /* viền xanh lá tươi */
+  box-shadow:
+    0 0 20px rgba(34, 197, 94, 0.25),
+    0 0 30px rgba(34, 197, 94, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.05);
+
+  
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  color: #000;
+}
+
+.metric-card-group3 {
+ background: #fff;
+  border: 2px solid rgba(250, 204, 21, 0.75);
+  box-shadow:
+    0 0 20px rgba(250, 204, 21, 0.25),
+    0 0 30px rgba(250, 204, 21, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.05); 
+
+  
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  color: #000;
+}
+
+
+.metric-card-group4 {
+ background: #fff;
+  border: 2px solid rgba(15, 70, 250, 0.75);
+  box-shadow:
+    0 0 20px rgba(15, 70, 250, 0.25),
+    0 0 30px rgba(15, 70, 250, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.05);
+    /* 0 0 20px rgba(250, 204, 21, 0.25),
+    0 0 30px rgba(250, 204, 21, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.05);  */
+
+
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  color: #000;
+}
+
+
+/*========================================================================*/
+
+
+
+
+
+
+
+
+
+
+
+
+.glass-header {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 100%;
+  min-height: 0;
+}
+
+/* Modern glass morphism effects for footer */
+.glass-footer {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+}
+
+/* Modern metric cards */
+.metric-card {
+ background: #000;
+  border: 2px solid rgba(71, 85, 105, 0.6); 
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.5), 
+    inset 0 1px 0 rgba(100, 116, 139, 0.15); 
+
+  /* border: 1px solid rgba(255, 255, 255, 0.1); */
+  /* box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1); */
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-card-glow {
+  background: radial-gradient(circle at top left, #0a0a0a, #000);
+  border: 2px solid rgba(0, 200, 255, 0.35); /* ánh xanh lam nhạt */
+  box-shadow:
+    0 4px 16px rgba(0, 200, 255, 0.2),  /* ánh sáng ngoài */
+    0 0 20px rgba(0, 200, 255, 0.15),   /* quầng sáng lam */
+    inset 0 1px 2px rgba(255, 255, 255, 0.05), /* phản chiếu trong */
+    inset 0 -1px 3px rgba(0, 0, 0, 0.5); /* chiều sâu */
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  color: #e5e7eb; /* text sáng vừa phải */
+  transition: all 0.3s ease;
+}
+
+.metric-card-violet {
+  background: radial-gradient(circle at top left, #0a0a0a, #000);
+  border: 2px solid rgba(168, 85, 247, 0.4); /* tím violet nhạt */
+  box-shadow:
+    0 4px 16px rgba(168, 85, 247, 0.25),  /* ánh sáng tím ngoài */
+    0 0 20px rgba(168, 85, 247, 0.15),   /* quầng sáng tím */
+    inset 0 1px 2px rgba(255, 255, 255, 0.05), /* phản chiếu trong */
+    inset 0 -1px 3px rgba(0, 0, 0, 0.6); /* tạo chiều sâu */
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  color: #f3e8ff; /* chữ tím sáng nhẹ */
+  transition: all 0.3s ease;
+}
+
+/* .metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: shine 3s infinite;
+} */
+
+/* Modern metric cards */
+.metric-card-light {
+  background: #fff;
+border: 2px solid rgba(0, 255, 150, 0.6);
+box-shadow:
+  0 0 15px rgba(0, 255, 150, 0.4),
+  0 0 30px rgba(0, 255, 150, 0.3),
+  inset 0 1px 1px rgba(255, 255, 255, 0.5);
+
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  color: #000;
+}
+
+
+@keyframes shine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Premium status indicators */
+.status-excellent {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+}
+
+.status-good {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  box-shadow: 0 0 20px rgba(56, 239, 125, 0.4);
+}
+
+.status-warning {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  box-shadow: 0 0 20px rgba(245, 87, 108, 0.4);
+}
+
+.status-critical {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  box-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
+}
+
+/* Specific containment for header, main, footer sections */
+.tv-header,
+.tv-main,
+.tv-footer {
+  contain: layout style;
+}
+
+.tv-header {
+  background: linear-gradient(
+    135deg,
+    #020617 0%,     /* gần như đen */
+    #0b1120 25%,    /* midnight blue */
+    #111827 50%,    /* slate-900 */
+    #0b1120 75%, 
+    #020617 100%
+  );
+  border: 1px solid rgba(168, 85, 247, 0.4); /* viền tím nhạt */
+  box-shadow:
+    0 0 15px rgba(168, 85, 247, 0.3),        /* ánh tím tỏa nhẹ */
+    0 0 30px rgba(59, 130, 246, 0.2),        /* ánh xanh phụ */
+    inset 0 1px 4px rgba(255, 255, 255, 0.05); /* chiều sâu */
+  border-radius: 12px;
+}
+
+
+.metric-box,
+.chart-container,
+.details-container {
+  contain: layout style;
+}
+
+.animated-gradient-header {
+  background: linear-gradient(-45deg, #e9f5e9, #e6ffec, #d8f3d8, #c8e6c8);
+  background-size: 400% 400%;
+  animation: gradientAnimation 20s ease infinite;
+  will-change: background-position;
+}
+
+
+/* Optimized gradient text for TV displays */
+.tech-gradient-text {
+  background: linear-gradient(135deg, #00f5ff 0%, #22c55e 25%, #3b82f6 50%, #a855f7 75%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: waveAnimation 10s ease infinite;
+  transform: translateZ(0);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1;
+  letter-spacing: 0.02em;
+}
+
+.green-gradient-text {
+  background: linear-gradient(135deg, #00ff88 0%, #22c55e 25%, #10b981 50%, #059669 75%, #047857 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: waveAnimation 8s ease infinite;
+  transform: translateZ(0);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1;
+  letter-spacing: 0.02em;
+}
+
+.tech-company-text {
+  color: #e2e8f0;
+  text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* GPU-accelerated optimizations for TV */
+.tv-optimized {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Reduced motion for accessibility and performance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Modern neon effects for tech display */
+.neon-glow {
+  text-shadow: 
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 15px currentColor,
+    0 0 20px currentColor;
+  animation: neonPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes neonPulse {
+  from {
+    text-shadow: 
+      0 0 5px currentColor,
+      0 0 10px currentColor,
+      0 0 15px currentColor,
+      0 0 20px currentColor;
+  }
+  to {
+    text-shadow: 
+      0 0 2px currentColor,
+      0 0 5px currentColor,
+      0 0 8px currentColor,
+      0 0 12px currentColor;
+  }
+}
+
+/* Enhanced gradient text effects */
+.tech-gradient-text {
+  background: linear-gradient(135deg, #00f5ff 0%, #22c55e 25%, #3b82f6 50%, #a855f7 75%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 300% 300%;
+  animation: gradientShift 8s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Modern metric value styling */
+.metric-value {
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 
+    0 8px 32px rgba(0,0,0,0.3),
+    inset 0 2px 8px rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-value::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00f5ff, transparent);
+  animation: scanLine 3s linear infinite;
+}
+
+@keyframes scanLine {
+  0% { 
+    left: -100%; 
+    transform: translateY(0px);
+  }
+  50% { 
+    left: 50%; 
+    transform: translateY(30px);
+  }
+  100% { 
+    left: 100%; 
+    transform: translateY(60px);
+  }
+}
+
+/* Holographic border effect */
+.holographic-border {
+  position: relative;
+  border: 1px solid transparent;
+  background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)) padding-box,
+              linear-gradient(45deg, #00f5ff, #22c55e, #3b82f6, #a855f7, #ec4899) border-box;
+}
+
+/* Data visualization enhancements */
+.data-viz-card {
+  background: linear-gradient(135deg, rgba(0, 245, 255, 0.1) 0%, rgba(34, 197, 94, 0.1) 50%, rgba(59, 130, 246, 0.1) 100%);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+/* TV-specific optimizations for different screen sizes */
+/* Laptop screens 14-15.6 inch - up to 1920px (Full HD) */
+@media (max-width: 1919px) {
+  .tv-container {
+    font-size: 0.85rem;
+    gap: 0.5rem;
+    padding: 0.2rem;
+  }
+  .tv-main {
+    gap: 1.25rem !important;
+  }
+  .grid {
+    gap: 0.4rem !important;
+  }
+  .header-cd {
+    gap: 0 !important;
+  }
+  /* .metric-card {
+    padding: 0.5rem !important;
+  } */
+  /* .metric-card-full-color >div {
+    padding: 0.5rem !important;
+  } */
+
+}
+
+/* 24" TVs - 1920x1080 (Full HD) */
+@media (min-width: 1920px) and (max-width: 2559px) {
+  .tv-container {
+    font-size: 1rem;
+    gap: 1.25rem;
+    padding: 0.5rem;
+  }
+  .tv-main {
+    gap: 0.5rem !important;
+  }
+  .grid {
+    gap: 0.25rem !important;
+  }
+  .header-cd {
+    gap: 0 !important;
+  }
+  /* .metric-card {
+    padding: 0.75rem !important;
+  }
+  .metric-card-full-color >div {
+    padding: 0.75rem !important;
+  } */
+}
+
+/* 27" TVs - 2560x1440 (2K) */
+@media (min-width: 2560px) and (max-width: 3839px) {
+  .tv-container {
+    font-size: 1.15rem;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+  .tv-main {
+    gap: 1.75rem !important;
+  }
+  .grid {
+    gap: 0.25rem !important;
+  }
+  .header-cd {
+    gap: 0 !important;
+  }
+  /* .metric-card {
+    padding: 1rem !important;
+  }
+  .metric-card-full-color >div {
+    padding: 1rem !important;
+  } */
+}
+
+/* 32"+ TVs - 3840x2160 (4K UHD) */
+@media (min-width: 3840px) and (max-width: 5119px) {
+  .tv-container {
+    font-size: 1.2rem;
+    gap: 1.75rem;
+    padding: 1.75rem;
+  }
+  .tv-main {
+    gap: 2rem !important;
+  }
+  .grid {
+    gap: 0.25rem !important;
+  }
+  .header-cd {
+    gap: 0 !important;
+  }
+  
+  /* Specific 43" TV header optimizations */
+  .tv-header {
+    gap: 0.5rem !important;
+  }
+  
+  .tv-header .glass-card {
+    padding: 0.5rem 0.75rem !important;
+  }
+  
+  .tv-header .grid-cols-5 {
+    gap: 0.5rem !important;
+  }
+  
+  /* Reduce font sizes for better fit */
+  .tv-header [style*="clamp(1.2rem,2.5vw,2rem)"] {
+    font-size: clamp(1rem, 2vw, 1.6rem) !important;
+  }
+  
+  .tv-header [style*="clamp(0.8rem,1.5vw,1.4rem)"] {
+    font-size: clamp(0.7rem, 1.2vw, 1.1rem) !important;
+  }
+}
+
+.grid-cols-4 {
+    gap: 2rem !important;
+  }
+  .grid-cols-3 {
+    gap: 2rem !important;
+  }
+  .grid-cols-2 {
+    gap: 2rem !important;
+  }
+  .grid-cols-6 {
+    gap: 2rem !important;
+  }
+
+/* Additional responsive grid optimizations */
+@media (max-width: 1366px) {
+  .grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    /* gap: 0.25rem !important; */
+  }
+  .grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    /* gap: 0.25rem !important; */
+  }
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* gap: 0.25rem !important; */
+  }
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* gap: 0.25rem !important; */
+  }
+}
+
+/* 24" TVs - 1920x1080 (Full HD) */
+@media (min-width: 1367px) and (max-width: 1919px) {
+  .grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    /* gap: 1.5rem !important; */
+  }
+  .grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    /* gap: 1.5rem !important; */
+  }
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* gap: 1.25rem !important; */
+  }
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* gap: 1.5rem !important; */
+  }
+}
+
+/* 27" TVs - 2560x1440 (2K) and 32" TVs - 3840x2160 (4K UHD) */
+@media (min-width: 1920px) and (max-width: 3839px) {
+  .grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    /* gap: 1.75rem !important; */
+  }
+  .grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    /* gap: 1.75rem !important; */
+  }
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* gap: 1.75rem !important; */
+  }
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* gap: 1.75rem !important; */
+  }
+}
+
+@media (min-width: 3840px) and (max-width: 5119px) {
+  .grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    /* gap: 2.25rem !important; */
+  }
+  .grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    /* gap: 2.25rem !important; */
+  }
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* gap: 2.25rem !important; */
+  }
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* gap: 2.25rem !important; */
+  }
+}
+
+@media (min-width: 1920px) {
+  .grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1.75rem !important;
+  }
+  .grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.75rem !important;
+  }
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem !important;
+  }
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem !important;
+  }
+}
+
+/* Additional optimizations for ultra-wide and large format displays */
+@media (min-aspect-ratio: 21 / 9) {
+  .tv-container {
+    padding-left: 2vw;
+    padding-right: 2vw;
+  }
+}
+
+/* Modern loading effects */
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Pulse animation for real-time updates */
+.pulse-update {
+  animation: pulseGlow 1s ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+/* Ensure readability at viewing distances for large TVs */
+@media (min-width: 3840px) {
+  .tv-container {
+    font-size: 1.5rem;
+  }
+  
+  .metric-card {
+    padding: 3rem;
+  }
+
+ .metric-card-full-color >div {
+    padding: 3rem ;
+  }
+
+  .glass-header {
+    padding: 2rem;
+  }
+}
+
+
+/* Hourly Timeline Styling */
+.hourly-timeline-container {
+  gap: 0 !important;
+  border: 1px solid rgba(100, 116, 139, 0.4);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.hourly-timeline-item {
+  border-right: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+.hourly-timeline-item:last-child {
+  border-right: none;
+}
+
+.hourly-timeline-header {
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+}
+
+.hourly-timeline-content {
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+}
+
+.tv-center {
+  margin: 0 !important;
+  gap: 0 !important;
+}
+
+/* Respect user reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin,
+  .scan-line,
+  .neon-glow,
+  .nhipsx-pulse-dot {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.header-cd {
+  gap: 0 !important;
+}
+
+
+/* Error QC Styling */
+.error-qc-container {
+  gap: 0 !important;
+  /* border: 1px solid rgba(100, 116, 139, 0.4); */
+  overflow: hidden;
+}
+
+.error-qc-item {
+  /* gap: 1rem !important; */
+  border-right: 2px solid rgba(100, 116, 139, 0.3);
+}
+
+.error-qc-item:last-child {
+  border-right: none;
+}
+
+/* ==================== CD HEADER DIAGONAL STYLING ==================== */
+
+/* Header gradient với diagonal line effect - Dark theme */
+.cd-header-diagonal {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.95) 0%,    /* slate-900 */
+    rgba(30, 41, 59, 0.95) 50%,   /* slate-800 */
+    rgba(15, 23, 42, 0.95) 100%   /* slate-900 */
+  );
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(168, 85, 247, 0.3);
+  box-shadow: 
+    0 0 20px rgba(168, 85, 247, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.05);
+}
+
+/* Animated gradient border glow */
+.cd-header-diagonal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(168, 85, 247, 0.3),
+    transparent
+  );
+  animation: cd-header-shine 3s infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes cd-header-shine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Glow effect cho header cells - Dark theme with diagonal line */
+.cd-header-cell {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 41, 59, 0.95) 0%,   /* slate-800 */
+    rgba(51, 65, 85, 0.95) 100%  /* slate-700 */
+  );
+  box-shadow: 
+    0 0 15px rgba(168, 85, 247, 0.25),
+    0 0 25px rgba(59, 130, 246, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(168, 85, 247, 0.35);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.cd-header-cell:hover {
+  box-shadow: 
+    0 0 20px rgba(168, 85, 247, 0.4),
+    0 0 35px rgba(59, 130, 246, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+/* Diagonal line for header cells - REMOVED */
+/* .cd-header-cell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cd-header-cell::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    135deg,
+    transparent 49.5%,
+    rgba(168, 85, 247, 0.4) 49.5%,
+    rgba(168, 85, 247, 0.4) 50.5%,
+    transparent 50.5%
+  );
+  pointer-events: none;
+  z-index: 1;
+} */
+
+/* Text gradient cho header items - Bright colors on dark */
+.cd-header-text {
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
+  font-weight: 900;
+  text-shadow: 
+    0 0 8px rgba(255, 255, 255, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.5);
+  /* Remove gradient for better readability at distance */
+}
+
+/* Diagonal stripe pattern for header background */
+.cd-header-stripe {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(168, 85, 247, 0.05) 10px,
+    rgba(168, 85, 247, 0.05) 20px
+  );
+}
+
+/* Neon glow text effect for headers - Enhanced for dark theme */
+.cd-header-neon {
+  color: #e9d5ff;
+  text-shadow: 
+    0 0 10px rgba(168, 85, 247, 0.6),
+    0 0 20px rgba(168, 85, 247, 0.4),
+    0 0 30px rgba(59, 130, 246, 0.3);
+  animation: cd-neon-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes cd-neon-pulse {
+  from {
+    filter: brightness(1);
+    text-shadow: 
+      0 0 10px rgba(168, 85, 247, 0.6),
+      0 0 20px rgba(168, 85, 247, 0.4),
+      0 0 30px rgba(59, 130, 246, 0.3);
+  }
+  to {
+    filter: brightness(1.2);
+    text-shadow: 
+      0 0 15px rgba(168, 85, 247, 0.8),
+      0 0 25px rgba(168, 85, 247, 0.6),
+      0 0 40px rgba(59, 130, 246, 0.5);
+  }
+}
+
+/* Ẩn biểu tượng "N" loading indicator */
+#__next-build-watcher,
+#__next-build-indicator,
+#__next-dev-overlay {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* ==================== DIAGONAL SPLIT CELL FOR DAYS COLUMNS ==================== */
+
+/* Container for diagonal split cell */
+.diagonal-split-cell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Top-left value (200 in sample) */
+.diagonal-value-top {
+  position: absolute;
+  top: 2%;
+  left: 2%;
+  font-weight: 900;
+  z-index: 2;
+  line-height: 1;
+}
+
+/* Bottom-right value (180 in sample) */
+.diagonal-value-bottom {
+  position: absolute;
+  bottom: 2%;
+  right: 2%;
+  font-weight: 900;
+  z-index: 2;
+  line-height: 1;
+}
+
+/* SVG diagonal line */
+.diagonal-line-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ==================== LKTH TEXT COLOR CLASSES - ULTRA BRIGHT & CRISP ==================== */
+
+/* Maximum brightness, no shadow for sharpest display */
+.lkth-text-excellent {
+  color: #ff66ff !important; /* Bright magenta - more visible */
+  font-weight: 900;
+  filter: brightness(1.3) contrast(1.1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.lkth-text-good {
+  color: #00ff88 !important; /* Ultra bright green */
+  font-weight: 900;
+  filter: brightness(1.3) contrast(1.1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.lkth-text-warning {
+  color: #ffee00 !important; /* Pure bright yellow - distinct from orange */
+  font-weight: 900;
+  filter: brightness(1.3) contrast(1.1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.lkth-text-alert {
+  color: #ff8800 !important; /* Pure orange - clearly different from yellow */
+  font-weight: 900;
+  filter: brightness(1.3) contrast(1.1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.lkth-text-critical {
+  color: #ff0000 !important; /* Pure red - maximum brightness */
+  font-weight: 900;
+  filter: brightness(1.4) contrast(1.15);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.lkth-text-default {
+  color: #ffffff !important; /* Pure white */
+  font-weight: 900;
+  filter: brightness(1.2);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==================== FLASH ANIMATION FOR REAL-TIME UPDATES ==================== */
+
+@keyframes flash-yellow {
+  0%, 100% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(250, 204, 21, 0.7); /* yellow-400 with high opacity for visibility */
+  }
+}
+
+.animate-flash-yellow {
+  animation: flash-yellow 1s ease-in-out 2; /* Flash 2 times, 1 second each */
+  transition: background-color 0.3s ease;
+}
+
+/* Enhanced flash for better visibility on dark backgrounds */
+@keyframes flash-yellow-bright {
+  0%, 100% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+  50% {
+    background-color: rgba(250, 204, 21, 0.8);
+    box-shadow: 0 0 10px rgba(250, 204, 21, 0.6), inset 0 0 10px rgba(250, 204, 21, 0.4);
+  }
+}
+
+.animate-flash-yellow-bright {
+  animation: flash-yellow-bright 1s ease-in-out 2;
+  transition: all 0.3s ease;
+}
+
