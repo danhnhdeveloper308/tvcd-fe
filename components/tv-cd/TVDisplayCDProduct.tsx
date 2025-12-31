@@ -17,7 +17,7 @@ interface TVDisplayCDProductProps {
 
 export default function TVDisplayCDProduct({
   code,
-  autoSlideInterval = 10000, // 10 seconds per slide
+  autoSlideInterval = 20000, // 20 seconds per slide
   refreshInterval = 30000,
   tvMode = false,
 }: TVDisplayCDProductProps) {
@@ -36,6 +36,8 @@ export default function TVDisplayCDProduct({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [countdown, setCountdown] = useState<number | null>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   // ✅ FLASH DETECTION LOGIC (like TVDisplayHTM)
   const [flashingCells, setFlashingCells] = useState<Set<string>>(new Set());
@@ -47,6 +49,34 @@ export default function TVDisplayCDProduct({
     () => (products.length > 0 ? products[currentSlide] : null),
     [products, currentSlide]
   );
+
+  // Smart slicing: show max 5 products centered around current slide
+  const visibleProducts = useMemo(() => {
+    if (products.length <= 5) return products;
+    
+    const maxVisible = 5;
+    const halfWindow = Math.floor(maxVisible / 2);
+    
+    let start = currentSlide - halfWindow;
+    let end = currentSlide + halfWindow + 1;
+    
+    // Adjust if near start
+    if (start < 0) {
+      end = Math.min(products.length, end + Math.abs(start));
+      start = 0;
+    }
+    
+    // Adjust if near end
+    if (end > products.length) {
+      start = Math.max(0, start - (end - products.length));
+      end = products.length;
+    }
+    
+    return products.slice(start, end).map((p, idx) => ({
+      product: p,
+      originalIndex: start + idx
+    }));
+  }, [products, currentSlide]);
 
   // ✅ Flash detection effect
   useEffect(() => {
@@ -154,16 +184,59 @@ export default function TVDisplayCDProduct({
       : `transition-colors duration-500 ${baseClass}`;
   };
 
-  // Auto-slide effect
+  // Auto-scroll carousel to keep current slide visible
   useEffect(() => {
-    if (!tvMode || isPaused || products.length <= 1) return;
+    if (carouselRef.current && products.length > 5) {
+      const container = carouselRef.current;
+      const items = container.children;
+      if (items[currentSlide]) {
+        const item = items[currentSlide] as HTMLElement;
+        const containerWidth = container.offsetWidth;
+        const itemLeft = item.offsetLeft;
+        const itemWidth = item.offsetWidth;
+        
+        // Scroll to center the current item
+        const scrollPosition = itemLeft - (containerWidth / 2) + (itemWidth / 2);
+        container.scrollTo({
+          left: scrollPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [currentSlide, products.length]);
+
+  // Auto-slide effect with countdown
+  useEffect(() => {
+    if (!tvMode || isPaused || products.length <= 1) {
+      setCountdown(null);
+      return;
+    }
+
+    let elapsed = 0;
+    const countdownStart = autoSlideInterval - 5000; // Start countdown 5s before transition
 
     const intervalId = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % products.length);
-    }, autoSlideInterval);
+      elapsed += 1000;
+      
+      // Update countdown in last 5 seconds
+      if (elapsed >= countdownStart) {
+        const remaining = Math.ceil((autoSlideInterval - elapsed) / 1000);
+        setCountdown(remaining > 0 ? remaining : null);
+      }
 
-    return () => clearInterval(intervalId);
-  }, [tvMode, isPaused, products.length, autoSlideInterval]);
+      // Transition to next slide
+      if (elapsed >= autoSlideInterval) {
+        setCurrentSlide((prev) => (prev + 1) % products.length);
+        elapsed = 0;
+        setCountdown(null);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+      setCountdown(null);
+    };
+  }, [tvMode, isPaused, products.length, autoSlideInterval, currentSlide]);
 
   // Reset slide when products change
   useEffect(() => {
@@ -253,14 +326,12 @@ export default function TVDisplayCDProduct({
   let shouldSplit = false;
   let rowsPerTable = totalRows;
   
-  if (totalRows > 12 && totalRows <= 24) {
-    shouldSplit = true;
-    rowsPerTable = 12;
-  } else if (totalRows > 24 && totalRows <= 30) {
+  if (totalRows > 15 && totalRows <= 30) {
+    // 16-30 rows: table 1 always shows 15 rows
     shouldSplit = true;
     rowsPerTable = 15;
   } else if (totalRows > 30) {
-    // Handle all cases >= 30 rows
+    // 31+ rows: table 1 always shows 20 rows
     shouldSplit = true;
     rowsPerTable = 20;
   }
@@ -306,32 +377,76 @@ export default function TVDisplayCDProduct({
           style={{ width: "100%", minWidth: 0, overflow: "hidden" }}
         >
           {/* Logo & Title */}
-          <div className="col-span-6 h-full flex items-center gap-4">
-            <div
-              className="relative bg-white/95 rounded backdrop-blur-sm shadow-lg flex items-center justify-center flex-shrink-0"
-              style={{
-                width: "clamp(3rem, 5vw, 5rem)",
-                height: "clamp(3rem, 5vw, 5rem)",
-                aspectRatio: "1",
-              }}
-            >
-              <Image
-                src="/logo.png"
-                alt="TBS GROUP Logo"
-                width={80}
-                height={80}
-                priority
-                className="w-full h-full object-contain filter drop-shadow-xl"
-              />
+          <div className="col-span-6 h-full flex flex-col justify-center gap-2">
+            <div className="flex items-center gap-4">
+              <div
+                className="relative bg-white/95 rounded backdrop-blur-sm shadow-lg flex items-center justify-center flex-shrink-0"
+                style={{
+                  width: "clamp(3rem, 5vw, 5rem)",
+                  height: "clamp(3rem, 5vw, 5rem)",
+                  aspectRatio: "1",
+                }}
+              >
+                <Image
+                  src="/logo.png"
+                  alt="TBS GROUP Logo"
+                  width={80}
+                  height={80}
+                  priority
+                  className="w-full h-full object-contain filter drop-shadow-xl"
+                />
+              </div>
+              
+              <h1
+                className="font-black text-white leading-tight text-left"
+                style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}
+              >
+                BẢNG THEO DÕI CHI TIẾT BTP TỔ {data?.sheet?.replace("CD", "CD")}{" "}
+                {data?.factory}
+              </h1>
             </div>
             
-            <h1
-              className="font-black text-white leading-tight text-left"
-              style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}
-            >
-              BẢNG THEO DÕI CHI TIẾT BTP TỔ {data?.sheet?.replace("CD", "CD")}{" "}
-              {data?.factory}
-            </h1>
+            {/* Product Carousel Indicator */}
+            {products.length > 1 && (
+              <div 
+                className="flex items-center justify-start gap-1.5 pl-1 overflow-hidden"
+                style={{ 
+                  fontSize: products.length > 6 
+                    ? "clamp(0.65rem, 1vw, 1.2rem)" 
+                    : "clamp(0.85rem, 1.4vw, 1.6rem)",
+                }}
+              >
+                {visibleProducts.map(({ product, originalIndex }, idx) => (
+                  <React.Fragment key={originalIndex}>
+                    <div
+                      className={`
+                        px-2 py-0.5 rounded font-bold tracking-wider transition-all duration-300 whitespace-nowrap flex-shrink-0
+                        ${originalIndex === currentSlide 
+                          ? 'bg-cyan-400 text-slate-900 scale-110 shadow-lg shadow-cyan-400/50' 
+                          : originalIndex === (currentSlide + 1) % products.length
+                            ? 'bg-yellow-500/20 text-yellow-200 border border-yellow-400/40 animate-[pulse_2s_ease-in-out_infinite]'
+                            : 'bg-slate-700/50 text-slate-300'
+                        }
+                      `}
+                    >
+                      {product.ma}/{product.mau}
+                    </div>
+                    {idx < visibleProducts.length - 1 && (
+                      <ChevronRight 
+                        className={`
+                          flex-shrink-0
+                          ${originalIndex === currentSlide 
+                            ? 'text-yellow-400 animate-pulse' 
+                            : 'text-slate-500'
+                          }
+                        `}
+                        style={{ width: "clamp(0.7rem, 1vw, 1.2rem)", height: "clamp(0.7rem, 1vw, 1.2rem)" }}
+                      />
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Metrics Card */}
@@ -417,7 +532,7 @@ export default function TVDisplayCDProduct({
                       width: shouldSplit ? "clamp(140px, 26vw, 300px)" : "28%" 
                     }}
                   >
-                    TÊN CT
+                    TÊN CHI TIẾT 
                   </th>
                   <th
                     className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
@@ -585,7 +700,7 @@ export default function TVDisplayCDProduct({
                         width: "clamp(140px, 26vw, 300px)"
                       }}
                     >
-                      TÊN CT
+                      TÊN CHI TIẾT
                     </th>
                     <th
                       className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
@@ -784,6 +899,16 @@ export default function TVDisplayCDProduct({
           style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.2rem)" }}
         >
           ⏸️ Tạm dừng
+        </div>
+      )}
+
+      {/* Countdown Alert */}
+      {countdown !== null && countdown > 0 && products.length > 1 && (
+        <div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-yellow-500/90 backdrop-blur-sm text-slate-900 px-6 py-3 rounded-lg shadow-2xl border-2 border-yellow-400 animate-pulse"
+          style={{ fontSize: "clamp(1.2rem, 2vw, 2.5rem)" }}
+        >
+          <span className="font-black">Chuyển {products[(currentSlide + 1) % products.length].ma}/{products[(currentSlide + 1) % products.length].mau} sau {countdown}s</span>
         </div>
       )}
     </div>

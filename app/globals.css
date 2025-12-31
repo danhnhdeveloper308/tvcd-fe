@@ -5,6 +5,34 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Hide scrollbar for carousel */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Thin subtle scrollbar for carousel */
+.carousel-scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+}
+.carousel-scroll-thin::-webkit-scrollbar {
+  height: 4px;
+}
+.carousel-scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.carousel-scroll-thin::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 2px;
+}
+.carousel-scroll-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
 :root {
 --font-oswald: 'Oswald', sans-serif;
   --background: oklch(1 0 0);
