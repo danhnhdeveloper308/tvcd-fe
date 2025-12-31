@@ -261,14 +261,16 @@ export default function TVDisplayCDProduct({
   const isCompact = rowsPerTable > 12;
 
   const headerFontSize = isCompact 
-    ? "clamp(0.7rem, 1.2vw, 1.5rem)" 
+    ? "clamp(0.65rem, 1.1vw, 1.3rem)" 
     : shouldSplit 
-      ? "clamp(0.8rem, 1.5vw, 1.8rem)" 
+      ? "clamp(0.75rem, 1.3vw, 1.6rem)" 
       : "clamp(1rem, 1.8vw, 2.2rem)";
 
   const rowFontSize = isCompact
-    ? "clamp(0.9rem, 1.5vw, 1.8rem)"
-    : "clamp(1.2rem, 2vw, 2.5rem)";
+    ? "clamp(0.85rem, 1.4vw, 1.7rem)"
+    : shouldSplit
+      ? "clamp(1rem, 1.7vw, 2.1rem)"
+      : "clamp(1.2rem, 2vw, 2.5rem)";
 
   return (
     <div
@@ -392,7 +394,7 @@ export default function TVDisplayCDProduct({
                     className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
-                      width: "clamp(40px, 5vw, 60px)",
+                      width: "clamp(30px, 3.5vw, 50px)",
                     }}
                   >
                     STT
@@ -401,52 +403,52 @@ export default function TVDisplayCDProduct({
                     className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                     style={{ 
                       fontSize: headerFontSize,
-                      width: shouldSplit ? undefined : "25%" 
+                      width: shouldSplit ? "clamp(140px, 26vw, 300px)" : "28%" 
                     }}
                   >
                     TÊN CT
                   </th>
                   <th
-                    className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
+                    className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
-                      width: "clamp(60px, 8vw, 100px)",
+                      width: shouldSplit ? "clamp(42px, 5.5vw, 70px)" : "clamp(50px, 7vw, 85px)",
                     }}
                   >
                     GIAO
                   </th>
                   <th
-                    className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
+                    className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
-                      width: "clamp(70px, 10vw, 120px)",
+                      width: shouldSplit ? "clamp(50px, 6.5vw, 80px)" : "clamp(60px, 8vw, 100px)",
                     }}
                   >
                     LK GIAO
                   </th>
                   <th
-                    className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
+                    className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
-                      width: "clamp(60px, 8vw, 100px)",
+                      width: shouldSplit ? "clamp(42px, 5.5vw, 70px)" : "clamp(50px, 7vw, 85px)",
                     }}
                   >
                     +/- CL
                   </th>
                   <th
-                    className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
+                    className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
-                      width: "clamp(60px, 8vw, 100px)",
+                      width: shouldSplit ? "clamp(42px, 5.5vw, 70px)" : "clamp(50px, 7vw, 85px)",
                     }}
                   >
                     TỒN
                   </th>
                   <th
-                    className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
+                    className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
-                      width: shouldSplit ? "clamp(80px, 12vw, 140px)" : "clamp(70px, 10vw, 120px)",
+                      width: shouldSplit ? "clamp(55px, 7vw, 90px)" : "clamp(60px, 8vw, 100px)",
                     }}
                   >
                     CẦN XỬ LÝ
@@ -560,58 +562,61 @@ export default function TVDisplayCDProduct({
                       className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
                       style={{
                         fontSize: headerFontSize,
-                        width: "clamp(40px, 5vw, 60px)",
+                        width: "clamp(30px, 3.5vw, 50px)",
                       }}
                     >
                       STT
                     </th>
                     <th
                       className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
-                      style={{ fontSize: headerFontSize }}
+                      style={{ 
+                        fontSize: headerFontSize,
+                        width: "clamp(140px, 26vw, 300px)"
+                      }}
                     >
                       TÊN CT
                     </th>
                     <th
-                      className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
+                      className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                       style={{
                         fontSize: headerFontSize,
-                        width: "clamp(60px, 8vw, 100px)",
+                        width: "clamp(42px, 5.5vw, 70px)",
                       }}
                     >
                       GIAO
                     </th>
                     <th
-                      className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
+                      className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                       style={{
                         fontSize: headerFontSize,
-                        width: "clamp(70px, 10vw, 120px)",
+                        width: "clamp(50px, 6.5vw, 80px)",
                       }}
                     >
                       LK GIAO
                     </th>
                     <th
-                      className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
+                      className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                       style={{
                         fontSize: headerFontSize,
-                        width: "clamp(60px, 8vw, 100px)",
+                        width: "clamp(42px, 5.5vw, 70px)",
                       }}
                     >
                       +/- CL
                     </th>
                     <th
-                      className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
+                      className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                       style={{
                         fontSize: headerFontSize,
-                        width: "clamp(60px, 8vw, 100px)",
+                        width: "clamp(42px, 5.5vw, 70px)",
                       }}
                     >
                       TỒN
                     </th>
                     <th
-                      className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
+                      className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                       style={{
                         fontSize: headerFontSize,
-                        width: "clamp(80px, 12vw, 140px)",
+                        width: "clamp(55px, 7vw, 90px)",
                       }}
                     >
                       CẦN XỬ LÝ
