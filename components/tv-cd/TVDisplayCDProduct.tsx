@@ -248,28 +248,39 @@ export default function TVDisplayCDProduct({
       ...row,
     }));
 
-  // ✅ Split into 2 tables if more than 15 rows
-  const shouldSplit = allRows.length > 15;
-  const splitIndex = shouldSplit
-    ? Math.ceil(allRows.length / 2)
-    : allRows.length;
-  const leftRows = allRows.slice(0, splitIndex);
-  const rightRows = shouldSplit ? allRows.slice(splitIndex) : [];
+  // ✅ Split into 2 tables with fixed row counts based on total
+  const totalRows = allRows.length;
+  let shouldSplit = false;
+  let rowsPerTable = totalRows;
+  
+  if (totalRows > 12 && totalRows <= 24) {
+    shouldSplit = true;
+    rowsPerTable = 12;
+  } else if (totalRows > 24 && totalRows <= 30) {
+    shouldSplit = true;
+    rowsPerTable = 15;
+  } else if (totalRows > 30) {
+    // Handle all cases >= 30 rows
+    shouldSplit = true;
+    rowsPerTable = 20;
+  }
+  
+  const leftRows = shouldSplit ? allRows.slice(0, rowsPerTable) : allRows;
+  const rightRows = shouldSplit ? allRows.slice(rowsPerTable) : [];
 
-  // ✅ Compact mode for high density (13-15 rows per table)
-  const rowsPerTable = shouldSplit ? Math.ceil(allRows.length / 2) : allRows.length;
-  const isCompact = rowsPerTable > 12;
+  // ✅ Compact mode for high density (>18 rows per table)
+  const isCompact = rowsPerTable > 18;
 
   const headerFontSize = isCompact 
-    ? "clamp(0.65rem, 1.1vw, 1.3rem)" 
+    ? "clamp(0.5rem, 0.8vw, 1rem)" 
     : shouldSplit 
-      ? "clamp(0.75rem, 1.3vw, 1.6rem)" 
+      ? "clamp(0.7rem, 1.2vw, 1.5rem)" 
       : "clamp(1rem, 1.8vw, 2.2rem)";
 
   const rowFontSize = isCompact
-    ? "clamp(0.85rem, 1.4vw, 1.7rem)"
+    ? "clamp(0.7rem, 1.1vw, 1.4rem)"
     : shouldSplit
-      ? "clamp(1rem, 1.7vw, 2.1rem)"
+      ? "clamp(0.95rem, 1.6vw, 2rem)"
       : "clamp(1.2rem, 2vw, 2.5rem)";
 
   return (
