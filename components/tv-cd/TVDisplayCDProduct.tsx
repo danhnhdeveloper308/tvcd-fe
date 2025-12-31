@@ -25,6 +25,12 @@ export default function TVDisplayCDProduct({
     .toString()
     .padStart(2, "0")}`;
 
+  // Get current date
+  const now = new Date();
+  const day = now.getDate().toString().padStart(2, "0");
+  const month = (now.getMonth() + 1).toString().padStart(2, "0");
+  const formattedDate = `${day}/${month}`;
+
   const { data, loading, error, connected } = useCDProductData({
     code: code.toLowerCase(),
     enableRealtime: true,
@@ -490,14 +496,15 @@ export default function TVDisplayCDProduct({
                 </span>
               </div>
 
-              {/* Connection Status */}
-              {/* <div className="flex items-center justify-center border-l border-purple-500/30 pl-2" style={{ minWidth: "clamp(3rem, 5vw, 5rem)" }}>
-                {connected ? (
-                  <Wifi className="text-green-400 drop-shadow-[0_0_5px_rgba(74,222,128,0.5)]" style={{ width: "clamp(1.5rem, 2.5vw, 2.5rem)", height: "clamp(1.5rem, 2.5vw, 2.5rem)" }} />
-                ) : (
-                  <WifiOff className="text-red-400 drop-shadow-[0_0_5px_rgba(248,113,113,0.5)]" style={{ width: "clamp(1.5rem, 2.5vw, 2.5rem)", height: "clamp(1.5rem, 2.5vw, 2.5rem)" }} />
-                )}
-              </div> */}
+              {/* Date & Time */}
+              <div className="flex flex-col items-center justify-center border-l border-purple-500/30 pl-2 flex-1 min-w-0">
+                <span className="font-black text-purple-300 leading-none" style={{ fontSize: "clamp(1.8rem, 3vw, 3.5rem)" }}>
+                  {formattedDate}
+                </span>
+                <span className="font-black text-white leading-none mt-1" style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}>
+                  {formattedTime}
+                </span>
+              </div>
             </div>
           </div>
         </div>
