@@ -30,7 +30,7 @@ function TVDisplayCDProductContent() {
     <TVDisplayCDProduct
       key={`tv-cd-product-${normalizedCode}`}
       code={normalizedCode}
-      autoSlideInterval={10000} // 10 seconds per slide
+      autoSlideInterval={20000} // 20 seconds per slide
       refreshInterval={30000}
       tvMode={true}
     />

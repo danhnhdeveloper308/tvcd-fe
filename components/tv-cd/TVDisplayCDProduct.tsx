@@ -37,7 +37,6 @@ export default function TVDisplayCDProduct({
   const [isHovered, setIsHovered] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [countdown, setCountdown] = useState<number | null>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
 
   // ✅ FLASH DETECTION LOGIC (like TVDisplayHTM)
   const [flashingCells, setFlashingCells] = useState<Set<string>>(new Set());
@@ -52,7 +51,12 @@ export default function TVDisplayCDProduct({
 
   // Smart slicing: show max 5 products centered around current slide
   const visibleProducts = useMemo(() => {
-    if (products.length <= 5) return products;
+    if (products.length <= 5) {
+      return products.map((p, idx) => ({
+        product: p,
+        originalIndex: idx
+      }));
+    }
     
     const maxVisible = 5;
     const halfWindow = Math.floor(maxVisible / 2);
@@ -183,27 +187,6 @@ export default function TVDisplayCDProduct({
       ? `animate-flash-yellow ${baseClass}`
       : `transition-colors duration-500 ${baseClass}`;
   };
-
-  // Auto-scroll carousel to keep current slide visible
-  useEffect(() => {
-    if (carouselRef.current && products.length > 5) {
-      const container = carouselRef.current;
-      const items = container.children;
-      if (items[currentSlide]) {
-        const item = items[currentSlide] as HTMLElement;
-        const containerWidth = container.offsetWidth;
-        const itemLeft = item.offsetLeft;
-        const itemWidth = item.offsetWidth;
-        
-        // Scroll to center the current item
-        const scrollPosition = itemLeft - (containerWidth / 2) + (itemWidth / 2);
-        container.scrollTo({
-          left: scrollPosition,
-          behavior: 'smooth'
-        });
-      }
-    }
-  }, [currentSlide, products.length]);
 
   // Auto-slide effect with countdown
   useEffect(() => {
@@ -625,7 +608,7 @@ export default function TVDisplayCDProduct({
                       >
                         {row.keHoachGiao > 0
                           ? row.keHoachGiao.toLocaleString("de-DE")
-                          : "-"}
+                          : ""}
                       </td>
                       <td
                         className={getFlashClass(
@@ -636,7 +619,7 @@ export default function TVDisplayCDProduct({
                       >
                         {row.luyKeGiao > 0
                           ? row.luyKeGiao.toLocaleString("de-DE")
-                          : "-"}
+                          : ""}
                       </td>
                       <td
                         className={getFlashClass(
@@ -647,7 +630,7 @@ export default function TVDisplayCDProduct({
                         )}
                         style={{ fontSize: rowFontSize }}
                       >
-                        {row.conLai !== 0 ? row.conLai.toLocaleString("de-DE") : "-"}
+                        {row.conLai !== 0 ? row.conLai.toLocaleString("de-DE") : ""}
                       </td>
                       <td
                         className={getFlashClass(
@@ -793,7 +776,7 @@ export default function TVDisplayCDProduct({
                         >
                           {row.keHoachGiao > 0
                             ? row.keHoachGiao.toLocaleString("de-DE")
-                            : "-"}
+                            : ""}
                         </td>
                         <td
                           className={getFlashClass(
@@ -804,7 +787,7 @@ export default function TVDisplayCDProduct({
                         >
                           {row.luyKeGiao > 0
                             ? row.luyKeGiao.toLocaleString("de-DE")
-                            : "-"}
+                            : ""}
                         </td>
                         <td
                           className={getFlashClass(
@@ -815,7 +798,7 @@ export default function TVDisplayCDProduct({
                           )}
                           style={{ fontSize: rowFontSize }}
                         >
-                          {row.conLai !== 0 ? row.conLai.toLocaleString("de-DE") : "-"}
+                          {row.conLai !== 0 ? row.conLai.toLocaleString("de-DE") : ""}
                         </td>
                         <td
                           className={getFlashClass(
