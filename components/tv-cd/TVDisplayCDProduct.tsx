@@ -5,7 +5,6 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight, Wifi, WifiOff } from "lucide-react";
 import { useCDProductData } from "@/hooks/useCDProductData";
 import { useTime } from "@/hooks/useTime";
-import type { CDProduct } from "@/types/cd-product.types";
 import LazyLoader from "@/components/common/LazyLoader";
 
 interface TVDisplayCDProductProps {
@@ -283,6 +282,7 @@ export default function TVDisplayCDProduct({
       conLai: currentProduct.conLai,
       ttdb: currentProduct.ttdb,
       canXuLy: currentProduct.canXuLy,
+      hidden: currentProduct.hidden || "",
     },
     ...currentProduct.details.map((detail, idx) => ({
       type: "detail",
@@ -293,12 +293,23 @@ export default function TVDisplayCDProduct({
       conLai: detail.conLai,
       ttdb: detail.ttdb,
       canXuLy: detail.canXuLy,
+      hidden: detail.hidden || "",
     })),
   ];
 
-  // Filter out rows with empty tenChiTiet and re-index
+  // Filter out rows with empty tenChiTiet OR hidden field is not empty, then re-index
   const allRows = rawRows
-    .filter((row) => row.tenChiTiet && row.tenChiTiet.trim() !== "")
+    .filter((row) => {
+      // Must have tenChiTiet
+      if (!row.tenChiTiet || row.tenChiTiet.trim() === "") {
+        return false;
+      }
+      // If hidden field has value (x, X, or any non-empty string), hide the row
+      if (row.hidden && row.hidden.trim() !== "") {
+        return false;
+      }
+      return true;
+    })
     .map((row, idx) => ({
       stt: idx + 1,
       ...row,
@@ -322,20 +333,25 @@ export default function TVDisplayCDProduct({
   const leftRows = shouldSplit ? allRows.slice(0, rowsPerTable) : allRows;
   const rightRows = shouldSplit ? allRows.slice(rowsPerTable) : [];
 
-  // ✅ Compact mode for high density (>18 rows per table)
+  // ✅ Font size modes: Extra Large (≤6 rows), Compact (>18 rows), Normal
+  const isExtraLarge = totalRows <= 6;
   const isCompact = rowsPerTable > 18;
 
-  const headerFontSize = isCompact 
-    ? "clamp(0.5rem, 0.8vw, 1rem)" 
-    : shouldSplit 
-      ? "clamp(0.7rem, 1.2vw, 1.5rem)" 
-      : "clamp(1rem, 1.8vw, 2.2rem)";
+  const headerFontSize = isExtraLarge
+    ? "clamp(1.5rem, 2.5vw, 3.1rem)"
+    : isCompact 
+      ? "clamp(0.5rem, 0.8vw, 1rem)" 
+      : shouldSplit 
+        ? "clamp(0.7rem, 1.2vw, 1.5rem)" 
+        : "clamp(1rem, 1.8vw, 2.2rem)";
 
-  const rowFontSize = isCompact
-    ? "clamp(0.7rem, 1.1vw, 1.4rem)"
-    : shouldSplit
-      ? "clamp(0.95rem, 1.6vw, 2rem)"
-      : "clamp(1.2rem, 2vw, 2.5rem)";
+  const rowFontSize = isExtraLarge
+    ? "clamp(1.8rem, 2.8vw, 3.5rem)"
+    : isCompact
+      ? "clamp(0.7rem, 1.1vw, 1.4rem)"
+      : shouldSplit
+        ? "clamp(0.95rem, 1.6vw, 2rem)"
+        : "clamp(1.2rem, 2vw, 2.5rem)";
 
   return (
     <div
@@ -391,43 +407,50 @@ export default function TVDisplayCDProduct({
             
             {/* Product Carousel Indicator */}
             {products.length > 1 && (
-              <div 
-                className="flex items-center justify-start gap-1.5 pl-1 overflow-hidden"
-                style={{ 
-                  fontSize: products.length > 6 
-                    ? "clamp(0.65rem, 1vw, 1.2rem)" 
-                    : "clamp(0.85rem, 1.4vw, 1.6rem)",
-                }}
-              >
-                {visibleProducts.map(({ product, originalIndex }, idx) => (
-                  <React.Fragment key={originalIndex}>
-                    <div
-                      className={`
-                        px-2 py-0.5 rounded font-bold tracking-wider transition-all duration-300 whitespace-nowrap flex-shrink-0
-                        ${originalIndex === currentSlide 
-                          ? 'bg-cyan-400 text-slate-900 scale-110 shadow-lg shadow-cyan-400/50' 
-                          : originalIndex === (currentSlide + 1) % products.length
-                            ? 'bg-yellow-500/20 text-yellow-200 border border-yellow-400/40 animate-[pulse_2s_ease-in-out_infinite]'
-                            : 'bg-slate-700/50 text-slate-300'
-                        }
-                      `}
-                    >
-                      {product.ma}/{product.mau}
-                    </div>
-                    {idx < visibleProducts.length - 1 && (
-                      <ChevronRight 
+              <div className="flex items-center justify-start gap-2 pl-1 overflow-hidden max-w-full">
+                <div 
+                  className="flex items-center justify-start gap-1.5 overflow-hidden flex-shrink min-w-0"
+                  style={{ 
+                    fontSize: products.length > 6 
+                      ? "clamp(0.65rem, 1vw, 1.2rem)" 
+                      : "clamp(0.85rem, 1.4vw, 1.6rem)",
+                  }}
+                >
+                  {visibleProducts.map(({ product, originalIndex }, idx) => (
+                    <React.Fragment key={originalIndex}>
+                      <div
                         className={`
-                          flex-shrink-0
+                          px-2 py-0.5 rounded font-bold tracking-wider transition-all duration-300 whitespace-nowrap flex-shrink-0
                           ${originalIndex === currentSlide 
-                            ? 'text-yellow-400 animate-pulse' 
-                            : 'text-slate-500'
+                            ? 'bg-cyan-400 text-slate-900 scale-110 shadow-lg shadow-cyan-400/50' 
+                            : originalIndex === (currentSlide + 1) % products.length
+                              ? 'bg-yellow-500/20 text-yellow-200 border border-yellow-400/40 animate-[pulse_2s_ease-in-out_infinite]'
+                              : 'bg-slate-700/50 text-slate-300'
                           }
                         `}
-                        style={{ width: "clamp(0.7rem, 1vw, 1.2rem)", height: "clamp(0.7rem, 1vw, 1.2rem)" }}
-                      />
-                    )}
-                  </React.Fragment>
-                ))}
+                      >
+                        {product.ma}/{product.mau}
+                      </div>
+                      {idx < visibleProducts.length - 1 && (
+                        <ChevronRight 
+                          className={`
+                            flex-shrink-0
+                            ${originalIndex === currentSlide 
+                              ? 'text-yellow-400 animate-pulse' 
+                              : 'text-slate-500'
+                            }
+                          `}
+                          style={{ width: "clamp(0.7rem, 1vw, 1.2rem)", height: "clamp(0.7rem, 1vw, 1.2rem)" }}
+                        />
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+                {/* Slide Info */}
+                <div className="font-black tracking-wider bg-cyan-500/20 border-2 border-cyan-400/60 px-2.5 py-1 rounded-lg shadow-lg shadow-cyan-400/30 backdrop-blur-sm flex-shrink-0" style={{ fontSize: "clamp(0.85rem, 1.3vw, 1.5rem)" }}>
+                  <span className="text-cyan-400 animate-pulse">{currentSlide + 1}</span>
+                  <span className="text-white/80">/{products.length}</span>
+                </div>
               </div>
             )}
           </div>
@@ -467,21 +490,14 @@ export default function TVDisplayCDProduct({
                 </span>
               </div>
 
-              {/* Connection Status & Slide Info */}
-              <div className="flex flex-col items-center justify-center border-l border-purple-500/30 pl-2 gap-1" style={{ minWidth: "clamp(3rem, 5vw, 5rem)" }}>
-                <div className="flex items-center">
-                  {connected ? (
-                    <Wifi className="text-green-400 drop-shadow-[0_0_5px_rgba(74,222,128,0.5)]" style={{ width: "clamp(1.5rem, 2.5vw, 2.5rem)", height: "clamp(1.5rem, 2.5vw, 2.5rem)" }} />
-                  ) : (
-                    <WifiOff className="text-red-400 drop-shadow-[0_0_5px_rgba(248,113,113,0.5)]" style={{ width: "clamp(1.5rem, 2.5vw, 2.5rem)", height: "clamp(1.5rem, 2.5vw, 2.5rem)" }} />
-                  )}
-                </div>
-                {products.length > 1 && (
-                  <div className="text-white/90 font-black tracking-widest" style={{ fontSize: "clamp(0.8rem, 1.2vw, 1.2rem)" }}>
-                    {currentSlide + 1}/{products.length}
-                  </div>
+              {/* Connection Status */}
+              {/* <div className="flex items-center justify-center border-l border-purple-500/30 pl-2" style={{ minWidth: "clamp(3rem, 5vw, 5rem)" }}>
+                {connected ? (
+                  <Wifi className="text-green-400 drop-shadow-[0_0_5px_rgba(74,222,128,0.5)]" style={{ width: "clamp(1.5rem, 2.5vw, 2.5rem)", height: "clamp(1.5rem, 2.5vw, 2.5rem)" }} />
+                ) : (
+                  <WifiOff className="text-red-400 drop-shadow-[0_0_5px_rgba(248,113,113,0.5)]" style={{ width: "clamp(1.5rem, 2.5vw, 2.5rem)", height: "clamp(1.5rem, 2.5vw, 2.5rem)" }} />
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -852,7 +868,7 @@ export default function TVDisplayCDProduct({
 
       {/* Slide Indicators */}
       {products.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
           {products.map((_, idx) => (
             <button
               key={idx}
@@ -888,8 +904,9 @@ export default function TVDisplayCDProduct({
       {/* Countdown Alert */}
       {countdown !== null && countdown > 0 && products.length > 1 && (
         <div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-yellow-500/90 backdrop-blur-sm text-slate-900 px-6 py-3 rounded-lg shadow-2xl border-2 border-yellow-400 animate-pulse"
-          style={{ fontSize: "clamp(1.2rem, 2vw, 2.5rem)" }}
+          className="absolute bottom-2 right-2 -translate-x-0.5
+          bg-yellow-500/90 backdrop-blur-sm text-slate-900 px-6 py-3 rounded-lg shadow-2xl border-2 border-yellow-400 animate-pulse"
+          style={{ fontSize: "clamp(1rem, 1.8vw, 2.2rem)" }}
         >
           <span className="font-black">Chuyển {products[(currentSlide + 1) % products.length].ma}/{products[(currentSlide + 1) % products.length].mau} sau {countdown}s</span>
         </div>

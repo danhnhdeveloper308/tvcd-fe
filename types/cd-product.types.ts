@@ -8,6 +8,7 @@ export interface CDProductDetail {
   conLai: number; // L: CÒN LẠI
   ttdb: number; // M: TTĐB (Tồn)
   canXuLy: number; // N: CẦN XỬ LÝ
+  hidden: string; // O: HIDDEN (đánh dấu để frontend ẩn/hiện)
 }
 
 export interface CDProduct {
@@ -21,6 +22,7 @@ export interface CDProduct {
   conLai: number; // L: CÒN LẠI
   ttdb: number; // M: TTĐB (Tồn)
   canXuLy: number; // N: CẦN XỬ LÝ
+  hidden: string; // O: HIDDEN (đánh dấu để frontend ẩn/hiện)
   details: CDProductDetail[]; // Chi tiết breakdown
 }
 
