@@ -498,7 +498,7 @@ export default function TVDisplayCDProduct({
 
               {/* Date & Time */}
               <div className="flex flex-col items-center justify-center border-l border-purple-500/30 pl-2 flex-1 min-w-0">
-                <span className="font-black text-purple-300 leading-none" style={{ fontSize: "clamp(1.8rem, 3vw, 3.5rem)" }}>
+                <span className="font-black text-purple-300 leading-none" style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}>
                   {formattedDate}
                 </span>
                 <span className="font-black text-white leading-none mt-1" style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}>
