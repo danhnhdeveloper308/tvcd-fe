@@ -33,6 +33,20 @@
   background: rgba(148, 163, 184, 0.5);
 }
 
+/* Flash animation for QSL updates */
+@keyframes flash {
+  0%, 100% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(74, 222, 128, 0.3);
+  }
+}
+
+.animate-flash {
+  animation: flash 0.6s ease-in-out 3;
+}
+
 :root {
 --font-oswald: 'Oswald', sans-serif;
   --background: oklch(1 0 0);
