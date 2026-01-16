@@ -59,31 +59,31 @@ export default function TVDisplayCDProduct({
     if (products.length <= 5) {
       return products.map((p, idx) => ({
         product: p,
-        originalIndex: idx
+        originalIndex: idx,
       }));
     }
-    
+
     const maxVisible = 5;
     const halfWindow = Math.floor(maxVisible / 2);
-    
+
     let start = currentSlide - halfWindow;
     let end = currentSlide + halfWindow + 1;
-    
+
     // Adjust if near start
     if (start < 0) {
       end = Math.min(products.length, end + Math.abs(start));
       start = 0;
     }
-    
+
     // Adjust if near end
     if (end > products.length) {
       start = Math.max(0, start - (end - products.length));
       end = products.length;
     }
-    
+
     return products.slice(start, end).map((p, idx) => ({
       product: p,
-      originalIndex: start + idx
+      originalIndex: start + idx,
     }));
   }, [products, currentSlide]);
 
@@ -205,7 +205,7 @@ export default function TVDisplayCDProduct({
 
     const intervalId = setInterval(() => {
       elapsed += 1000;
-      
+
       // Update countdown in last 5 seconds
       if (elapsed >= countdownStart) {
         const remaining = Math.ceil((autoSlideInterval - elapsed) / 1000);
@@ -325,7 +325,7 @@ export default function TVDisplayCDProduct({
   const totalRows = allRows.length;
   let shouldSplit = false;
   let rowsPerTable = totalRows;
-  
+
   if (totalRows > 15 && totalRows <= 30) {
     // 16-30 rows: table 1 always shows 15 rows
     shouldSplit = true;
@@ -335,7 +335,7 @@ export default function TVDisplayCDProduct({
     shouldSplit = true;
     rowsPerTable = 20;
   }
-  
+
   const leftRows = shouldSplit ? allRows.slice(0, rowsPerTable) : allRows;
   const rightRows = shouldSplit ? allRows.slice(rowsPerTable) : [];
 
@@ -345,19 +345,19 @@ export default function TVDisplayCDProduct({
 
   const headerFontSize = isExtraLarge
     ? "clamp(1.5rem, 2.5vw, 3.1rem)"
-    : isCompact 
-      ? "clamp(0.5rem, 0.8vw, 1rem)" 
-      : shouldSplit 
-        ? "clamp(0.7rem, 1.2vw, 1.5rem)" 
-        : "clamp(1rem, 1.8vw, 2.2rem)";
+    : isCompact
+    ? "clamp(0.5rem, 0.8vw, 1rem)"
+    : shouldSplit
+    ? "clamp(0.7rem, 1.2vw, 1.5rem)"
+    : "clamp(1rem, 1.8vw, 2.2rem)";
 
   const rowFontSize = isExtraLarge
     ? "clamp(1.8rem, 2.8vw, 3.5rem)"
     : isCompact
-      ? "clamp(0.7rem, 1.1vw, 1.4rem)"
-      : shouldSplit
-        ? "clamp(0.95rem, 1.6vw, 2rem)"
-        : "clamp(1.2rem, 2vw, 2.5rem)";
+    ? "clamp(0.7rem, 1.1vw, 1.4rem)"
+    : shouldSplit
+    ? "clamp(0.95rem, 1.6vw, 2rem)"
+    : "clamp(1.2rem, 2vw, 2.5rem)";
 
   return (
     <div
@@ -401,7 +401,7 @@ export default function TVDisplayCDProduct({
                   className="w-full h-full object-contain filter drop-shadow-xl"
                 />
               </div>
-              
+
               <h1
                 className="font-black text-white leading-tight text-left"
                 style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}
@@ -410,16 +410,17 @@ export default function TVDisplayCDProduct({
                 {data?.factory}
               </h1>
             </div>
-            
+
             {/* Product Carousel Indicator */}
             {products.length > 1 && (
               <div className="flex items-center justify-start gap-2 pl-1 overflow-hidden max-w-full">
-                <div 
+                <div
                   className="flex items-center justify-start gap-1.5 overflow-hidden flex-shrink min-w-0"
-                  style={{ 
-                    fontSize: products.length > 6 
-                      ? "clamp(0.65rem, 1vw, 1.2rem)" 
-                      : "clamp(0.85rem, 1.4vw, 1.6rem)",
+                  style={{
+                    fontSize:
+                      products.length > 6
+                        ? "clamp(0.65rem, 1vw, 1.2rem)"
+                        : "clamp(0.85rem, 1.4vw, 1.6rem)",
                   }}
                 >
                   {visibleProducts.map(({ product, originalIndex }, idx) => (
@@ -427,34 +428,45 @@ export default function TVDisplayCDProduct({
                       <div
                         className={`
                           px-2 py-0.5 rounded font-bold tracking-wider transition-all duration-300 whitespace-nowrap flex-shrink-0
-                          ${originalIndex === currentSlide 
-                            ? 'bg-cyan-400 text-slate-900 scale-110 shadow-lg shadow-cyan-400/50' 
-                            : originalIndex === (currentSlide + 1) % products.length
-                              ? 'bg-yellow-500/20 text-yellow-200 border border-yellow-400/40 animate-[pulse_2s_ease-in-out_infinite]'
-                              : 'bg-slate-700/50 text-slate-300'
+                          ${
+                            originalIndex === currentSlide
+                              ? "bg-cyan-400 text-slate-900 scale-110 shadow-lg shadow-cyan-400/50"
+                              : originalIndex ===
+                                (currentSlide + 1) % products.length
+                              ? "bg-yellow-500/20 text-yellow-200 border border-yellow-400/40 animate-[pulse_2s_ease-in-out_infinite]"
+                              : "bg-slate-700/50 text-slate-300"
                           }
                         `}
                       >
                         {product.ma}/{product.mau}
                       </div>
                       {idx < visibleProducts.length - 1 && (
-                        <ChevronRight 
+                        <ChevronRight
                           className={`
                             flex-shrink-0
-                            ${originalIndex === currentSlide 
-                              ? 'text-yellow-400 animate-pulse' 
-                              : 'text-slate-500'
+                            ${
+                              originalIndex === currentSlide
+                                ? "text-yellow-400 animate-pulse"
+                                : "text-slate-500"
                             }
                           `}
-                          style={{ width: "clamp(0.7rem, 1vw, 1.2rem)", height: "clamp(0.7rem, 1vw, 1.2rem)" }}
+                          style={{
+                            width: "clamp(0.7rem, 1vw, 1.2rem)",
+                            height: "clamp(0.7rem, 1vw, 1.2rem)",
+                          }}
                         />
                       )}
                     </React.Fragment>
                   ))}
                 </div>
                 {/* Slide Info */}
-                <div className="font-black tracking-wider bg-cyan-500/20 border-2 border-cyan-400/60 px-2.5 py-1 rounded-lg shadow-lg shadow-cyan-400/30 backdrop-blur-sm flex-shrink-0" style={{ fontSize: "clamp(0.85rem, 1.3vw, 1.5rem)" }}>
-                  <span className="text-cyan-400 animate-pulse">{currentSlide + 1}</span>
+                <div
+                  className="font-black tracking-wider bg-cyan-500/20 border-2 border-cyan-400/60 px-2.5 py-1 rounded-lg shadow-lg shadow-cyan-400/30 backdrop-blur-sm flex-shrink-0"
+                  style={{ fontSize: "clamp(0.85rem, 1.3vw, 1.5rem)" }}
+                >
+                  <span className="text-cyan-400 animate-pulse">
+                    {currentSlide + 1}
+                  </span>
                   <span className="text-white/80">/{products.length}</span>
                 </div>
               </div>
@@ -462,46 +474,96 @@ export default function TVDisplayCDProduct({
           </div>
 
           {/* Metrics Card */}
-          <div className="col-span-6 h-full flex items-center justify-end pr-2">
+          <div className="col-span-6 h-full flex items-center justify-end">
             <div className="metric-card-violet flex items-center justify-between px-4 py-1 w-full h-[90%] gap-2 shadow-lg">
               {/* Style */}
               <div className="flex flex-col items-center justify-center flex-1 min-w-0">
-                <span className="text-purple-300 font-bold mb-0.5 tracking-wider" style={{ fontSize: "clamp(1.2rem, 1.6vw, 2rem)" }}>STYLE</span>
-                <span className={getFlashClass("product-ma", "font-black text-white leading-none truncate w-full text-center")} style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}>
+                <span
+                  className="text-purple-300 font-bold mb-0.5 tracking-wider"
+                  style={{ fontSize: "clamp(1.2rem, 1.6vw, 2rem)" }}
+                >
+                  STYLE
+                </span>
+                <span
+                  className={getFlashClass(
+                    "product-ma",
+                    "font-black text-white leading-none truncate w-full text-center"
+                  )}
+                  style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}
+                >
                   {currentProduct.ma}
                 </span>
               </div>
 
               {/* Màu */}
-              <div className="flex flex-col items-center justify-center border-l border-purple-500/30 pl-2 flex-1 min-w-0">
-                <span className="text-purple-300 font-bold mb-0.5 tracking-wider" style={{ fontSize: "clamp(1.2rem, 1.6vw, 2rem)" }}>MÀU</span>
-                <span className={getFlashClass("product-mau", "font-black text-white leading-none truncate w-full text-center")} style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}>
+              <div className="flex flex-col items-center justify-center border-l border-purple-500/30 flex-1 min-w-0">
+                <span
+                  className="text-purple-300 font-bold mb-0.5 tracking-wider"
+                  style={{ fontSize: "clamp(1.2rem, 1.6vw, 2rem)" }}
+                >
+                  MÀU
+                </span>
+                <span
+                  className={getFlashClass(
+                    "product-mau",
+                    "font-black text-white leading-none truncate w-full text-center"
+                  )}
+                  style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}
+                >
                   {currentProduct.mau}
                 </span>
               </div>
 
               {/* SLKH */}
-              <div className="flex flex-col items-center justify-center border-l border-purple-500/30 pl-2 flex-1 min-w-0">
-                <span className="text-purple-300 font-bold mb-0.5 tracking-wider" style={{ fontSize: "clamp(1.2rem, 1.6vw, 2rem)" }}>SLKH</span>
-                <span className={getFlashClass("product-slkh", "font-black text-white leading-none")} style={{ fontSize: "clamp(1.8rem, 3vw, 3.5rem)" }}>
+              <div className="flex flex-col items-center justify-center border-l border-purple-500/30 flex-1 min-w-0">
+                <span
+                  className="text-purple-300 font-bold mb-0.5 tracking-wider"
+                  style={{ fontSize: "clamp(1.2rem, 1.6vw, 2rem)" }}
+                >
+                  SLKH
+                </span>
+                <span
+                  className={getFlashClass(
+                    "product-slkh",
+                    "font-black text-white leading-none"
+                  )}
+                  style={{ fontSize: "clamp(1.8rem, 3vw, 3.5rem)" }}
+                >
                   {currentProduct.slkh.toLocaleString("de-DE")}
                 </span>
               </div>
 
               {/* Nhu cầu lũy kế */}
-              <div className="flex flex-col items-center justify-center border-l border-purple-500/30 pl-2 flex-1 min-w-0">
-                <span className="text-purple-300 font-bold mb-0.5 text-center leading-tight tracking-wider" style={{ fontSize: "clamp(1.2rem, 1.6vw, 2rem)" }}>NC LŨY KẾ</span>
-                <span className={getFlashClass("product-nhuCauLuyKe", "font-black text-white leading-none")} style={{ fontSize: "clamp(1.8rem, 3vw, 3.5rem)" }}>
+              <div className="flex flex-col items-center justify-center border-l border-purple-500/30 flex-1 min-w-0">
+                <span
+                  className="text-purple-300 font-bold mb-0.5 text-center leading-tight tracking-wider"
+                  style={{ fontSize: "clamp(1.2rem, 1.6vw, 2rem)" }}
+                >
+                  NC LŨY KẾ
+                </span>
+                <span
+                  className={getFlashClass(
+                    "product-nhuCauLuyKe",
+                    "font-black text-white leading-none"
+                  )}
+                  style={{ fontSize: "clamp(1.8rem, 3vw, 3.5rem)" }}
+                >
                   {currentProduct.nhuCauLuyKe.toLocaleString("de-DE")}
                 </span>
               </div>
 
               {/* Date & Time */}
-              <div className="flex flex-col items-center justify-center border-l border-purple-500/30 pl-2 flex-1 min-w-0">
-                <span className="font-black text-purple-300 leading-none" style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}>
+              <div className="flex flex-col items-center justify-center border-l border-purple-500/30 flex-1 min-w-0">
+                <span
+                  className="font-black text-purple-300 leading-none"
+                  style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}
+                >
                   {formattedDate}
                 </span>
-                <span className="font-black text-white leading-none mt-1" style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}>
+                <span
+                  className="font-black text-white leading-none mt-1"
+                  style={{ fontSize: "clamp(1.5rem, 2.5vw, 3rem)" }}
+                >
                   {formattedTime}
                 </span>
               </div>
@@ -533,18 +595,20 @@ export default function TVDisplayCDProduct({
                   </th>
                   <th
                     className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
-                    style={{ 
+                    style={{
                       fontSize: headerFontSize,
-                      width: shouldSplit ? "clamp(140px, 26vw, 300px)" : "28%" 
+                      width: shouldSplit ? "clamp(140px, 26vw, 300px)" : "28%",
                     }}
                   >
-                    TÊN CHI TIẾT 
+                    TÊN CHI TIẾT
                   </th>
                   <th
                     className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
-                      width: shouldSplit ? "clamp(42px, 5.5vw, 70px)" : "clamp(50px, 7vw, 85px)",
+                      width: shouldSplit
+                        ? "clamp(42px, 5.5vw, 70px)"
+                        : "clamp(50px, 7vw, 85px)",
                     }}
                   >
                     GIAO
@@ -553,7 +617,9 @@ export default function TVDisplayCDProduct({
                     className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
-                      width: shouldSplit ? "clamp(50px, 6.5vw, 80px)" : "clamp(60px, 8vw, 100px)",
+                      width: shouldSplit
+                        ? "clamp(50px, 6.5vw, 80px)"
+                        : "clamp(60px, 8vw, 100px)",
                     }}
                   >
                     LK GIAO
@@ -562,7 +628,9 @@ export default function TVDisplayCDProduct({
                     className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
-                      width: shouldSplit ? "clamp(42px, 5.5vw, 70px)" : "clamp(50px, 7vw, 85px)",
+                      width: shouldSplit
+                        ? "clamp(42px, 5.5vw, 70px)"
+                        : "clamp(50px, 7vw, 85px)",
                     }}
                   >
                     +/- CL
@@ -571,7 +639,9 @@ export default function TVDisplayCDProduct({
                     className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
-                      width: shouldSplit ? "clamp(42px, 5.5vw, 70px)" : "clamp(50px, 7vw, 85px)",
+                      width: shouldSplit
+                        ? "clamp(42px, 5.5vw, 70px)"
+                        : "clamp(50px, 7vw, 85px)",
                     }}
                   >
                     TỒN
@@ -580,7 +650,9 @@ export default function TVDisplayCDProduct({
                     className="border border-slate-500 px-0.5 py-0.5 text-center font-black tracking-wider"
                     style={{
                       fontSize: headerFontSize,
-                      width: shouldSplit ? "clamp(55px, 7vw, 90px)" : "clamp(60px, 8vw, 100px)",
+                      width: shouldSplit
+                        ? "clamp(55px, 7vw, 90px)"
+                        : "clamp(60px, 8vw, 100px)",
                     }}
                   >
                     CẦN XỬ LÝ
@@ -598,7 +670,7 @@ export default function TVDisplayCDProduct({
                     : "bg-slate-800/80"; // Slightly lighter slate
                   const rowKey =
                     row.type === "main" ? "product" : `detail-${row.index}`;
-                  
+
                   // Subtle borders for dark theme
                   const borderColor = "border-slate-700";
 
@@ -653,7 +725,9 @@ export default function TVDisplayCDProduct({
                         )}
                         style={{ fontSize: rowFontSize }}
                       >
-                        {row.conLai !== 0 ? row.conLai.toLocaleString("de-DE") : ""}
+                        {row.conLai !== 0
+                          ? row.conLai.toLocaleString("de-DE")
+                          : ""}
                       </td>
                       <td
                         className={getFlashClass(
@@ -673,7 +747,9 @@ export default function TVDisplayCDProduct({
                         )}
                         style={{ fontSize: rowFontSize }}
                       >
-                        {row.canXuLy !== 0 ? row.canXuLy.toLocaleString("de-DE") : ""}
+                        {row.canXuLy !== 0
+                          ? row.canXuLy.toLocaleString("de-DE")
+                          : ""}
                       </td>
                     </tr>
                   );
@@ -701,9 +777,9 @@ export default function TVDisplayCDProduct({
                     </th>
                     <th
                       className="border border-slate-500 px-0.5 py-1 text-center font-black tracking-wider"
-                      style={{ 
+                      style={{
                         fontSize: headerFontSize,
-                        width: "clamp(140px, 26vw, 300px)"
+                        width: "clamp(140px, 26vw, 300px)",
                       }}
                     >
                       TÊN CHI TIẾT
@@ -766,7 +842,7 @@ export default function TVDisplayCDProduct({
                       : "bg-slate-800/80"; // Slightly lighter slate
                     const rowKey =
                       row.stt === 1 ? "product" : `detail-${row.stt - 2}`;
-                    
+
                     // Subtle borders for dark theme
                     const borderColor = "border-slate-700";
 
@@ -821,7 +897,9 @@ export default function TVDisplayCDProduct({
                           )}
                           style={{ fontSize: rowFontSize }}
                         >
-                          {row.conLai !== 0 ? row.conLai.toLocaleString("de-DE") : ""}
+                          {row.conLai !== 0
+                            ? row.conLai.toLocaleString("de-DE")
+                            : ""}
                         </td>
                         <td
                           className={getFlashClass(
@@ -915,7 +993,11 @@ export default function TVDisplayCDProduct({
           bg-yellow-500/90 backdrop-blur-sm text-slate-900 px-6 py-3 rounded-lg shadow-2xl border-2 border-yellow-400 animate-pulse"
           style={{ fontSize: "clamp(1rem, 1.8vw, 2.2rem)" }}
         >
-          <span className="font-black">Chuyển {products[(currentSlide + 1) % products.length].ma}/{products[(currentSlide + 1) % products.length].mau} sau {countdown}s</span>
+          <span className="font-black">
+            Chuyển {products[(currentSlide + 1) % products.length].ma}/
+            {products[(currentSlide + 1) % products.length].mau} sau {countdown}
+            s
+          </span>
         </div>
       )}
     </div>
