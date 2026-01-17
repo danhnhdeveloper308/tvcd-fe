@@ -2,8 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import TVDisplayQSL from "@/components/tv-qsl/TVDisplayQSL";
 import LazyLoader from "@/components/common/LazyLoader";
+import TVDisplayQSL from "@/components/tv-qsl/TVDisplayQSL";
 
 function QSLDisplay() {
   const searchParams = useSearchParams();
