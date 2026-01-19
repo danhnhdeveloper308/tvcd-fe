@@ -47,6 +47,104 @@
   animation: flash 0.6s ease-in-out 3;
 }
 
+/* QSL QC Cell Highlighting - Pulsing orange-yellow gradient */
+/* @keyframes qc-pulse {
+  0%, 100% {
+    background-position: 0% 50%;
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.5), 0 0 30px rgba(249, 115, 22, 0.3);
+  }
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.7), 0 0 40px rgba(249, 115, 22, 0.5);
+  }
+} */
+
+/* ==================== QSL DISPLAY RESPONSIVE OPTIMIZATION ==================== */
+
+/* Base styles for all screens - Mobile and small tablets */
+.qsl-display {
+  /* Default compact for small screens */
+}
+
+/* Laptop 15.6 inch (1366x768, 1440x900, 1600x900) - COMPACT LAYOUT */
+@media (min-width: 1280px) and (max-width: 1680px) {
+  .qsl-display:not(.tv-dense) th,
+  .qsl-display:not(.tv-dense) td {
+    padding: 0.15rem 0.3rem !important;
+    line-height: 1.1 !important;
+  }
+  
+  .qsl-display:not(.tv-dense) th {
+    font-size: clamp(0.75rem, 1.35vw, 1.15rem) !important;
+  }
+  
+  .qsl-display:not(.tv-dense) td {
+    font-size: clamp(0.7rem, 1.3vw, 1.1rem) !important;
+  }
+  
+  .qsl-display:not(.tv-dense) .qsl-percent-cell {
+    font-size: clamp(0.85rem, 1.5vw, 1.25rem) !important;
+  }
+}
+
+/* Desktop 24 inch FULL HD (1920x1080) - Maximum compact to show all 9 rows */
+@media (min-width: 1900px) {
+  /* Headers - ultra compact */
+  .qsl-display:not(.tv-dense) th {
+    padding: 0.15rem 0.2rem !important;
+    font-size: clamp(0.75rem, 1.35vw, 1.45rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.05 !important;
+  }
+  
+  /* Data cells - ultra compact */
+  .qsl-display:not(.tv-dense) td {
+    padding: 0.15rem 0.2rem !important;
+    font-size: clamp(0.75rem, 1.35vw, 1.45rem) !important;
+    font-weight: 600 !important;
+    line-height: 1.05 !important;
+  }
+  
+  .qsl-display:not(.tv-dense) .qsl-nhom-cell {
+    font-size: clamp(0.8rem, 1.45vw, 1.55rem) !important;
+    font-weight: 800 !important;
+  }
+  
+  .qsl-display:not(.tv-dense) .qsl-percent-cell {
+    font-size: clamp(0.9rem, 1.65vw, 1.75rem) !important;
+    font-weight: 900 !important;
+  }
+}
+
+/* Desktop 27 inch+ and 4K (2560x1440+) */
+@media (min-width: 2500px) {
+  .qsl-display:not(.tv-dense) th,
+  .qsl-display:not(.tv-dense) td {
+    padding: 1rem 0.8rem !important;
+    line-height: 1.5 !important;
+  }
+  
+  .qsl-display:not(.tv-dense) th {
+    font-size: clamp(2rem, 3.2vw, 3.6rem) !important;
+  }
+  
+  .qsl-display:not(.tv-dense) td {
+    font-size: clamp(1.9rem, 3vw, 3.4rem) !important;
+  }
+  
+  .qsl-display:not(.tv-dense) .qsl-percent-cell {
+    font-size: clamp(2.5rem, 3.8vw, 4.2rem) !important;
+  }
+}
+
+/* TV Mode ONLY - Xiaomi TV 75" (Window: 960x540 @ Physical: 1920x1080) */
+/* Must use .tv-dense class, NOT viewport size! */
+.qsl-display.tv-dense th,
+.qsl-display.tv-dense td {
+  padding: 0.15rem 0.25rem !important;
+  line-height: 1.05 !important;
+}
+
 :root {
 --font-oswald: 'Oswald', sans-serif;
   --background: oklch(1 0 0);

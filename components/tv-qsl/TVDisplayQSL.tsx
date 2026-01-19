@@ -382,7 +382,7 @@ export default function TVDisplayQSL({
     return (
       <>
         {/* Table */}
-        <div className="w-full flex-1 overflow-hidden">
+        <div className={`w-full flex-1 overflow-hidden qsl-display ${isTVMode ? 'tv-dense' : ''}`}>
           <table className="w-full border-collapse table-fixed">
             {/* Team Header Row - aligned with table columns, no borders */}
             <thead>
@@ -400,8 +400,12 @@ export default function TVDisplayQSL({
                     <span className={`font-black text-yellow-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>{teamLdThucTe}</span>
                   </div>
                 </th>
-                <th className="px-0.5 py-0 w-[5%]"></th>
-                <th className="px-0.5 py-0 w-[4.5%]"></th>
+                <th className="px-0.5 py-0 w-[5%]">
+                  <span className={`font-semibold text-slate-300 ${isTVMode ? 'text-[clamp(0.7rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.8vw,1.5rem)]'}`}>TGLV: </span>
+                </th>
+                <th className="px-0.5 py-0 w-[4.5%]">
+                  <span className={`font-semibold text-slate-300 ${isTVMode ? 'text-[clamp(0.7rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.8vw,1.5rem)]'}`}>{team.tglv} </span>
+                </th>
                 <th className="px-0.5 py-0 w-[4.5%]"></th>
                 <th className="px-0.5 py-0 w-[4.5%]"></th>
                 <th className="px-0.5 py-0 w-[4.5%]"></th>
@@ -416,69 +420,69 @@ export default function TVDisplayQSL({
                 <th className="px-0.5 py-0 w-[7%]"></th>
                 <th className="px-0.5 py-0 w-[4%]"></th>
                 <th className="px-0.5 py-0 text-center w-[7.5%]">
-                  <span className={`font-semibold text-slate-300 ${isTVMode ? 'text-[clamp(0.7rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.8vw,1.5rem)]'}`}>TGLV: </span>
-                  <span className={`font-bold text-white ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>{team.tglv}</span>
+                 {/* <span className={`font-semibold text-slate-300 ${isTVMode ? 'text-[clamp(0.7rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.8vw,1.5rem)]'}`}>TGLV: </span> */}
+                  {/* <span className={`font-bold text-white ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>{team.tglv}</span> */}
                 </th>
               </tr>
             </thead>
             {/* Header */}
             <thead>
               <tr className="bg-yellow-500">
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[10%] ${isTVMode ? 'text-[clamp(0.65rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.8vw,1.5rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[10%] leading-[1] ${isTVMode ? 'text-[clamp(0.6rem,1.15vw,0.95rem)]' : 'text-[clamp(0.8rem,1.7vw,1.4rem)]'}`}>
                   NHÓM
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   LĐ LAYOUT
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   THỰC TẾ
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[5.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[5.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   K.HOẠCH
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   8H30
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   9H30
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   10H30
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   11H30
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   13H30
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   14H30
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   15H30
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   16H30
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   18H
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   19H
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   20H
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[7%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[7%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   LKKH
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[7%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[7%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   LKTH
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[3.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[3.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   +/- LK
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[5.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[5.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   %HT
                 </th>
               </tr>
@@ -506,30 +510,33 @@ export default function TVDisplayQSL({
                   return getPercentageColor(percentage);
                 };
 
+                // Check if this is a QC group that needs highlighting
+                const isQCGroup = group.nhom === 'QC KIỂM TÚI' || group.nhom === 'QC KIỂM QUAI';
+
                 return (
                   <tr
                     key={groupIdx}
                     className={groupIdx % 2 === 0 ? "bg-slate-700/20" : "bg-slate-800/20"}
                   >
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold text-cyan-300 leading-[1.1] shadow-md shadow-blue-900/50 ${isTVMode ? 'text-[clamp(0.65rem,1.35vw,1.15rem)]' : 'text-[clamp(0.75rem,1.5vw,1.25rem)]'}`}>
+                    <td className={`qsl-nhom-cell border border-slate-600 px-0.5 py-0 text-center font-black leading-[1] shadow-md ${isQCGroup ? 'bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-500 text-slate-900 border-yellow-300 border-2 shadow-lg shadow-orange-500/50 animate-pulse' : 'text-cyan-300 shadow-blue-900/50'} ${isTVMode ? 'text-[clamp(0.6rem,1.25vw,1.05rem)]' : 'text-[clamp(0.7rem,1.4vw,1.15rem)]'}`}>
                       {group.nhom}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1] ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {group.ldLayout !== 0 ? group.ldLayout : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1] ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {group.thucTe !== 0 ? (
                         <>
                           {group.thucTe}
                           {ldDiff !== 0 && (
-                            <span className={`ml-1 ${isTVMode ? 'text-[clamp(0.6rem,1.25vw,1.05rem)]' : 'text-[clamp(0.75rem,1.4vw,1.125rem)]'} font-bold ${ldDiff > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                            <span className={`ml-1 ${isTVMode ? 'text-[clamp(0.55rem,1.15vw,0.95rem)]' : 'text-[clamp(0.7rem,1.3vw,1.05rem)]'} font-bold ${ldDiff > 0 ? 'text-green-500' : 'text-red-500'}`}>
                               ({ldDiff > 0 ? '+' : ''}{ldDiff})
                             </span>
                           )}
                         </>
                       ) : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1] ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {group.keHoach !== 0 ? group.keHoach : ''}
                     </td>
                     {/* Hourly data with color based on performance */}
@@ -540,7 +547,7 @@ export default function TVDisplayQSL({
                         return (
                           <td
                             key={key}
-                            className={`border border-slate-600 px-0.5 py-0 text-center font-bold bg-slate-700/30 text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}
+                            className={`border border-slate-600 px-0.5 py-0 text-center font-bold bg-slate-700/30 text-white leading-[1] ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}
                           >
                           </td>
                         );
@@ -552,7 +559,7 @@ export default function TVDisplayQSL({
                           key={key}
                           className={getFlashClass(
                             `${team.tenTo}-${group.nhom}-${key}`,
-                            `border border-slate-600 px-0.5 py-0 text-center font-bold ${hourColor.bgColor} ${hourColor.textColor} transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`
+                            `border border-slate-600 px-0.5 py-0 text-center font-bold ${hourColor.bgColor} ${hourColor.textColor} transition-colors duration-300 leading-[1] ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`
                           )}
                         >
                           {value}
@@ -561,18 +568,18 @@ export default function TVDisplayQSL({
                     })}
                     {/* Summary */}
 
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1] ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {group.luyKeKeHoach !== 0 ? group.luyKeKeHoach : ''}
                     </td>
                     <td
                       className={getFlashClass(
                         `${team.tenTo}-${group.nhom}-luyKeThucHien`,
-                        `border border-slate-600 px-0.5 py-0 text-center font-bold text-white transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`
+                        `border border-slate-600 px-0.5 py-0 text-center font-bold text-white transition-colors duration-300 leading-[1] ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`
                       )}
                     >
                       {group.luyKeThucHien !== 0 ? group.luyKeThucHien : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1] ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {luyKeDiff !== 0 && (
                         <span className={luyKeDiff > 0 ? 'text-green-500' : 'text-red-500'}>
                           {luyKeDiff > 0 ? '+' : ''}{luyKeDiff}
@@ -582,7 +589,7 @@ export default function TVDisplayQSL({
                     <td
                       className={getFlashClass(
                         `${team.tenTo}-${group.nhom}-percentHT`,
-                        `border border-slate-600 px-0.5 py-0 text-center font-black ${percentColor.bgColor} ${percentColor.textColor} transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.8rem,1.65vw,1.45rem)]' : 'text-[clamp(1rem,1.8vw,1.5rem)]'}`
+                        `qsl-percent-cell border border-slate-600 px-0.5 py-0 text-center font-black ${percentColor.bgColor} ${percentColor.textColor} transition-colors duration-300 leading-[1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.95rem,1.7vw,1.4rem)]'}`
                       )}
                     >
                       {group.percentHT}%
@@ -624,23 +631,25 @@ export default function TVDisplayQSL({
           <div
             className="relative bg-white/95 rounded backdrop-blur-sm shadow-lg flex items-center justify-center flex-shrink-0"
             style={{
-              width: isTVMode ? 'clamp(2rem,5vw,4rem)' : 'clamp(3rem,6vw,5rem)',
-              height: isTVMode ? 'clamp(1.2rem,3vw,2.5rem)' : 'clamp(2rem,4vw,3.5rem)',
+              width: isTVMode ? 'clamp(1rem,2.5vw,2rem)' : 'clamp(1.5rem,3.5vw,3rem)',
+              height: isTVMode ? 'clamp(1rem,2.5vw,2rem)' : 'clamp(1.5rem,3.5vw,3rem)',
               aspectRatio: "1",
             }}
           >
           <Image
             src="/logo.png"
             alt="Logo"
-            width={isTVMode ? 80 : 100}
-            height={isTVMode ? 48 : 60}
-            className={`w-auto object-contain ${isTVMode ? 'h-[clamp(1.2rem,3vw,2.5rem)]' : 'h-[clamp(2rem,4vw,3.5rem)]'}`}
+            // width={isTVMode ? 80 : 100}
+            // height={isTVMode ? 48 : 60}
+            width={80}
+            height={80}
+            className={`w-auto object-contain ${isTVMode ? 'h-[clamp(1rem,2.5vw,2rem)]' : 'h-[clamp(1.5rem,3.5vw,3rem)]'}`}
             priority
           />
         </div>
         {/* Title */}
         <h1 className={`font-black text-white text-center flex-1 leading-tight px-1 ${isTVMode ? 'text-[clamp(0.75rem,1.8vw,1.5rem)]' : 'text-[clamp(1.25rem,2.5vw,2.25rem)]'}`}>
-          TIVI SẢN LƯỢNG NHÓM LINE {line} - {currentSlide.slideLabel}
+          BÁO CÁO SẢN LƯỢNG NHÓM LINE {line} - {currentSlide.slideLabel}
         </h1>
 
         {/* Time */}
