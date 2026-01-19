@@ -511,25 +511,25 @@ export default function TVDisplayQSL({
                     key={groupIdx}
                     className={groupIdx % 2 === 0 ? "bg-slate-700/20" : "bg-slate-800/20"}
                   >
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold text-cyan-300 leading-[1.1] shadow-md shadow-blue-900/50 ${isTVMode ? 'text-[clamp(0.7rem,1.4vw,1.2rem)]' : 'text-[clamp(0.75rem,1.5vw,1.25rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold text-cyan-300 leading-[1.1] shadow-md shadow-blue-900/50 ${isTVMode ? 'text-[clamp(0.65rem,1.35vw,1.15rem)]' : 'text-[clamp(0.75rem,1.5vw,1.25rem)]'}`}>
                       {group.nhom}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                       {group.ldLayout !== 0 ? group.ldLayout : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                       {group.thucTe !== 0 ? (
                         <>
                           {group.thucTe}
                           {ldDiff !== 0 && (
-                            <span className={`ml-1 ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.75rem,1.4vw,1.125rem)]'} font-bold ${ldDiff > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                            <span className={`ml-1 ${isTVMode ? 'text-[clamp(0.6rem,1.25vw,1.05rem)]' : 'text-[clamp(0.75rem,1.4vw,1.125rem)]'} font-bold ${ldDiff > 0 ? 'text-green-500' : 'text-red-500'}`}>
                               ({ldDiff > 0 ? '+' : ''}{ldDiff})
                             </span>
                           )}
                         </>
                       ) : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                       {group.keHoach !== 0 ? group.keHoach : ''}
                     </td>
                     {/* Hourly data with color based on performance */}
@@ -540,7 +540,7 @@ export default function TVDisplayQSL({
                         return (
                           <td
                             key={key}
-                            className={`border border-slate-600 px-0.5 py-0 text-center font-bold bg-slate-700/30 text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}
+                            className={`border border-slate-600 px-0.5 py-0 text-center font-bold bg-slate-700/30 text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}
                           >
                           </td>
                         );
@@ -552,7 +552,7 @@ export default function TVDisplayQSL({
                           key={key}
                           className={getFlashClass(
                             `${team.tenTo}-${group.nhom}-${key}`,
-                            `border border-slate-600 px-0.5 py-0 text-center font-bold ${hourColor.bgColor} ${hourColor.textColor} transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`
+                            `border border-slate-600 px-0.5 py-0 text-center font-bold ${hourColor.bgColor} ${hourColor.textColor} transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`
                           )}
                         >
                           {value}
@@ -561,18 +561,18 @@ export default function TVDisplayQSL({
                     })}
                     {/* Summary */}
 
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                       {group.luyKeKeHoach !== 0 ? group.luyKeKeHoach : ''}
                     </td>
                     <td
                       className={getFlashClass(
                         `${team.tenTo}-${group.nhom}-luyKeThucHien`,
-                        `border border-slate-600 px-0.5 py-0 text-center font-bold text-white transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`
+                        `border border-slate-600 px-0.5 py-0 text-center font-bold text-white transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`
                       )}
                     >
                       {group.luyKeThucHien !== 0 ? group.luyKeThucHien : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.45vw,1.25rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                       {luyKeDiff !== 0 && (
                         <span className={luyKeDiff > 0 ? 'text-green-500' : 'text-red-500'}>
                           {luyKeDiff > 0 ? '+' : ''}{luyKeDiff}
@@ -582,7 +582,7 @@ export default function TVDisplayQSL({
                     <td
                       className={getFlashClass(
                         `${team.tenTo}-${group.nhom}-percentHT`,
-                        `border border-slate-600 px-0.5 py-0 text-center font-black ${percentColor.bgColor} ${percentColor.textColor} transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.85rem,1.7vw,1.5rem)]' : 'text-[clamp(1rem,1.8vw,1.5rem)]'}`
+                        `border border-slate-600 px-0.5 py-0 text-center font-black ${percentColor.bgColor} ${percentColor.textColor} transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.8rem,1.65vw,1.45rem)]' : 'text-[clamp(1rem,1.8vw,1.5rem)]'}`
                       )}
                     >
                       {group.percentHT}%
