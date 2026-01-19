@@ -367,17 +367,17 @@ export default function TVDisplayQSL({
             {/* Team Header Row - aligned with table columns, no borders */}
             <thead>
               <tr className="bg-slate-800/50">
-                <th className="px-0.5 py-0 text-left font-black text-white text-[clamp(1rem,2.5vw,2rem)] w-[10%]">
+                <th className="px-0.5 py-0 text-left font-black text-white text-[clamp(0.75rem,1.8vw,1.5rem)] w-[10%]">
                   {team.tenTo}
                 </th>
                 <th className="px-0.5 py-0 text-center w-[5%]">
-                  <div className="flex items-center justify-center bg-blue-600/80 px-2 rounded">
-                    <span className="text-[clamp(1rem,2.5vw,2rem)] font-black text-yellow-300">{teamLdLayout}</span>
+                  <div className="flex items-center justify-center bg-blue-600/80 px-1 rounded">
+                    <span className="text-[clamp(0.75rem,1.8vw,1.5rem)] font-black text-yellow-300">{teamLdLayout}</span>
                   </div>
                 </th>
                 <th className="px-0.5 py-0 text-center w-[5%]">
-                  <div className="flex items-center justify-center bg-green-600/80 px-2 rounded">
-                    <span className="text-[clamp(1rem,2.5vw,2rem)] font-black text-yellow-300">{teamLdThucTe}</span>
+                  <div className="flex items-center justify-center bg-green-600/80 px-1 rounded">
+                    <span className="text-[clamp(0.75rem,1.8vw,1.5rem)] font-black text-yellow-300">{teamLdThucTe}</span>
                   </div>
                 </th>
                 <th className="px-0.5 py-0 w-[5%]"></th>
@@ -396,8 +396,8 @@ export default function TVDisplayQSL({
                 <th className="px-0.5 py-0 w-[7%]"></th>
                 <th className="px-0.5 py-0 w-[4%]"></th>
                 <th className="px-0.5 py-0 text-center w-[7.5%]">
-                  <span className="text-[clamp(0.875rem,2vw,1.75rem)] font-semibold text-slate-300">TGLV: </span>
-                  <span className="text-[clamp(1rem,2.5vw,2rem)] font-bold text-white">{team.tglv}</span>
+                  <span className="text-[clamp(0.7rem,1.5vw,1.25rem)] font-semibold text-slate-300">TGLV: </span>
+                  <span className="text-[clamp(0.75rem,1.8vw,1.5rem)] font-bold text-white">{team.tglv}</span>
                 </th>
               </tr>
             </thead>
@@ -588,31 +588,31 @@ export default function TVDisplayQSL({
   return (
     <div className="h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 p-0.5 flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="mb-0.5 shrink-0">
-        <div className="flex items-center justify-between mb-0.5">
+      <div className="mb-0 shrink-0">
+        <div className="flex items-center justify-between mb-0">
           {/* Logo */}
-          <Image src="/logo.png" alt="Logo" width={100} height={60} className="h-[clamp(1.5rem,4vw,3rem)] w-auto object-contain" priority />
+          <Image src="/logo.png" alt="Logo" width={80} height={48} className="h-[clamp(1.2rem,3vw,2.5rem)] w-auto object-contain" priority />
 
           {/* Title */}
-          <h1 className="text-[clamp(1rem,2.5vw,2rem)] font-black text-white text-center flex-1 leading-tight px-2">
+          <h1 className="text-[clamp(0.75rem,1.8vw,1.5rem)] font-black text-white text-center flex-1 leading-tight px-1">
             TIVI SẢN LƯỢNG NHÓM LINE {line} - {currentSlide.slideLabel}
           </h1>
 
           {/* Time */}
-          <div className="text-right flex flex-col items-end gap-1">
-            <div className="text-[clamp(1.25rem,3vw,2.5rem)] font-black text-white leading-tight">{formattedTime}</div>
+          <div className="text-right flex flex-col items-end gap-0">
+            <div className="text-[clamp(1rem,2.2vw,2rem)] font-black text-white leading-tight">{formattedTime}</div>
           </div>
         </div>
 
         {/* Slide indicator for slideshow mode */}
         {slides.length > 1 && (
-          <div className="flex justify-center gap-1.5">
+          <div className="flex justify-center gap-1 mt-0">
             {slides.map((_, idx) => (
               <div
                 key={idx}
-                className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentSlideIndex
-                  ? 'w-8 bg-yellow-500'
-                  : 'w-1.5 bg-slate-600'
+                className={`h-1 rounded-full transition-all duration-300 ${idx === currentSlideIndex
+                  ? 'w-6 bg-yellow-500'
+                  : 'w-1 bg-slate-600'
                   }`}
               />
             ))}
