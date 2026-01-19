@@ -389,21 +389,21 @@ export default function TVDisplayQSL({
             <thead>
               <tr className="bg-slate-800/50">
                 <th className="px-0 py-1 text-left w-[10%]">
-                  <div className="flex items-center justify-center bg-cyan-500/10 border-2 border-cyan-400/60 px-1 py-0.5 rounded shadow-lg shadow-cyan-500/20 h-full overflow-hidden">
-                    <span className={`font-black text-cyan-300 truncate ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.9rem,2vw,1.8rem)]'}`}>{team.tenTo}</span>
+                  <div className="flex items-center justify-center bg-cyan-500/10 border-2 border-cyan-400/60 px-2 py-1 rounded shadow-lg shadow-cyan-500/20 h-full overflow-hidden">
+                    <span className={`font-black text-cyan-300 truncate ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.85rem,1.9vw,1.7rem)]'}`}>{team.tenTo}</span>
                   </div>
                 </th>
-                <th className="px-0 py-1 text-center w-[6%]">
-                  <div className="flex items-center justify-center bg-cyan-500/10 border-2 border-cyan-400/60 px-1 py-0.5 rounded shadow-lg shadow-cyan-500/20 h-full">
-                    <span className={`font-black text-cyan-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.9rem,2vw,1.8rem)]'}`}>{teamLdLayout}</span>
+                <th className="px-0 py-1 text-center w-[7%]">
+                  <div className="flex items-center justify-center bg-cyan-500/10 border-2 border-cyan-400/60 px-2 py-1 rounded shadow-lg shadow-cyan-500/20 h-full">
+                    <span className={`font-black text-cyan-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.85rem,1.9vw,1.7rem)]'}`}>{teamLdLayout}</span>
                   </div>
                 </th>
-                <th className="px-0 py-1 text-center w-[6%]">
-                  <div className="flex items-center justify-center bg-cyan-500/10 border-2 border-cyan-400/60 px-1 py-0.5 rounded shadow-lg shadow-cyan-500/20 h-full">
-                    <span className={`font-black text-cyan-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.9rem,2vw,1.8rem)]'}`}>
+                <th className="px-0 py-1 text-center w-[7%]">
+                  <div className="flex items-center justify-center bg-cyan-500/10 border-2 border-cyan-400/60 px-2 py-1 rounded shadow-lg shadow-cyan-500/20 h-full">
+                    <span className={`font-black text-cyan-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.85rem,1.9vw,1.7rem)]'}`}>
                       {teamLdThucTe}
                       {teamLdDiff !== 0 && (
-                        <span className={`ml-0.5 ${isTVMode ? 'text-[clamp(0.6rem,1.3vw,1.1rem)]' : 'text-[clamp(0.75rem,1.6vw,1.4rem)]'} font-bold ${teamLdDiff > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        <span className={`ml-0.5 ${isTVMode ? 'text-[clamp(0.6rem,1.3vw,1.1rem)]' : 'text-[clamp(0.7rem,1.5vw,1.3rem)]'} font-bold ${teamLdDiff > 0 ? 'text-green-400' : 'text-red-400'}`}>
                           ({teamLdDiff > 0 ? '+' : ''}{teamLdDiff})
                         </span>
                       )}
@@ -411,13 +411,13 @@ export default function TVDisplayQSL({
                   </div>
                 </th>
                 <th className="px-0 py-1 w-[5%]">
-                  <div className="flex items-center justify-center bg-cyan-500/10 border-2 border-cyan-400/60 px-1 py-0.5 rounded shadow-lg shadow-cyan-500/20 h-full">
-                    <span className={`font-black text-cyan-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.9rem,2vw,1.8rem)]'}`}>TGLV</span>
+                  <div className="flex items-center justify-center bg-cyan-500/10 border-2 border-cyan-400/60 px-2 py-1 rounded shadow-lg shadow-cyan-500/20 h-full">
+                    <span className={`font-black text-cyan-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.85rem,1.9vw,1.7rem)]'}`}>TGLV</span>
                   </div>
                 </th>
                 <th className="px-0 py-1 w-[4.5%]">
-                  <div className="flex items-center justify-center bg-cyan-500/10 border-2 border-cyan-400/60 px-1 py-0.5 rounded shadow-lg shadow-cyan-500/20 h-full">
-                    <span className={`font-black text-cyan-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.9rem,2vw,1.8rem)]'}`}>{team.tglv}</span>
+                  <div className="flex items-center justify-center bg-cyan-500/10 border-2 border-cyan-400/60 px-2 py-1 rounded shadow-lg shadow-cyan-500/20 h-full">
+                    <span className={`font-black text-cyan-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.85rem,1.9vw,1.7rem)]'}`}>{team.tglv}</span>
                   </div>
                 </th>
                 <th className="px-0.5 py-0 w-[4.5%]"></th>
@@ -445,10 +445,10 @@ export default function TVDisplayQSL({
                 <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[10%] leading-[1] ${isTVMode ? 'text-[clamp(0.6rem,1.15vw,0.95rem)]' : 'text-[clamp(0.8rem,1.7vw,1.4rem)]'}`}>
                   NHÓM
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[6%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[7%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   LĐ LAYOUT
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[6%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[7%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   THỰC TẾ
                 </th>
                 <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[5.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
@@ -496,7 +496,7 @@ export default function TVDisplayQSL({
                 <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[3.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   +/- LK
                 </th>
-                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[3.5%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[3%] leading-[1] ${isTVMode ? 'text-[clamp(0.55rem,1.05vw,0.85rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                   %HT
                 </th>
               </tr>
@@ -573,7 +573,8 @@ export default function TVDisplayQSL({
                           key={key}
                           className={getFlashClass(
                             `${team.tenTo}-${group.nhom}-${key}`,
-                            `border border-slate-600 px-0.5 py-0 text-center font-bold ${isQCGroup ? 'ring-2 ring-inset ring-cyan-400/40' : ''} ${hourColor.bgColor} ${hourColor.textColor} transition-colors duration-300 leading-[1] ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`
+                            // `border border-slate-600 px-0.5 py-0 text-center font-bold ${isQCGroup ? 'ring-2 ring-inset ring-cyan-400/40' : ''} ${hourColor.bgColor} ${hourColor.textColor} transition-colors duration-300 leading-[1] ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`
+                            `border border-slate-600 px-0.5 py-0 text-center font-bold ${isQCGroup ? 'ring-inset ring-cyan-400/40' : ''} ${hourColor.bgColor} ${hourColor.textColor} transition-colors duration-300 leading-[1] ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`
                           )}
                         >
                           {value}
