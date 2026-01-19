@@ -38,6 +38,30 @@ export default function TVDisplayQSL({
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [countdown, setCountdown] = useState(30);
 
+  // Screen dimensions detection
+  const [screenInfo, setScreenInfo] = useState<{
+    width: number;
+    height: number;
+    screenWidth: number;
+    screenHeight: number;
+    devicePixelRatio: number;
+  } | null>(null);
+
+  useEffect(() => {
+    const updateScreenInfo = () => {
+      setScreenInfo({
+        width: window.innerWidth,
+        height: window.innerHeight,
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        devicePixelRatio: window.devicePixelRatio,
+      });
+    };
+    updateScreenInfo();
+    window.addEventListener('resize', updateScreenInfo);
+    return () => window.removeEventListener('resize', updateScreenInfo);
+  }, []);
+
   // Helper function to check if time slot should be displayed
   const shouldShowTimeSlot = (timeSlot: string): boolean => {
     const timeMap: { [key: string]: { hour: number; minute: number } } = {
@@ -367,17 +391,17 @@ export default function TVDisplayQSL({
             {/* Team Header Row - aligned with table columns, no borders */}
             <thead>
               <tr className="bg-slate-800/50">
-                <th className="px-0.5 py-0 text-left font-black text-white text-[clamp(0.75rem,1.8vw,1.5rem)] w-[10%]">
+                <th className="px-0.5 py-0 text-left font-black text-white text-[clamp(0.6rem,1.3vw,1.1rem)] w-[10%]">
                   {team.tenTo}
                 </th>
                 <th className="px-0.5 py-0 text-center w-[5%]">
-                  <div className="flex items-center justify-center bg-blue-600/80 px-1 rounded">
-                    <span className="text-[clamp(0.75rem,1.8vw,1.5rem)] font-black text-yellow-300">{teamLdLayout}</span>
+                  <div className="flex items-center justify-center bg-blue-600/80 px-0.5 rounded">
+                    <span className="text-[clamp(0.6rem,1.3vw,1.1rem)] font-black text-yellow-300">{teamLdLayout}</span>
                   </div>
                 </th>
                 <th className="px-0.5 py-0 text-center w-[5%]">
-                  <div className="flex items-center justify-center bg-green-600/80 px-1 rounded">
-                    <span className="text-[clamp(0.75rem,1.8vw,1.5rem)] font-black text-yellow-300">{teamLdThucTe}</span>
+                  <div className="flex items-center justify-center bg-green-600/80 px-0.5 rounded">
+                    <span className="text-[clamp(0.6rem,1.3vw,1.1rem)] font-black text-yellow-300">{teamLdThucTe}</span>
                   </div>
                 </th>
                 <th className="px-0.5 py-0 w-[5%]"></th>
@@ -396,69 +420,69 @@ export default function TVDisplayQSL({
                 <th className="px-0.5 py-0 w-[7%]"></th>
                 <th className="px-0.5 py-0 w-[4%]"></th>
                 <th className="px-0.5 py-0 text-center w-[7.5%]">
-                  <span className="text-[clamp(0.7rem,1.5vw,1.25rem)] font-semibold text-slate-300">TGLV: </span>
-                  <span className="text-[clamp(0.75rem,1.8vw,1.5rem)] font-bold text-white">{team.tglv}</span>
+                  <span className="text-[clamp(0.6rem,1.2vw,1rem)] font-semibold text-slate-300">TGLV: </span>
+                  <span className="text-[clamp(0.6rem,1.3vw,1.1rem)] font-bold text-white">{team.tglv}</span>
                 </th>
               </tr>
             </thead>
             {/* Header */}
             <thead>
               <tr className="bg-yellow-500">
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.875rem,1.6vw,1.375rem)] w-[10%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.65rem,1.2vw,1rem)] w-[10%]">
                   NHÓM
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[5%]">
                   LĐ LAYOUT
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[5%]">
                   THỰC TẾ
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[5.5%]">
                   KẾ HOẠCH
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[4.5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
                   8H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[4.5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
                   9H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[4.5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
                   10H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[4.5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
                   11H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[4.5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
                   13H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[4.5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
                   14H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[4.5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
                   15H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[4.5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
                   16H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[4.5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
                   18H
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[4.5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
                   19H
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[4.5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
                   20H
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[7%]">
-                  LK KẾ HOẠCH
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[7%]">
+                  LKKH
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[7%]">
-                  LK THỰC HIỆN
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[7%]">
+                  LKTH
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[4%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[3.5%]">
                   +/- LK
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0.5 text-center font-black text-slate-900 text-[clamp(0.75rem,1.4vw,1.25rem)] w-[7.5%]">
+                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[5.5%]">
                   %HT
                 </th>
               </tr>
@@ -586,7 +610,16 @@ export default function TVDisplayQSL({
   }
 
   return (
-    <div className="h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 p-0.5 flex flex-col overflow-hidden">
+    <div className="h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 p-0.5 flex flex-col overflow-hidden relative">
+      {/* Screen Info Debug - Top Right */}
+      {screenInfo && (
+        <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-[10px] z-50 font-mono">
+          <div>Window: {screenInfo.width} × {screenInfo.height}</div>
+          <div>Screen: {screenInfo.screenWidth} × {screenInfo.screenHeight}</div>
+          <div>DPR: {screenInfo.devicePixelRatio}</div>
+          <div>Physical: {Math.round(screenInfo.screenWidth * screenInfo.devicePixelRatio)} × {Math.round(screenInfo.screenHeight * screenInfo.devicePixelRatio)}</div>
+        </div>
+      )}
       {/* Header */}
       <div className="mb-0 shrink-0">
         <div className="flex items-center justify-between mb-0">
