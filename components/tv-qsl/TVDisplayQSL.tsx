@@ -51,7 +51,7 @@ export default function TVDisplayQSL({
       // Auto-detect via media query for small screens (TV scaled mode)
       const mediaQuery = window.matchMedia('(max-width: 1000px)');
       setIsTVMode(mediaQuery.matches);
-      
+
       const handler = (e: MediaQueryListEvent) => setIsTVMode(e.matches);
       mediaQuery.addEventListener('change', handler);
       return () => mediaQuery.removeEventListener('change', handler);
@@ -128,7 +128,7 @@ export default function TVDisplayQSL({
     data.teams.forEach((team) => {
       const totalGroups = [...team.fixedGroups, ...team.tuiNhoGroups];
       const hasTuiNho = team.tuiNhoGroups.length > 0;
-      
+
       // If total rows ≤ 9 and no tuiNho, display all in one slide
       if (totalGroups.length <= MAX_ROWS_PER_SLIDE && !hasTuiNho) {
         allSlides.push({
@@ -146,7 +146,7 @@ export default function TVDisplayQSL({
       }
 
       fixedGroupChunks.forEach((chunk, index) => {
-        const label = fixedGroupChunks.length > 1 
+        const label = fixedGroupChunks.length > 1
           ? `${team.tenTo} (${index + 1}/${fixedGroupChunks.length})`
           : team.tenTo;
         allSlides.push({
@@ -188,16 +188,16 @@ export default function TVDisplayQSL({
     if (!currentSlide || currentSlide.teams.length === 0) {
       return { totalLdLayout: 0, totalLdThucTe: 0, tglv: 0 };
     }
-    
+
     let totalLdLayout = 0;
     let totalLdThucTe = 0;
     const tglv = currentSlide.teams[0].team.tglv; // Use first team's TGLV
-    
+
     currentSlide.teams.forEach(({ groups }) => {
       totalLdLayout += groups.reduce((sum, group) => sum + group.ldLayout, 0);
       totalLdThucTe += groups.reduce((sum, group) => sum + group.thucTe, 0);
     });
-    
+
     return { totalLdLayout, totalLdThucTe, tglv };
   }, [currentSlide]);
 
@@ -374,7 +374,7 @@ export default function TVDisplayQSL({
   // Render team table for current slide
   const renderTeamTable = (teamData: { team: QSLTeam; groups: QSLGroup[] }) => {
     const { team, groups } = teamData;
-    
+
     // Calculate SUM for this team's groups only
     const teamLdLayout = groups.reduce((sum, group) => sum + group.ldLayout, 0);
     const teamLdThucTe = groups.reduce((sum, group) => sum + group.thucTe, 0);
@@ -387,17 +387,17 @@ export default function TVDisplayQSL({
             {/* Team Header Row - aligned with table columns, no borders */}
             <thead>
               <tr className="bg-slate-800/50">
-                <th className={`px-0.5 py-0 text-left font-black text-white w-[10%] ${isTVMode ? 'text-[clamp(0.6rem,1.3vw,1.1rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>
+                <th className={`px-0.5 py-0 text-left font-black text-white w-[10%] ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>
                   {team.tenTo}
                 </th>
                 <th className="px-0.5 py-0 text-center w-[5%]">
                   <div className="flex items-center justify-center bg-blue-600/80 px-0.5 rounded">
-                    <span className={`font-black text-yellow-300 ${isTVMode ? 'text-[clamp(0.6rem,1.3vw,1.1rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>{teamLdLayout}</span>
+                    <span className={`font-black text-yellow-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>{teamLdLayout}</span>
                   </div>
                 </th>
                 <th className="px-0.5 py-0 text-center w-[5%]">
                   <div className="flex items-center justify-center bg-green-600/80 px-0.5 rounded">
-                    <span className={`font-black text-yellow-300 ${isTVMode ? 'text-[clamp(0.6rem,1.3vw,1.1rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>{teamLdThucTe}</span>
+                    <span className={`font-black text-yellow-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>{teamLdThucTe}</span>
                   </div>
                 </th>
                 <th className="px-0.5 py-0 w-[5%]"></th>
@@ -416,8 +416,8 @@ export default function TVDisplayQSL({
                 <th className="px-0.5 py-0 w-[7%]"></th>
                 <th className="px-0.5 py-0 w-[4%]"></th>
                 <th className="px-0.5 py-0 text-center w-[7.5%]">
-                  <span className={`font-semibold text-slate-300 ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.8vw,1.5rem)]'}`}>TGLV: </span>
-                  <span className={`font-bold text-white ${isTVMode ? 'text-[clamp(0.6rem,1.3vw,1.1rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>{team.tglv}</span>
+                  <span className={`font-semibold text-slate-300 ${isTVMode ? 'text-[clamp(0.7rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.8vw,1.5rem)]'}`}>TGLV: </span>
+                  <span className={`font-bold text-white ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>{team.tglv}</span>
                 </th>
               </tr>
             </thead>
@@ -511,25 +511,25 @@ export default function TVDisplayQSL({
                     key={groupIdx}
                     className={groupIdx % 2 === 0 ? "bg-slate-700/20" : "bg-slate-800/20"}
                   >
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold text-cyan-300 leading-[1.1] shadow-md shadow-blue-900/50 ${isTVMode ? 'text-[clamp(0.55rem,1.1vw,0.9rem)]' : 'text-[clamp(0.75rem,1.5vw,1.25rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold text-cyan-300 leading-[1.1] shadow-md shadow-blue-900/50 ${isTVMode ? 'text-[clamp(0.7rem,1.4vw,1.2rem)]' : 'text-[clamp(0.75rem,1.5vw,1.25rem)]'}`}>
                       {group.nhom}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                       {group.ldLayout !== 0 ? group.ldLayout : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                       {group.thucTe !== 0 ? (
                         <>
                           {group.thucTe}
                           {ldDiff !== 0 && (
-                            <span className={`ml-1 ${isTVMode ? 'text-[clamp(0.55rem,1vw,0.85rem)]' : 'text-[clamp(0.75rem,1.4vw,1.125rem)]'} font-bold ${ldDiff > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                            <span className={`ml-1 ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.75rem,1.4vw,1.125rem)]'} font-bold ${ldDiff > 0 ? 'text-green-500' : 'text-red-500'}`}>
                               ({ldDiff > 0 ? '+' : ''}{ldDiff})
                             </span>
                           )}
                         </>
                       ) : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                       {group.keHoach !== 0 ? group.keHoach : ''}
                     </td>
                     {/* Hourly data with color based on performance */}
@@ -540,7 +540,7 @@ export default function TVDisplayQSL({
                         return (
                           <td
                             key={key}
-                            className={`border border-slate-600 px-0.5 py-0 text-center font-bold bg-slate-700/30 text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}
+                            className={`border border-slate-600 px-0.5 py-0 text-center font-bold bg-slate-700/30 text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}
                           >
                           </td>
                         );
@@ -552,7 +552,7 @@ export default function TVDisplayQSL({
                           key={key}
                           className={getFlashClass(
                             `${team.tenTo}-${group.nhom}-${key}`,
-                            `border border-slate-600 px-0.5 py-0 text-center font-bold ${hourColor.bgColor} ${hourColor.textColor} transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`
+                            `border border-slate-600 px-0.5 py-0 text-center font-bold ${hourColor.bgColor} ${hourColor.textColor} transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`
                           )}
                         >
                           {value}
@@ -561,18 +561,18 @@ export default function TVDisplayQSL({
                     })}
                     {/* Summary */}
 
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                       {group.luyKeKeHoach !== 0 ? group.luyKeKeHoach : ''}
                     </td>
                     <td
                       className={getFlashClass(
                         `${team.tenTo}-${group.nhom}-luyKeThucHien`,
-                        `border border-slate-600 px-0.5 py-0 text-center font-bold text-white transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`
+                        `border border-slate-600 px-0.5 py-0 text-center font-bold text-white transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`
                       )}
                     >
                       {group.luyKeThucHien !== 0 ? group.luyKeThucHien : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1.1] ${isTVMode ? 'text-[clamp(0.75rem,1.5vw,1.3rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                       {luyKeDiff !== 0 && (
                         <span className={luyKeDiff > 0 ? 'text-green-500' : 'text-red-500'}>
                           {luyKeDiff > 0 ? '+' : ''}{luyKeDiff}
@@ -582,7 +582,7 @@ export default function TVDisplayQSL({
                     <td
                       className={getFlashClass(
                         `${team.tenTo}-${group.nhom}-percentHT`,
-                        `border border-slate-600 px-0.5 py-0 text-center font-black ${percentColor.bgColor} ${percentColor.textColor} transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.3vw,1.1rem)]' : 'text-[clamp(1rem,1.8vw,1.5rem)]'}`
+                        `border border-slate-600 px-0.5 py-0 text-center font-black ${percentColor.bgColor} ${percentColor.textColor} transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.85rem,1.7vw,1.5rem)]' : 'text-[clamp(1rem,1.8vw,1.5rem)]'}`
                       )}
                     >
                       {group.percentHT}%
@@ -621,63 +621,73 @@ export default function TVDisplayQSL({
       <div className="mb-0 shrink-0">
         <div className="flex items-center justify-between mb-0">
           {/* Logo */}
-          <Image 
-            src="/logo.png" 
-            alt="Logo" 
-            width={isTVMode ? 80 : 100} 
-            height={isTVMode ? 48 : 60} 
+          <div
+            className="relative bg-white/95 rounded backdrop-blur-sm shadow-lg flex items-center justify-center flex-shrink-0"
+            style={{
+              width: isTVMode ? 'clamp(2rem,5vw,4rem)' : 'clamp(3rem,6vw,5rem)',
+              height: isTVMode ? 'clamp(1.2rem,3vw,2.5rem)' : 'clamp(2rem,4vw,3.5rem)',
+              aspectRatio: "1",
+            }}
+          >
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={isTVMode ? 80 : 100}
+            height={isTVMode ? 48 : 60}
             className={`w-auto object-contain ${isTVMode ? 'h-[clamp(1.2rem,3vw,2.5rem)]' : 'h-[clamp(2rem,4vw,3.5rem)]'}`}
-            priority 
+            priority
           />
-
-          {/* Title */}
-          <h1 className={`font-black text-white text-center flex-1 leading-tight px-1 ${isTVMode ? 'text-[clamp(0.75rem,1.8vw,1.5rem)]' : 'text-[clamp(1.25rem,2.5vw,2.25rem)]'}`}>
-            TIVI SẢN LƯỢNG NHÓM LINE {line} - {currentSlide.slideLabel}
-          </h1>
-
-          {/* Time */}
-          <div className="text-right flex flex-col items-end gap-0">
-            <div className={`font-black text-white leading-tight ${isTVMode ? 'text-[clamp(1rem,2.2vw,2rem)]' : 'text-[clamp(1.5rem,3vw,2.75rem)]'}`}>{formattedTime}</div>
-          </div>
         </div>
+        {/* Title */}
+        <h1 className={`font-black text-white text-center flex-1 leading-tight px-1 ${isTVMode ? 'text-[clamp(0.75rem,1.8vw,1.5rem)]' : 'text-[clamp(1.25rem,2.5vw,2.25rem)]'}`}>
+          TIVI SẢN LƯỢNG NHÓM LINE {line} - {currentSlide.slideLabel}
+        </h1>
 
-        {/* Slide indicator for slideshow mode */}
-        {slides.length > 1 && (
-          <div className="flex justify-center gap-1 mt-0">
-            {slides.map((_, idx) => (
-              <div
-                key={idx}
-                className={`h-1 rounded-full transition-all duration-300 ${idx === currentSlideIndex
-                  ? 'w-6 bg-yellow-500'
-                  : 'w-1 bg-slate-600'
-                  }`}
-              />
-            ))}
-          </div>
-        )}
+        {/* Time */}
+        <div className="text-right flex flex-col items-end gap-0">
+          <div className={`font-black text-white leading-tight ${isTVMode ? 'text-[clamp(1rem,2.2vw,2rem)]' : 'text-[clamp(1.5rem,3vw,2.75rem)]'}`}>{formattedTime}</div>
+        </div>
       </div>
 
-      {/* Teams Grid - No scroll, fit to screen with max height */}
-      <div className="flex-1 flex flex-col gap-0.5 min-h-0 overflow-hidden">
-        {currentSlide.teams.map((teamData, idx) => (
-          <div key={idx} className="flex-1 overflow-hidden flex flex-col">
-            {renderTeamTable(teamData)}
-          </div>
-        ))}
-      </div>
-
-      {/* Slide transition notification - show in last 5 seconds */}
-      {slides.length > 1 && countdown <= 5 && (
-        <div className="absolute bottom-4 right-4 bg-linear-to-r from-yellow-400 to-orange-500 text-slate-900 px-6 py-3 rounded-lg shadow-2xl border-2 border-yellow-300">
-          <div className="text-[clamp(1rem,1.8vw,1.5rem)] font-black flex items-center gap-2">
-            <span>Chuyển sang</span>
-            <span className="text-red-600 bg-white px-3 py-1 rounded-md shadow-inner">
-              {slides[(currentSlideIndex + 1) % slides.length].slideLabel}
-            </span>
-            <span>sau {countdown}s</span>
-          </div>
+      {/* Slide indicator for slideshow mode */}
+      {slides.length > 1 && (
+        <div className="flex justify-center gap-1 mt-0">
+          {slides.map((_, idx) => (
+            <div
+              key={idx}
+              className={`h-1 rounded-full transition-all duration-300 ${idx === currentSlideIndex
+                ? 'w-6 bg-yellow-500'
+                : 'w-1 bg-slate-600'
+                }`}
+            />
+          ))}
         </div>
       )}
     </div>
+
+      {/* Teams Grid - No scroll, fit to screen with max height */ }
+  <div className="flex-1 flex flex-col gap-0.5 min-h-0 overflow-hidden">
+    {currentSlide.teams.map((teamData, idx) => (
+      <div key={idx} className="flex-1 overflow-hidden flex flex-col">
+        {renderTeamTable(teamData)}
+      </div>
+    ))}
+  </div>
+
+  {/* Slide transition notification - show in last 5 seconds */ }
+  {
+    slides.length > 1 && countdown <= 5 && (
+      <div className="absolute bottom-4 right-4 bg-linear-to-r from-yellow-400 to-orange-500 text-slate-900 px-6 py-3 rounded-lg shadow-2xl border-2 border-yellow-300">
+        <div className="text-[clamp(1rem,1.8vw,1.5rem)] font-black flex items-center gap-2">
+          <span>Chuyển sang</span>
+          <span className="text-red-600 bg-white px-3 py-1 rounded-md shadow-inner">
+            {slides[(currentSlideIndex + 1) % slides.length].slideLabel}
+          </span>
+          <span>sau {countdown}s</span>
+        </div>
+      </div>
+    )
+  }
+    </div >
   );
 }
