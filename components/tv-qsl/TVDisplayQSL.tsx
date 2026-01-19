@@ -389,16 +389,16 @@ export default function TVDisplayQSL({
             <thead>
               <tr className="bg-slate-800/50">
                 <th className="px-0 py-1 text-left w-[10%]">
-                  <div className="flex items-center justify-center bg-cyan-500/10 border-cyan-400/60 px-2 py-1 rounded shadow-lg shadow-cyan-500/20 h-full overflow-hidden">
+                  <div className="flex items-center justify-center bg-cyan-500/10 border-cyan-400/60 px-2 py-1 rounded shadow-lg shadow-cyan-500/20 h-full">
                     <span className={`font-black text-cyan-300 truncate ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.85rem,1.9vw,1.7rem)]'}`}>{team.tenTo}</span>
                   </div>
                 </th>
-                <th className="px-0 py-1 text-center w-[7%]">
+                <th className="px-0 text-center w-[7%]">
                   <div className="flex items-center justify-center bg-cyan-500/10 border-1 border-cyan-400/60 px-2 py-1 rounded shadow-lg shadow-cyan-500/20 h-full">
                     <span className={`font-black text-cyan-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.85rem,1.9vw,1.7rem)]'}`}>{teamLdLayout}</span>
                   </div>
                 </th>
-                <th className="px-0 py-1 text-center w-[7%]">
+                <th className="px-0 text-center w-[7%]">
                   <div className="flex items-center justify-center bg-cyan-500/10 border-1 border-cyan-400/60 px-2 py-1 rounded shadow-lg shadow-cyan-500/20 h-full">
                     <span className={`font-black text-cyan-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.85rem,1.9vw,1.7rem)]'}`}>
                       {teamLdThucTe}
@@ -415,7 +415,7 @@ export default function TVDisplayQSL({
                     <span className={`font-black text-cyan-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.85rem,1.9vw,1.7rem)]'}`}>TGLV</span>
                   </div>
                 </th>
-                <th className="px-0 py-1 w-[4.5%]">
+                <th className="px-0 w-[4.5%]">
                   <div className="flex items-center justify-center bg-cyan-500/10 border-1 border-cyan-400/60 px-2 py-1 rounded shadow-lg shadow-cyan-500/20 h-full">
                     <span className={`font-black text-cyan-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.85rem,1.9vw,1.7rem)]'}`}>{team.tglv}</span>
                   </div>
