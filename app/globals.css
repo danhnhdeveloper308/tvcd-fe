@@ -840,6 +840,22 @@ box-shadow:
 }
 
 /* TV-specific optimizations for different screen sizes */
+/* ==================== TV DENSE MODE (via ?tvmode=1 or auto-detect) ==================== */
+.tv-dense {
+  font-size: 0.85rem;
+}
+
+.tv-dense table {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.tv-dense table td,
+.tv-dense table th {
+  line-height: 1.1 !important;
+  padding: 0.125rem 0.25rem !important;
+}
+
 /* Laptop screens 14-15.6 inch - up to 1920px (Full HD) */
 @media (max-width: 1919px) {
   .tv-container {
@@ -856,13 +872,11 @@ box-shadow:
   .header-cd {
     gap: 0 !important;
   }
-  /* .metric-card {
-    padding: 0.5rem !important;
-  } */
-  /* .metric-card-full-color >div {
-    padding: 0.5rem !important;
-  } */
-
+  /* Override any conflicting table styles for QSL display */
+  table td, table th {
+    line-height: inherit !important;
+    padding: inherit !important;
+  }
 }
 
 /* 24" TVs - 1920x1080 (Full HD) */
@@ -1472,3 +1486,17 @@ box-shadow:
   transition: all 0.3s ease;
 }
 
+/* Green flash for QSL data updates */
+@keyframes flash {
+  0%, 100% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(74, 222, 128, 0.4); /* green-400 with opacity */
+  }
+}
+
+.animate-flash {
+  animation: flash 2s ease-in-out;
+  transition: background-color 0.3s ease;
+}

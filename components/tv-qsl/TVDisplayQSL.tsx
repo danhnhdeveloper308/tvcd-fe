@@ -38,28 +38,24 @@ export default function TVDisplayQSL({
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [countdown, setCountdown] = useState(30);
 
-  // Screen dimensions detection
-  const [screenInfo, setScreenInfo] = useState<{
-    width: number;
-    height: number;
-    screenWidth: number;
-    screenHeight: number;
-    devicePixelRatio: number;
-  } | null>(null);
+  // TV mode detection: URL param ?tvmode=1 or CSS media query
+  const [isTVMode, setIsTVMode] = useState(false);
 
   useEffect(() => {
-    const updateScreenInfo = () => {
-      setScreenInfo({
-        width: window.innerWidth,
-        height: window.innerHeight,
-        screenWidth: window.screen.width,
-        screenHeight: window.screen.height,
-        devicePixelRatio: window.devicePixelRatio,
-      });
-    };
-    updateScreenInfo();
-    window.addEventListener('resize', updateScreenInfo);
-    return () => window.removeEventListener('resize', updateScreenInfo);
+    // Check URL parameter
+    const params = new URLSearchParams(window.location.search);
+    const tvParam = params.get('tvmode');
+    if (tvParam === '1') {
+      setIsTVMode(true);
+    } else {
+      // Auto-detect via media query for small screens (TV scaled mode)
+      const mediaQuery = window.matchMedia('(max-width: 1000px)');
+      setIsTVMode(mediaQuery.matches);
+      
+      const handler = (e: MediaQueryListEvent) => setIsTVMode(e.matches);
+      mediaQuery.addEventListener('change', handler);
+      return () => mediaQuery.removeEventListener('change', handler);
+    }
   }, []);
 
   // Helper function to check if time slot should be displayed
@@ -391,17 +387,17 @@ export default function TVDisplayQSL({
             {/* Team Header Row - aligned with table columns, no borders */}
             <thead>
               <tr className="bg-slate-800/50">
-                <th className="px-0.5 py-0 text-left font-black text-white text-[clamp(0.6rem,1.3vw,1.1rem)] w-[10%]">
+                <th className={`px-0.5 py-0 text-left font-black text-white w-[10%] ${isTVMode ? 'text-[clamp(0.6rem,1.3vw,1.1rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>
                   {team.tenTo}
                 </th>
                 <th className="px-0.5 py-0 text-center w-[5%]">
                   <div className="flex items-center justify-center bg-blue-600/80 px-0.5 rounded">
-                    <span className="text-[clamp(0.6rem,1.3vw,1.1rem)] font-black text-yellow-300">{teamLdLayout}</span>
+                    <span className={`font-black text-yellow-300 ${isTVMode ? 'text-[clamp(0.6rem,1.3vw,1.1rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>{teamLdLayout}</span>
                   </div>
                 </th>
                 <th className="px-0.5 py-0 text-center w-[5%]">
                   <div className="flex items-center justify-center bg-green-600/80 px-0.5 rounded">
-                    <span className="text-[clamp(0.6rem,1.3vw,1.1rem)] font-black text-yellow-300">{teamLdThucTe}</span>
+                    <span className={`font-black text-yellow-300 ${isTVMode ? 'text-[clamp(0.6rem,1.3vw,1.1rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>{teamLdThucTe}</span>
                   </div>
                 </th>
                 <th className="px-0.5 py-0 w-[5%]"></th>
@@ -420,69 +416,69 @@ export default function TVDisplayQSL({
                 <th className="px-0.5 py-0 w-[7%]"></th>
                 <th className="px-0.5 py-0 w-[4%]"></th>
                 <th className="px-0.5 py-0 text-center w-[7.5%]">
-                  <span className="text-[clamp(0.6rem,1.2vw,1rem)] font-semibold text-slate-300">TGLV: </span>
-                  <span className="text-[clamp(0.6rem,1.3vw,1.1rem)] font-bold text-white">{team.tglv}</span>
+                  <span className={`font-semibold text-slate-300 ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.8vw,1.5rem)]'}`}>TGLV: </span>
+                  <span className={`font-bold text-white ${isTVMode ? 'text-[clamp(0.6rem,1.3vw,1.1rem)]' : 'text-[clamp(0.875rem,2vw,1.75rem)]'}`}>{team.tglv}</span>
                 </th>
               </tr>
             </thead>
             {/* Header */}
             <thead>
               <tr className="bg-yellow-500">
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.65rem,1.2vw,1rem)] w-[10%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[10%] ${isTVMode ? 'text-[clamp(0.65rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.8vw,1.5rem)]'}`}>
                   NHÓM
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   LĐ LAYOUT
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   THỰC TẾ
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[5.5%]">
-                  KẾ HOẠCH
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[5.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                  K.HOẠCH
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   8H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   9H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   10H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   11H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   13H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   14H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   15H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   16H30
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   18H
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   19H
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[4.5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[4.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   20H
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[7%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[7%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   LKKH
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[7%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[7%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   LKTH
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[3.5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[3.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   +/- LK
                 </th>
-                <th className="border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 text-[clamp(0.6rem,1.1vw,0.95rem)] w-[5.5%]">
+                <th className={`border border-slate-600 px-0.5 py-0 text-center font-black text-slate-900 w-[5.5%] ${isTVMode ? 'text-[clamp(0.6rem,1.1vw,0.95rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                   %HT
                 </th>
               </tr>
@@ -515,21 +511,25 @@ export default function TVDisplayQSL({
                     key={groupIdx}
                     className={groupIdx % 2 === 0 ? "bg-slate-700/20" : "bg-slate-800/20"}
                   >
-                    <td className="border border-slate-600 px-0.5 py-0 text-center font-bold text-cyan-300 text-[clamp(0.625rem,1.4vw,1.125rem)] shadow-md shadow-blue-900/50">
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold text-cyan-300 leading-[1.1] shadow-md shadow-blue-900/50 ${isTVMode ? 'text-[clamp(0.55rem,1.1vw,0.9rem)]' : 'text-[clamp(0.75rem,1.5vw,1.25rem)]'}`}>
                       {group.nhom}
                     </td>
-                    <td className="border border-slate-600 px-0.5 py-0 text-center font-semibold text-white text-[clamp(0.75rem,1.5vw,1.25rem)]">
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                       {group.ldLayout !== 0 ? group.ldLayout : ''}
                     </td>
-                    <td className="border border-slate-600 px-0.5 py-0 text-center font-semibold text-white text-[clamp(0.75rem,1.5vw,1.25rem)] relative">
-                      <span>{group.thucTe !== 0 ? group.thucTe : ''}</span>
-                      {ldDiff !== 0 && (
-                        <span className={`absolute left-[calc(50%+1.5ch)] text-[clamp(0.75rem,1.5vw,1.25rem)] font-bold ${ldDiff > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                          ({ldDiff > 0 ? '+' : ''}{ldDiff})
-                        </span>
-                      )}
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
+                      {group.thucTe !== 0 ? (
+                        <>
+                          {group.thucTe}
+                          {ldDiff !== 0 && (
+                            <span className={`ml-1 ${isTVMode ? 'text-[clamp(0.55rem,1vw,0.85rem)]' : 'text-[clamp(0.75rem,1.4vw,1.125rem)]'} font-bold ${ldDiff > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                              ({ldDiff > 0 ? '+' : ''}{ldDiff})
+                            </span>
+                          )}
+                        </>
+                      ) : ''}
                     </td>
-                    <td className="border border-slate-600 px-0.5 py-0 text-center font-semibold text-white text-[clamp(0.75rem,1.5vw,1.25rem)]">
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                       {group.keHoach !== 0 ? group.keHoach : ''}
                     </td>
                     {/* Hourly data with color based on performance */}
@@ -540,7 +540,7 @@ export default function TVDisplayQSL({
                         return (
                           <td
                             key={key}
-                            className="border border-slate-600 px-0.5 py-0 text-center font-bold bg-slate-700/30 text-white text-[clamp(0.75rem,1.5vw,1.25rem)]"
+                            className={`border border-slate-600 px-0.5 py-0 text-center font-bold bg-slate-700/30 text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}
                           >
                           </td>
                         );
@@ -552,7 +552,7 @@ export default function TVDisplayQSL({
                           key={key}
                           className={getFlashClass(
                             `${team.tenTo}-${group.nhom}-${key}`,
-                            `border border-slate-600 px-0.5 py-0 text-center font-bold ${hourColor.bgColor} ${hourColor.textColor} transition-colors duration-300 text-[clamp(0.75rem,1.5vw,1.25rem)]`
+                            `border border-slate-600 px-0.5 py-0 text-center font-bold ${hourColor.bgColor} ${hourColor.textColor} transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`
                           )}
                         >
                           {value}
@@ -561,18 +561,18 @@ export default function TVDisplayQSL({
                     })}
                     {/* Summary */}
 
-                    <td className="border border-slate-600 px-0.5 py-0 text-center font-semibold text-white text-[clamp(0.75rem,1.5vw,1.25rem)]">
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold text-white leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                       {group.luyKeKeHoach !== 0 ? group.luyKeKeHoach : ''}
                     </td>
                     <td
                       className={getFlashClass(
                         `${team.tenTo}-${group.nhom}-luyKeThucHien`,
-                        "border border-slate-600 px-0.5 py-0 text-center font-bold text-white transition-colors duration-300 text-[clamp(0.75rem,1.5vw,1.25rem)]"
+                        `border border-slate-600 px-0.5 py-0 text-center font-bold text-white transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`
                       )}
                     >
                       {group.luyKeThucHien !== 0 ? group.luyKeThucHien : ''}
                     </td>
-                    <td className="border border-slate-600 px-0.5 py-0 text-center font-bold text-[clamp(0.75rem,1.5vw,1.25rem)]">
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1.1] ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.875rem,1.6vw,1.375rem)]'}`}>
                       {luyKeDiff !== 0 && (
                         <span className={luyKeDiff > 0 ? 'text-green-500' : 'text-red-500'}>
                           {luyKeDiff > 0 ? '+' : ''}{luyKeDiff}
@@ -582,7 +582,7 @@ export default function TVDisplayQSL({
                     <td
                       className={getFlashClass(
                         `${team.tenTo}-${group.nhom}-percentHT`,
-                        `border border-slate-600 px-0.5 py-0 text-center font-black ${percentColor.bgColor} ${percentColor.textColor} transition-colors duration-300 text-[clamp(0.875rem,1.6vw,1.5rem)]`
+                        `border border-slate-600 px-0.5 py-0 text-center font-black ${percentColor.bgColor} ${percentColor.textColor} transition-colors duration-300 leading-[1.1] ${isTVMode ? 'text-[clamp(0.7rem,1.3vw,1.1rem)]' : 'text-[clamp(1rem,1.8vw,1.5rem)]'}`
                       )}
                     >
                       {group.percentHT}%
@@ -610,30 +610,34 @@ export default function TVDisplayQSL({
   }
 
   return (
-    <div className="h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 p-0.5 flex flex-col overflow-hidden relative">
-      {/* Screen Info Debug - Top Right */}
-      {screenInfo && (
-        <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-[10px] z-50 font-mono">
-          <div>Window: {screenInfo.width} × {screenInfo.height}</div>
-          <div>Screen: {screenInfo.screenWidth} × {screenInfo.screenHeight}</div>
-          <div>DPR: {screenInfo.devicePixelRatio}</div>
-          <div>Physical: {Math.round(screenInfo.screenWidth * screenInfo.devicePixelRatio)} × {Math.round(screenInfo.screenHeight * screenInfo.devicePixelRatio)}</div>
+    <div className={`h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col overflow-hidden relative ${isTVMode ? 'tv-dense p-0.5' : 'p-2'}`}>
+      {/* TV Mode Indicator */}
+      {isTVMode && new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '').get('tvmode') === '1' && (
+        <div className="absolute top-2 right-2 bg-purple-900/90 text-white px-3 py-1 rounded-full text-xs z-50 font-bold border border-purple-400/50">
+          📺 TV Mode
         </div>
       )}
       {/* Header */}
       <div className="mb-0 shrink-0">
         <div className="flex items-center justify-between mb-0">
           {/* Logo */}
-          <Image src="/logo.png" alt="Logo" width={80} height={48} className="h-[clamp(1.2rem,3vw,2.5rem)] w-auto object-contain" priority />
+          <Image 
+            src="/logo.png" 
+            alt="Logo" 
+            width={isTVMode ? 80 : 100} 
+            height={isTVMode ? 48 : 60} 
+            className={`w-auto object-contain ${isTVMode ? 'h-[clamp(1.2rem,3vw,2.5rem)]' : 'h-[clamp(2rem,4vw,3.5rem)]'}`}
+            priority 
+          />
 
           {/* Title */}
-          <h1 className="text-[clamp(0.75rem,1.8vw,1.5rem)] font-black text-white text-center flex-1 leading-tight px-1">
+          <h1 className={`font-black text-white text-center flex-1 leading-tight px-1 ${isTVMode ? 'text-[clamp(0.75rem,1.8vw,1.5rem)]' : 'text-[clamp(1.25rem,2.5vw,2.25rem)]'}`}>
             TIVI SẢN LƯỢNG NHÓM LINE {line} - {currentSlide.slideLabel}
           </h1>
 
           {/* Time */}
           <div className="text-right flex flex-col items-end gap-0">
-            <div className="text-[clamp(1rem,2.2vw,2rem)] font-black text-white leading-tight">{formattedTime}</div>
+            <div className={`font-black text-white leading-tight ${isTVMode ? 'text-[clamp(1rem,2.2vw,2rem)]' : 'text-[clamp(1.5rem,3vw,2.75rem)]'}`}>{formattedTime}</div>
           </div>
         </div>
 
