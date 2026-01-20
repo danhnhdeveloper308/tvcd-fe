@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import { useQSLData } from "@/hooks/useQSLData";
 import { useTime } from "@/hooks/useTime";
@@ -60,27 +60,9 @@ export default function TVDisplayQSL({
 
   // Helper function to check if time slot should be displayed
   const shouldShowTimeSlot = (timeSlot: string): boolean => {
-    const timeMap: { [key: string]: { hour: number; minute: number } } = {
-      h8h30: { hour: 8, minute: 30 },
-      h9h30: { hour: 9, minute: 30 },
-      h10h30: { hour: 10, minute: 30 },
-      h11h30: { hour: 11, minute: 30 },
-      h13h30: { hour: 13, minute: 30 },
-      h14h30: { hour: 14, minute: 30 },
-      h15h30: { hour: 15, minute: 30 },
-      h16h30: { hour: 16, minute: 30 },
-      h18h: { hour: 18, minute: 0 },
-      h19h: { hour: 19, minute: 0 },
-      h20h: { hour: 20, minute: 0 },
-    };
-
-    const slotTime = timeMap[timeSlot];
-    if (!slotTime) return false;
-
-    // Check if current time has passed the slot time
-    if (currentHour > slotTime.hour) return true;
-    if (currentHour === slotTime.hour && currentMinute >= slotTime.minute) return true;
-    return false;
+    // After 7:00 AM, show ALL time slots (don't check if time has passed)
+    // Before 7:00 AM, hide all time slots
+    return currentHour >= 7;
   };
 
   const { data, loading, error, connected } = useQSLData({
@@ -99,20 +81,18 @@ export default function TVDisplayQSL({
     slideLabel: string; // e.g., "TỔ 7 & TỔ 8", "TỔ 7 - TÚI NHỎ (1/2)"
   }
 
-  // Create slides array with pagination (max 9 rows per slide)
+  // Create slides array - one slide per team (display all rows together)
   const slides = useMemo((): TeamSlide[] => {
     if (!data || !data.teams) return [];
 
-    const MAX_ROWS_PER_SLIDE = 9;
     const allSlides: TeamSlide[] = [];
 
-    // Check if we can display all teams together (each team ≤9 rows and no tuiNho)
+    // Check if we can display all teams together (no tuiNho and reasonable row count)
     const canDisplayAllTogether = data.teams.every(team => {
-      const totalRows = team.fixedGroups.length + team.tuiNhoGroups.length;
-      return totalRows <= MAX_ROWS_PER_SLIDE && team.tuiNhoGroups.length === 0;
-    });
+      return team.tuiNhoGroups.length === 0 && team.fixedGroups.length <= 9;
+    }) && data.teams.length <= 2;
 
-    if (canDisplayAllTogether && data.teams.length <= 2) {
+    if (canDisplayAllTogether) {
       // Display all teams together in one slide
       allSlides.push({
         teams: data.teams.map(team => ({
@@ -124,54 +104,22 @@ export default function TVDisplayQSL({
       return allSlides;
     }
 
-    // Need to split into separate slides per team
+    // Create one slide per team - display fixedGroups + tuiNhoGroups together
     data.teams.forEach((team) => {
-      const totalGroups = [...team.fixedGroups, ...team.tuiNhoGroups];
       const hasTuiNho = team.tuiNhoGroups.length > 0;
-
-      // If total rows ≤ 9 and no tuiNho, display all in one slide
-      if (totalGroups.length <= MAX_ROWS_PER_SLIDE && !hasTuiNho) {
-        allSlides.push({
-          teams: [{ team, groups: totalGroups }],
-          slideLabel: team.tenTo,
-        });
-        return;
-      }
-
-      // Need to split into multiple slides
-      // First, display fixedGroups (may need pagination if > 9)
-      const fixedGroupChunks: QSLGroup[][] = [];
-      for (let i = 0; i < team.fixedGroups.length; i += MAX_ROWS_PER_SLIDE) {
-        fixedGroupChunks.push(team.fixedGroups.slice(i, i + MAX_ROWS_PER_SLIDE));
-      }
-
-      fixedGroupChunks.forEach((chunk, index) => {
-        const label = fixedGroupChunks.length > 1
-          ? `${team.tenTo} (${index + 1}/${fixedGroupChunks.length})`
-          : team.tenTo;
-        allSlides.push({
-          teams: [{ team, groups: chunk }],
-          slideLabel: label,
-        });
+      
+      // Combine all groups (9 fixed + 8 tuiNho = 17 rows if has tuiNho)
+      const allGroups = [...team.fixedGroups, ...team.tuiNhoGroups];
+      
+      // const label = hasTuiNho 
+      //   ? `${team.tenTo} (${team.fixedGroups.length} + ${team.tuiNhoGroups.length} TÚI NHỎ)` 
+      //   : team.tenTo;
+      const label = team.tenTo;
+      
+      allSlides.push({
+        teams: [{ team, groups: allGroups }],
+        slideLabel: label,
       });
-
-      // Then, display tuiNhoGroups if exists (may need pagination if > 9)
-      if (hasTuiNho) {
-        const tuiNhoChunks: QSLGroup[][] = [];
-        for (let i = 0; i < team.tuiNhoGroups.length; i += MAX_ROWS_PER_SLIDE) {
-          tuiNhoChunks.push(team.tuiNhoGroups.slice(i, i + MAX_ROWS_PER_SLIDE));
-        }
-
-        tuiNhoChunks.forEach((chunk, index) => {
-          const label = tuiNhoChunks.length > 1
-            ? `${team.tenTo} - TÚI NHỎ (${index + 1}/${tuiNhoChunks.length})`
-            : `${team.tenTo} - TÚI NHỎ`;
-          allSlides.push({
-            teams: [{ team, groups: chunk }],
-            slideLabel: label,
-          });
-        });
-      }
     });
 
     return allSlides;
@@ -388,9 +336,9 @@ export default function TVDisplayQSL({
             {/* Team Header Row - aligned with table columns, no borders */}
             <thead>
               <tr className="bg-slate-800/50">
-                <th className="px-0 py-1 text-left w-[10%]">
+                <th className="px-0 text-left w-[10%] h-full">
                   <div className="flex items-center justify-center bg-cyan-500/10 border-cyan-400/60 px-2 py-1 rounded shadow-lg shadow-cyan-500/20 h-full">
-                    <span className={`font-black text-cyan-300 truncate ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.85rem,1.9vw,1.7rem)]'}`}>{team.tenTo}</span>
+                    <span className={`font-black text-cyan-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.85rem,1.9vw,1.7rem)]'}`}>{team.tenTo}</span>
                   </div>
                 </th>
                 <th className="px-0 text-center w-[7%]">
@@ -506,9 +454,16 @@ export default function TVDisplayQSL({
             <tbody>
               {groups.map((group, groupIdx) => {
                 // Skip row if LĐ Layout, Thực tế, and Kế hoạch are all 0
-                if (group.ldLayout === 0 && group.thucTe === 0 && group.keHoach === 0) {
+                // OR if LKTH, LKKH, and %HT are all 0
+                if (
+                  (group.ldLayout === 0 && group.thucTe === 0 && group.keHoach === 0) ||
+                  (group.luyKeThucHien === 0 && group.luyKeKeHoach === 0 && group.percentHT === 0)
+                ) {
                   return null;
                 }
+
+                // Check if this is the first tuiNho group (add separator before it)
+                const isFirstTuiNhoGroup = team.tuiNhoGroups.length > 0 && groupIdx === team.fixedGroups.length;
 
                 // Calculate differences
                 const ldDiff = group.thucTe - group.ldLayout;
@@ -526,19 +481,35 @@ export default function TVDisplayQSL({
 
                 // Check if this is a QC group that needs highlighting
                 const isQCGroup = group.nhom === 'QC KIỂM TÚI' || group.nhom === 'QC KIỂM QUAI';
+                
+                // Check if this row belongs to tuiNhoGroups
+                const isTuiNhoRow = groupIdx >= team.fixedGroups.length;
 
                 return (
-                  <tr
-                    key={groupIdx}
-                    className={groupIdx % 2 === 0 ? "bg-slate-700/20" : "bg-slate-800/20"}
-                  >
-                    <td className={`qsl-nhom-cell border border-slate-600 px-0.5 py-0 text-center font-black leading-[1] shadow-md ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300 shadow-cyan-900/50' : 'text-cyan-300 shadow-blue-900/50'} ${isTVMode ? 'text-[clamp(0.6rem,1.25vw,1.05rem)]' : 'text-[clamp(0.7rem,1.4vw,1.15rem)]'}`}>
-                      {group.nhom}
-                    </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white'} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
+                  <React.Fragment key={groupIdx}>
+                    {/* Separator row before first TÚI NHỎ group */}
+                    {isFirstTuiNhoGroup && (
+                      <tr className="bg-gradient-to-r from-purple-900/40 via-purple-800/80 to-purple-900/60 border-y-2 border-purple-500">
+                        <td colSpan={19} className="py-0 text-center">
+                          <div className="flex items-center justify-center gap-2">
+                            <span className={`font-black text-purple-300 tracking-wider ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.75rem,1.4vw,1.2rem)]'}`}>
+                              ━━━━━ TÚI NHỎ ━━━━━
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                    
+                    <tr
+                      className={`${isTuiNhoRow ? 'bg-purple-900/10' : (groupIdx % 2 === 0 ? 'bg-slate-700/20' : 'bg-slate-800/20')}`}
+                    >
+                      <td className={`qsl-nhom-cell border border-slate-600 px-0.5 py-0 text-center font-black leading-[1] shadow-md ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300 shadow-purple-900/50' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300 shadow-cyan-900/50' : 'text-cyan-300 shadow-blue-900/50')} ${isTVMode ? 'text-[clamp(0.6rem,1.25vw,1.05rem)]' : 'text-[clamp(0.7rem,1.4vw,1.15rem)]'}`}>
+                        {group.nhom}
+                      </td>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {group.ldLayout !== 0 ? group.ldLayout : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white'} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {group.thucTe !== 0 ? (
                         <>
                           {group.thucTe}
@@ -550,18 +521,29 @@ export default function TVDisplayQSL({
                         </>
                       ) : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white'} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {group.keHoach !== 0 ? group.keHoach : ''}
                     </td>
                     {/* Hourly data with color based on performance */}
                     {Object.entries(group.hourly).map(([key, value]) => {
                       const shouldShow = shouldShowTimeSlot(key);
 
-                      if (!shouldShow || value === 0) {
+                      if (!shouldShow) {
                         return (
                           <td
                             key={key}
-                            className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'bg-slate-700/30 text-white'} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}
+                            className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'bg-slate-700/30 text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}
+                          >
+                          </td>
+                        );
+                      }
+
+                      // Show empty cell if no value, but still show the cell (don't hide it)
+                      if (!value || value === 0) {
+                        return (
+                          <td
+                            key={key}
+                            className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'bg-slate-700/30 text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}
                           >
                           </td>
                         );
@@ -583,18 +565,18 @@ export default function TVDisplayQSL({
                     })}
                     {/* Summary */}
 
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white'} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {group.luyKeKeHoach !== 0 ? group.luyKeKeHoach : ''}
                     </td>
                     <td
                       className={getFlashClass(
                         `${team.tenTo}-${group.nhom}-luyKeThucHien`,
-                        `border border-slate-600 px-0.5 py-0 text-center font-bold transition-colors duration-300 leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white'} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`
+                        `border border-slate-600 px-0.5 py-0 text-center font-bold transition-colors duration-300 leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`
                       )}
                     >
                       {group.luyKeThucHien !== 0 ? group.luyKeThucHien : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1] ${isQCGroup ? 'bg-cyan-500/20' : ''} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20' : (isQCGroup ? 'bg-cyan-500/20' : '')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {luyKeDiff !== 0 && (
                         <span className={luyKeDiff > 0 ? 'text-green-500' : 'text-red-500'}>
                           {luyKeDiff > 0 ? '+' : ''}{luyKeDiff}
@@ -610,6 +592,7 @@ export default function TVDisplayQSL({
                       {group.percentHT}%
                     </td>
                   </tr>
+                  </React.Fragment>
                 );
               })}
             </tbody>
