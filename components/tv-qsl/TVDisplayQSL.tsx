@@ -501,15 +501,15 @@ export default function TVDisplayQSL({
                     )}
                     
                     <tr
-                      className={`${isTuiNhoRow ? 'bg-purple-900/10' : (groupIdx % 2 === 0 ? 'bg-slate-700/20' : 'bg-slate-800/20')}`}
+                      className={`${isQCGroup ? 'bg-cyan-900/10' : (isTuiNhoRow ? 'bg-purple-900/10' : (groupIdx % 2 === 0 ? 'bg-slate-700/20' : 'bg-slate-800/20'))}`}
                     >
-                      <td className={`qsl-nhom-cell border border-slate-600 px-0.5 py-0 text-center font-black leading-[1] shadow-md ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300 shadow-purple-900/50' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300 shadow-cyan-900/50' : 'text-cyan-300 shadow-blue-900/50')} ${isTVMode ? 'text-[clamp(0.6rem,1.25vw,1.05rem)]' : 'text-[clamp(0.7rem,1.4vw,1.15rem)]'}`}>
+                      <td className={`qsl-nhom-cell border border-slate-600 px-0.5 py-0 text-center font-black leading-[1] shadow-md ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300 shadow-cyan-900/50' : (isTuiNhoRow ? 'bg-purple-500/20 text-purple-300 shadow-purple-900/50' : 'text-cyan-300 shadow-blue-900/50')} ${isTVMode ? 'text-[clamp(0.6rem,1.25vw,1.05rem)]' : 'text-[clamp(0.7rem,1.4vw,1.15rem)]'}`}>
                         {group.nhom}
                       </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : (isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {group.ldLayout !== 0 ? group.ldLayout : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : (isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {group.thucTe !== 0 ? (
                         <>
                           {group.thucTe}
@@ -521,7 +521,7 @@ export default function TVDisplayQSL({
                         </>
                       ) : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : (isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {group.keHoach !== 0 ? group.keHoach : ''}
                     </td>
                     {/* Hourly data with color based on performance */}
@@ -532,7 +532,7 @@ export default function TVDisplayQSL({
                         return (
                           <td
                             key={key}
-                            className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'bg-slate-700/30 text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}
+                            className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : (isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : 'bg-slate-700/30 text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}
                           >
                           </td>
                         );
@@ -543,7 +543,7 @@ export default function TVDisplayQSL({
                         return (
                           <td
                             key={key}
-                            className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'bg-slate-700/30 text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}
+                            className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : (isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : 'bg-slate-700/30 text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}
                           >
                           </td>
                         );
@@ -565,18 +565,18 @@ export default function TVDisplayQSL({
                     })}
                     {/* Summary */}
 
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : (isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {group.luyKeKeHoach !== 0 ? group.luyKeKeHoach : ''}
                     </td>
                     <td
                       className={getFlashClass(
                         `${team.tenTo}-${group.nhom}-luyKeThucHien`,
-                        `border border-slate-600 px-0.5 py-0 text-center font-bold transition-colors duration-300 leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : (isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`
+                        `border border-slate-600 px-0.5 py-0 text-center font-bold transition-colors duration-300 leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : (isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`
                       )}
                     >
                       {group.luyKeThucHien !== 0 ? group.luyKeThucHien : ''}
                     </td>
-                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1] ${isTuiNhoRow ? 'bg-purple-500/20' : (isQCGroup ? 'bg-cyan-500/20' : '')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
+                    <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1] ${isQCGroup ? 'bg-cyan-500/20' : (isTuiNhoRow ? 'bg-purple-500/20' : '')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {luyKeDiff !== 0 && (
                         <span className={luyKeDiff > 0 ? 'text-green-500' : 'text-red-500'}>
                           {luyKeDiff > 0 ? '+' : ''}{luyKeDiff}
