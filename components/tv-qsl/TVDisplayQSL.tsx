@@ -85,27 +85,53 @@ export default function TVDisplayQSL({
   const slides = useMemo((): TeamSlide[] => {
     if (!data || !data.teams) return [];
 
+    // Helper function to check if a team has all zero values
+    const isTeamEmpty = (team: QSLTeam): boolean => {
+      const allGroups = [...team.fixedGroups, ...team.tuiNhoGroups];
+      
+      // Check if all groups have all values as 0
+      return allGroups.every(group => {
+        // Check basic fields
+        const basicFieldsZero = group.ldLayout === 0 && 
+                                group.thucTe === 0 && 
+                                group.keHoach === 0 &&
+                                group.luyKeThucHien === 0 &&
+                                group.luyKeKeHoach === 0 &&
+                                group.percentHT === 0;
+        
+        // Check all hourly values
+        const hourlyValuesZero = Object.values(group.hourly).every(val => val === 0);
+        
+        return basicFieldsZero && hourlyValuesZero;
+      });
+    };
+
+    // Filter out teams with all zero values
+    const activeTeams = data.teams.filter(team => !isTeamEmpty(team));
+
+    if (activeTeams.length === 0) return [];
+
     const allSlides: TeamSlide[] = [];
 
     // Check if we can display all teams together (no tuiNho and reasonable row count)
-    const canDisplayAllTogether = data.teams.every(team => {
+    const canDisplayAllTogether = activeTeams.every(team => {
       return team.tuiNhoGroups.length === 0 && team.fixedGroups.length <= 9;
-    }) && data.teams.length <= 2;
+    }) && activeTeams.length <= 2;
 
     if (canDisplayAllTogether) {
       // Display all teams together in one slide
       allSlides.push({
-        teams: data.teams.map(team => ({
+        teams: activeTeams.map(team => ({
           team,
           groups: [...team.fixedGroups, ...team.tuiNhoGroups],
         })),
-        slideLabel: data.teams.map(t => t.tenTo).join(' & '),
+        slideLabel: activeTeams.map(t => t.tenTo).join(' & '),
       });
       return allSlides;
     }
 
     // Create one slide per team - display fixedGroups + tuiNhoGroups together
-    data.teams.forEach((team) => {
+    activeTeams.forEach((team) => {
       const hasTuiNho = team.tuiNhoGroups.length > 0;
       
       // Combine all groups (9 fixed + 8 tuiNho = 17 rows if has tuiNho)
@@ -347,15 +373,15 @@ export default function TVDisplayQSL({
                   </div>
                 </th>
                 <th className="px-0 text-center w-[7%]">
-                  <div className="flex items-center justify-center bg-cyan-500/10 border-1 border-cyan-400/60 px-2 py-1 rounded shadow-lg shadow-cyan-500/20 h-full">
+                  <div className="flex items-center justify-center gap-1 bg-cyan-500/10 border-1 border-cyan-400/60 px-2 py-1 rounded shadow-lg shadow-cyan-500/20 h-full">
                     <span className={`font-black text-cyan-300 ${isTVMode ? 'text-[clamp(0.75rem,1.6vw,1.4rem)]' : 'text-[clamp(0.85rem,1.9vw,1.7rem)]'}`}>
                       {teamLdThucTe}
-                      {teamLdDiff !== 0 && (
-                        <span className={`ml-0.5 ${isTVMode ? 'text-[clamp(0.6rem,1.3vw,1.1rem)]' : 'text-[clamp(0.7rem,1.5vw,1.3rem)]'} font-bold ${teamLdDiff > 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          ({teamLdDiff > 0 ? '+' : ''}{teamLdDiff})
-                        </span>
-                      )}
                     </span>
+                    {teamLdDiff !== 0 && (
+                      <span className={`inline-flex items-center justify-center px-1 py-0.5 rounded-md font-bold ${isTVMode ? 'text-[clamp(0.55rem,1.1vw,0.95rem)]' : 'text-[clamp(0.65rem,1.3vw,1.1rem)]'} ${teamLdDiff > 0 ? 'bg-green-500/20 text-green-300 border border-green-500/40' : 'bg-red-500/20 text-red-300 border border-red-500/40'}`}>
+                        {teamLdDiff > 0 ? '+' : ''}{teamLdDiff}
+                      </span>
+                    )}
                   </div>
                 </th>
                 <th className="px-0 py-1 w-[5%]">
@@ -511,14 +537,14 @@ export default function TVDisplayQSL({
                     </td>
                     <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : (isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {group.thucTe !== 0 ? (
-                        <>
-                          {group.thucTe}
+                        <div className="flex items-center justify-center gap-1">
+                          <span>{group.thucTe}</span>
                           {ldDiff !== 0 && (
-                            <span className={`ml-1 ${isTVMode ? 'text-[clamp(0.55rem,1.15vw,0.95rem)]' : 'text-[clamp(0.7rem,1.3vw,1.05rem)]'} font-bold ${ldDiff > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                              ({ldDiff > 0 ? '+' : ''}{ldDiff})
+                            <span className={`inline-flex items-center justify-center px-1 py-0.5 rounded font-extrabold ${isTVMode ? 'text-[clamp(0.5rem,1vw,0.85rem)]' : 'text-[clamp(0.6rem,1.15vw,0.95rem)]'} ${ldDiff > 0 ? 'bg-green-500/25 text-green-200 border border-green-400/50 shadow-sm shadow-green-500/30' : 'bg-red-500/25 text-red-200 border border-red-400/50 shadow-sm shadow-red-500/30'}`}>
+                              {ldDiff > 0 ? '+' : ''}{ldDiff}
                             </span>
                           )}
-                        </>
+                        </div>
                       ) : ''}
                     </td>
                     <td className={`border border-slate-600 px-0.5 py-0 text-center font-semibold leading-[1] ${isQCGroup ? 'bg-cyan-500/20 text-cyan-300' : (isTuiNhoRow ? 'bg-purple-500/20 text-purple-300' : 'text-white')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
@@ -578,7 +604,7 @@ export default function TVDisplayQSL({
                     </td>
                     <td className={`border border-slate-600 px-0.5 py-0 text-center font-bold leading-[1] ${isQCGroup ? 'bg-cyan-500/20' : (isTuiNhoRow ? 'bg-purple-500/20' : '')} ${isTVMode ? 'text-[clamp(0.65rem,1.3vw,1.1rem)]' : 'text-[clamp(0.8rem,1.5vw,1.25rem)]'}`}>
                       {luyKeDiff !== 0 && (
-                        <span className={luyKeDiff > 0 ? 'text-green-500' : 'text-red-500'}>
+                        <span className={`inline-flex items-center justify-center px-1.5 py-0.5 rounded-md font-extrabold ${isTVMode ? 'text-[clamp(0.6rem,1.2vw,1rem)]' : 'text-[clamp(0.75rem,1.4vw,1.15rem)]'} ${luyKeDiff > 0 ? 'bg-green-500/30 text-green-100 border border-green-400/60 shadow-md shadow-green-500/40' : 'bg-red-500/30 text-red-100 border border-red-400/60 shadow-md shadow-red-500/40'}`}>
                           {luyKeDiff > 0 ? '+' : ''}{luyKeDiff}
                         </span>
                       )}
